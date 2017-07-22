@@ -1454,8 +1454,9 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
         /// If true, recursively searches the given file path and analyzes any
         /// script files that are found.
         /// </param>
+        /// <param name="autoFix">Fix warnings that can be automatically fixed.</param>
         /// <returns>An enumeration of DiagnosticRecords that were found by rules.</returns>
-        public IEnumerable<DiagnosticRecord> AnalyzePath(string path, bool searchRecursively = false)
+        public IEnumerable<DiagnosticRecord> AnalyzePath(string path, bool searchRecursively = false, bool autoFix = false)
         {
             List<string> scriptFilePaths = new List<string>();
 
@@ -1477,11 +1478,39 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             {
                 // Yield each record in the result so that the
                 // caller can pull them one at a time
-                foreach (var diagnosticRecord in this.AnalyzeFile(scriptFilePath))
+                var diagnosticRecords = this.AnalyzeFile(scriptFilePath);
+                if(autoFix)
+                {
+                    bool allFixableWarningsFixed = false;
+                    while(!allFixableWarningsFixed)
+                    {
+                        allFixableWarningsFixed = !(AutoFixFirstFixableDiagnosticRecord(diagnosticRecords));
+                        diagnosticRecords = this.AnalyzeFile(scriptFilePath);  // update records with the correct line numbers after fix
+                    }
+                }
+                foreach (var diagnosticRecord in diagnosticRecords)
                 {
                     yield return diagnosticRecord;
                 }
             }
+        }
+
+        /// <summary>
+        /// Fixes only the first fixable DiagnosticRecord that it encounters because afterwards the other records need to be re-created as their line/column numbers are different then
+        /// </summary>
+        /// <param name="diagnosticRecords"></param>
+        /// <returns>True if it could fix a warning</returns>
+        private bool AutoFixFirstFixableDiagnosticRecord(IEnumerable<DiagnosticRecord> diagnosticRecords)
+        {
+            foreach(var diagnosticRecord in diagnosticRecords)
+            {
+                if (diagnosticRecord.CanBeFixedAutomatically)
+                {
+                    diagnosticRecord.AutoFix();
+                    return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>

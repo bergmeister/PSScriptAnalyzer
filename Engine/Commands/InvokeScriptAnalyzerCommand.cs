@@ -42,7 +42,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Commands
     public class InvokeScriptAnalyzerCommand : PSCmdlet, IOutputWriter
     {
         #region Private variables
-        List<string> processedPaths;
+        private List<string> processedPaths;
         #endregion // Private variables
 
         #region Parameters
@@ -116,6 +116,18 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Commands
             set { includeDefaultRules = value; }
         }
         private bool includeDefaultRules;
+
+        /// <summary>
+        /// Resolves rule violations automatically where possible.
+        /// </summary>
+        [Parameter(Mandatory = false, ParameterSetName = "File")]
+        [SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
+        public SwitchParameter AutoFix
+        {
+            get { return autoFix; }
+            set { autoFix = value; }
+        }
+        private bool autoFix;
 
         /// <summary>
         /// ExcludeRule: Array of names of rules to be disabled.
@@ -351,7 +363,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Commands
             {
                 foreach (var p in processedPaths)
                 {
-                    diagnosticsList = ScriptAnalyzer.Instance.AnalyzePath(p, this.recurse);
+                    diagnosticsList = ScriptAnalyzer.Instance.AnalyzePath(p, this.recurse, this.autoFix);
                     WriteToOutput(diagnosticsList);
                 }
             }

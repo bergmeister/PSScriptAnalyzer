@@ -135,7 +135,8 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
                         DiagnosticSeverity.Warning,
                         fileName,
                         aliasName,
-                        suggestedCorrections: GetCorrectionExtent(cmdAst, cmdletName));
+                        suggestedCorrections: GetCorrectionExtent(cmdAst, cmdletName),
+                        canBeFixedAutomatically: true);
                 }
             }
         }
