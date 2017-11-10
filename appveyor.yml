@@ -25,7 +25,7 @@ build_script:
         C:\projects\psscriptanalyzer\build.ps1 -BuildDocs
         Pop-Location
 
-# branches to build
+# branches to build 
 branches:
   # whitelist
   only:
