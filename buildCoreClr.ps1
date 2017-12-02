@@ -104,3 +104,5 @@ if ($install)
 {
     Copy-Item -Recurse -Path "$destinationDir" -Destination "$modulePath\." -Verbose -Force
 }
+
+Pop-Location
