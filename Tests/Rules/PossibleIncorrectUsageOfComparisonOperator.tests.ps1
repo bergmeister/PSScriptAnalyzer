@@ -65,6 +65,11 @@ Describe "PossibleIncorrectUsageOfComparisonOperator" {
             $warnings.Count | Should Be 0
         }
 
+        It "returns no violations when the variable assigned on the LHS is used" {
+            $warnings = Invoke-ScriptAnalyzer -ScriptDefinition 'if ($a = $b){ $a.DoSomething() }' | Where-Object {$_.RuleName -eq $ruleName}
+            $warnings.Count | Should Be 0
+        }
+
         It "returns no violations when there is an evaluation on the RHS" {
             $warnings = Invoke-ScriptAnalyzer -ScriptDefinition 'if ($a = Get-ChildItem){}' | Where-Object {$_.RuleName -eq $ruleName}
             $warnings.Count | Should Be 0
