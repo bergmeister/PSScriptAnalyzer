@@ -77,7 +77,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
                                     {
                                         // If the right hand side contains a CommandAst at some point, then we do not want to warn
                                         // because this could be intentional in cases like 'if ($a = Get-ChildItem){ }'
-                                        var commandAst = assignmentStatementAst.Right.Find(testAst => testAst is CommandAst, searchNestedScriptBlocks: true) as CommandExpressionAst;
+                                        var commandAst = assignmentStatementAst.Right.Find(testAst => testAst is CommandAst, searchNestedScriptBlocks: true) as CommandAst;
                                         if (commandAst == null)
                                         {
                                             yield return new DiagnosticRecord(
