@@ -18,6 +18,7 @@ using System.ComponentModel.Composition;
 #endif
 using System.Management.Automation.Language;
 using System.Globalization;
+using System.Linq;
 
 namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
 {
@@ -55,14 +56,30 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
                         }
                         else
                         {
-                            // If the right hand side contains a CommandAst at some point, then we do not want to warn
-                            // because this could be intentional in cases like 'if ($a = Get-ChildItem){ }'
-                            var commandAst = assignmentStatementAst.Right.Find(testAst => testAst is CommandAst, searchNestedScriptBlocks: true) as CommandAst;
-                            if (commandAst == null)
+                            if (assignmentStatementAst.Left is VariableExpressionAst)
                             {
-                                yield return new DiagnosticRecord(
-                                   Strings.PossibleIncorrectUsageOfComparisonOperatorAssignmentOperatorError, assignmentStatementAst.ErrorPosition,
-                                   GetName(), DiagnosticSeverity.Information, fileName);
+                                var vast = assignmentStatementAst.Left as VariableExpressionAst;
+                                var veAsts = clause.Item2.FindAll(testAst => testAst is VariableExpressionAst, searchNestedScriptBlocks: true);
+                                if (veAsts == null)
+                                {
+                                    yield return new DiagnosticRecord(
+                                       Strings.PossibleIncorrectUsageOfComparisonOperatorAssignmentOperatorError, assignmentStatementAst.ErrorPosition,
+                                       GetName(), DiagnosticSeverity.Information, fileName);
+                                }
+                                else
+                                {
+                                    // Check if LHS is being used
+                                    var variableIsBeingUsed = veAsts.Where(x => x is VariableExpressionAst).Any(x =>( (VariableExpressionAst)x).VariablePath.UserPath == vast.VariablePath.UserPath);
+                                    // If the right hand side contains a CommandAst at some point, then we do not want to warn
+                                    // because this could be intentional in cases like 'if ($a = Get-ChildItem){ }'
+                                    var commandAst = assignmentStatementAst.Right.Find(testAst => testAst is CommandAst, searchNestedScriptBlocks: true) as CommandExpressionAst;
+                                    if (commandAst == null && !variableIsBeingUsed)
+                                    {
+                                        yield return new DiagnosticRecord(
+                                            Strings.PossibleIncorrectUsageOfComparisonOperatorAssignmentOperatorError, assignmentStatementAst.ErrorPosition,
+                                            GetName(), DiagnosticSeverity.Information, fileName);
+                                    }
+                                }
                             }
                         }
                     }
