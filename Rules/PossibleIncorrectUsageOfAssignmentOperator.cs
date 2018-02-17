@@ -59,7 +59,8 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
                             if (leftVariableExpressionAstOfAssignment != null)
                             {
                                 var statementBlockOfIfStatenent = clause.Item2;
-                                var variableExpressionAstsInStatementBlockOfIfStatement = statementBlockOfIfStatenent.FindAll(testAst => testAst is VariableExpressionAst, searchNestedScriptBlocks: true);
+                                var variableExpressionAstsInStatementBlockOfIfStatement = statementBlockOfIfStatenent.FindAll(testAst =>
+                                                                                                testAst is VariableExpressionAst, searchNestedScriptBlocks: true);
                                 if (variableExpressionAstsInStatementBlockOfIfStatement == null) // no variable uages at all
                                 {
                                     yield return PossibleIncorrectUsageOfComparisonOperatorAssignmentOperatorError(assignmentStatementAst.ErrorPosition, fileName);
@@ -67,7 +68,8 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
                                 else
                                 {
                                     var variableOnLHSIsBeingUsed = variableExpressionAstsInStatementBlockOfIfStatement.Where(x => x is VariableExpressionAst)
-                                                                .Any(x => ((VariableExpressionAst)x).VariablePath.UserPath.Equals(leftVariableExpressionAstOfAssignment.VariablePath.UserPath, StringComparison.OrdinalIgnoreCase));
+                                        .Any(x => ((VariableExpressionAst)x).VariablePath.UserPath.Equals(
+                                            leftVariableExpressionAstOfAssignment.VariablePath.UserPath, StringComparison.OrdinalIgnoreCase));
 
                                     if (!variableOnLHSIsBeingUsed)
                                     {
