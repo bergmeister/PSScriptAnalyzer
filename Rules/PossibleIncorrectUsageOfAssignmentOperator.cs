@@ -61,7 +61,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
                                 var statementBlockOfIfStatenent = clause.Item2;
                                 var variableExpressionAstsInStatementBlockOfIfStatement = statementBlockOfIfStatenent.FindAll(testAst =>
                                                                                                 testAst is VariableExpressionAst, searchNestedScriptBlocks: true);
-                                if (variableExpressionAstsInStatementBlockOfIfStatement == null) // no variable uages at all
+                                if (variableExpressionAstsInStatementBlockOfIfStatement == null) // no variable usages at all
                                 {
                                     yield return PossibleIncorrectUsageOfComparisonOperatorAssignmentOperatorError(assignmentStatementAst.ErrorPosition, fileName);
                                 }
