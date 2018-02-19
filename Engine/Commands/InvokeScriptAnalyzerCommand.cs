@@ -398,19 +398,43 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Commands
             IEnumerable<DiagnosticRecord> diagnosticsList = Enumerable.Empty<DiagnosticRecord>();
             if (IsFileParameterSet())
             {
-                foreach (var p in processedPaths)
+                if (this.Recurse)  // todo: think about whatif
                 {
-                    if (fix)
+                    Parallel.ForEach(processedPaths, (processedPath) =>
                     {
-                        ShouldProcess(p, $"Analyzing and fixing path with Recurse={this.recurse}");
-                        diagnosticsList = ScriptAnalyzer.Instance.AnalyzeAndFixPath(p, this.ShouldProcess, this.recurse);
-                    }
-                    else
+                        IEnumerable<DiagnosticRecord> diagnosticRecordOfFile = Enumerable.Empty<DiagnosticRecord>();
+                        if (fix)
+                        {
+                            diagnosticsList = ScriptAnalyzer.Instance.AnalyzeAndFixPath(processedPath, this.ShouldProcess, this.recurse);
+                            WriteToOutput(diagnosticsList);
+                        }
+                        else
+                        {
+                            diagnosticsList = ScriptAnalyzer.Instance.AnalyzePath(processedPath, this.ShouldProcess, this.recurse);
+                            WriteToOutput(diagnosticsList);
+                        }
+                        //lock(diagnosticsList)
+                        //{
+                        //    diagnosticsList.Concat(diagnosticRecordOfFile);
+                        //}
+                    });
+                }
+                else
+                {
+                    foreach (var processedPath in processedPaths)
                     {
-                        ShouldProcess(p, $"Analyzing path with Recurse={this.recurse}");
-                        diagnosticsList = ScriptAnalyzer.Instance.AnalyzePath(p, this.ShouldProcess, this.recurse);
+                        if (fix)
+                        {
+                            ShouldProcess(processedPath, $"Analyzing and fixing path with Recurse={this.recurse}");
+                            diagnosticsList = ScriptAnalyzer.Instance.AnalyzeAndFixPath(processedPath, this.ShouldProcess, this.recurse);
+                        }
+                        else
+                        {
+                            ShouldProcess(processedPath, $"Analyzing path with Recurse={this.recurse}");
+                            diagnosticsList = ScriptAnalyzer.Instance.AnalyzePath(processedPath, this.ShouldProcess, this.recurse);
+                        }
+                        WriteToOutput(diagnosticsList);
                     }
-                    WriteToOutput(diagnosticsList);
                 }
             }
             else if (String.Equals(this.ParameterSetName, "ScriptDefinition", StringComparison.OrdinalIgnoreCase))
@@ -419,6 +443,21 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Commands
                 WriteToOutput(diagnosticsList);
             }
         }
+
+        //private void ProcessFilePath(string path, bool recurse, bool fixWarnings)
+        //{
+        //    if (fixWarnings)
+        //    {
+        //        ShouldProcess(path, $"Analyzing and fixing path with Recurse={this.recurse}");
+        //        diagnosticsList = ScriptAnalyzer.Instance.AnalyzeAndFixPath(path, this.ShouldProcess, this.recurse);
+        //    }
+        //    else
+        //    {
+        //        ShouldProcess(path, $"Analyzing path with Recurse={this.recurse}");
+        //        diagnosticsList = ScriptAnalyzer.Instance.AnalyzePath(path, this.ShouldProcess, this.recurse);
+        //    }
+        //    WriteToOutput(diagnosticsList);
+        //}
 
         private void WriteToOutput(IEnumerable<DiagnosticRecord> diagnosticRecords)
         {
