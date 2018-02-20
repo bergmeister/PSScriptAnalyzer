@@ -69,6 +69,7 @@ if ($build)
     {
         Invoke-RestoreSolution
     }
+    .\New-StronglyTypedCsFileForResx.ps1 Engine
     Push-Location Engine\
     dotnet build Engine.csproj --framework $Framework --configuration $Configuration
     Pop-Location
