@@ -1,5 +1,5 @@
 #Import-Module PSScriptAnalyzer
-$ruleName = "PSPossibleIncorrectUsageOfComparisonOperator"
+$ruleName = "PSPossibleIncorrectUsageOfAssignmentOperator"
 
 Describe "PossibleIncorrectUsageOfComparisonOperator" {
     Context "When there are violations" {
@@ -35,31 +35,6 @@ Describe "PossibleIncorrectUsageOfComparisonOperator" {
 
         It "double equals inside if statement causes warning when wrapped in expression" {
             $warnings = Invoke-ScriptAnalyzer -ScriptDefinition 'if ($a == "$b"){}' | Where-Object {$_.RuleName -eq $ruleName}
-            $warnings.Count | Should -Be 1
-        }
-
-        It "File redirection operator inside if statement causes warning" {
-            $warnings = Invoke-ScriptAnalyzer -ScriptDefinition 'if ($a > $b){}' | Where-Object {$_.RuleName -eq $ruleName}
-            $warnings.Count | Should -Be 1
-        }
-
-        It "File redirection operator with equals sign inside if statement causes warning" {
-            $warnings = Invoke-ScriptAnalyzer -ScriptDefinition 'if ($a >=){}' | Where-Object {$_.RuleName -eq $ruleName}
-            $warnings.Count | Should -Be 1
-        }
-
-        It "File redirection operator inside if statement causes warning when wrapped in command expression" {
-            $warnings = Invoke-ScriptAnalyzer -ScriptDefinition 'if ($a > ($b)){}' | Where-Object {$_.RuleName -eq $ruleName}
-            $warnings.Count | Should -Be 1
-        }
-
-        It "File redirection operator inside if statement causes warning when wrapped in expression" {
-            $warnings = Invoke-ScriptAnalyzer -ScriptDefinition 'if ($a > "$b"){}' | Where-Object {$_.RuleName -eq $ruleName}
-            $warnings.Count | Should -Be 1
-        }
-
-        It "File redirection operator inside elseif statement causes warning" {
-            $warnings = Invoke-ScriptAnalyzer -ScriptDefinition 'if ($a -eq $b){}elseif($a > $b){}' | Where-Object {$_.RuleName -eq $ruleName}
             $warnings.Count | Should -Be 1
         }
     }

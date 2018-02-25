@@ -1,14 +1,5 @@
-﻿//
-// Copyright (c) Microsoft Corporation.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
-//
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 using Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic;
 using System;
@@ -26,9 +17,9 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
     /// The origin of this rule is that people often forget that operators change when switching between different languages such as C# and PowerShell.
     /// </summary>
 #if !CORECLR
-[Export(typeof(IScriptRule))]
+    [Export(typeof(IScriptRule))]
 #endif
-    public class PossibleIncorrectUsageOfComparisonOperator : AstVisitor, IScriptRule
+    public class PossibleIncorrectUsageOfAssignmentOperator : AstVisitor, IScriptRule
     {
         /// <summary>
         /// The idea is to get all AssignmentStatementAsts and then check if the parent is an IfStatementAst, which includes if, elseif and else statements.
@@ -43,14 +34,14 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
                 foreach (var clause in ifStatementAst.Clauses)
                 {
                     var assignmentStatementAst = clause.Item1.Find(testAst => testAst is AssignmentStatementAst, searchNestedScriptBlocks: false) as AssignmentStatementAst;
-                    if (assignmentStatementAst != null && !ClangStylesuppresionIsUsed(assignmentStatementAst.Extent))
+                    if (assignmentStatementAst != null && !ClangSuppresion.ScriptExtendIsWrappedInParenthesis(assignmentStatementAst.Extent))
                     {
                         // Check if someone used '==', which can easily happen when the person is used to coding a lot in C#.
                         // In most cases, this will be a runtime error because PowerShell will look for a cmdlet name starting with '=', which is technically possible to define
                         if (assignmentStatementAst.Right.Extent.Text.StartsWith("="))
                         {
                             yield return new DiagnosticRecord(
-                                Strings.PossibleIncorrectUsageOfComparisonOperatorAssignmentOperatorError, assignmentStatementAst.ErrorPosition,
+                                Strings.PossibleIncorrectUsageOfAssignmentOperatorAssignmentOperatorError, assignmentStatementAst.ErrorPosition,
                                 GetName(), DiagnosticSeverity.Warning, fileName);
                         }
                         else
@@ -65,32 +56,13 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
                             if (commandAst == null && invokeMemberExpressionAst == null && binaryExpressionAst == null)
                             {
                                 yield return new DiagnosticRecord(
-                                   Strings.PossibleIncorrectUsageOfComparisonOperatorAssignmentOperatorError, assignmentStatementAst.ErrorPosition,
+                                   Strings.PossibleIncorrectUsageOfAssignmentOperatorAssignmentOperatorError, assignmentStatementAst.ErrorPosition,
                                    GetName(), DiagnosticSeverity.Information, fileName);
                             }
                         }
                     }
-
-                    var fileRedirectionAst = clause.Item1.Find(testAst => testAst is FileRedirectionAst, searchNestedScriptBlocks: false) as FileRedirectionAst;
-                    if (fileRedirectionAst != null)
-                    {
-                        yield return new DiagnosticRecord(
-                            Strings.PossibleIncorrectUsageOfComparisonOperatorFileRedirectionOperatorError, fileRedirectionAst.Extent,
-                            GetName(), DiagnosticSeverity.Warning, fileName);
-                    }
                 }
             }
-        }
-
-        /// <summary>
-        /// The community requested an implicit suppression mechanism that follows the clang style where warnings are not issued if the expression is wrapped in extra parenthesis
-        /// See here for details: https://github.com/Microsoft/clang/blob/349091162fcf2211a2e55cf81db934978e1c4f0c/test/SemaCXX/warn-assignment-condition.cpp#L15-L18
-        /// </summary>
-        /// <param name="scriptExtent"></param>
-        /// <returns></returns>
-        private bool ClangStylesuppresionIsUsed(IScriptExtent scriptExtent)
-        {
-            return scriptExtent.Text.StartsWith("(") && scriptExtent.Text.EndsWith(")");
         }
 
         /// <summary>
@@ -99,7 +71,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
         /// <returns>The name of this rule</returns>
         public string GetName()
         {
-            return string.Format(CultureInfo.CurrentCulture, Strings.NameSpaceFormat, GetSourceName(), Strings.PossibleIncorrectUsageOfComparisonOperatorName);
+            return string.Format(CultureInfo.CurrentCulture, Strings.NameSpaceFormat, GetSourceName(), Strings.PossibleIncorrectUsageOfAssignmentOperatorName);
         }
 
         /// <summary>
@@ -108,7 +80,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
         /// <returns>The common name of this rule</returns>
         public string GetCommonName()
         {
-            return string.Format(CultureInfo.CurrentCulture, Strings.PossibleIncorrectUsageOfComparisonOperatorCommonName);
+            return string.Format(CultureInfo.CurrentCulture, Strings.PossibleIncorrectUsageOfAssignmentOperatorCommonName);
         }
 
         /// <summary>
@@ -117,7 +89,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
         /// <returns>The description of this rule</returns>
         public string GetDescription()
         {
-            return string.Format(CultureInfo.CurrentCulture, Strings.PossibleIncorrectUsageOfComparisonOperatorDescription);
+            return string.Format(CultureInfo.CurrentCulture, Strings.PossibleIncorrectUsageOfAssignmentOperatorDescription);
         }
 
         /// <summary>
