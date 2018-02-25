@@ -1,4 +1,4 @@
-# PossibleIncorrectUsageOfComparisonOperator
+# PossibleIncorrectUsageOfAssignmentOperator
 
 **Severity Level: Information**
 
