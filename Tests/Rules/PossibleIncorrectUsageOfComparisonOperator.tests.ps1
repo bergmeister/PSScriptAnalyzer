@@ -43,6 +43,11 @@ Describe "PossibleIncorrectUsageOfComparisonOperator" {
             $warnings.Count | Should -Be 1
         }
 
+        It "File redirection operator with equals sign inside if statement causes warning" {
+            $warnings = Invoke-ScriptAnalyzer -ScriptDefinition 'if ($a >=){}' | Where-Object {$_.RuleName -eq $ruleName}
+            $warnings.Count | Should -Be 1
+        }
+
         It "File redirection operator inside if statement causes warning when wrapped in command expression" {
             $warnings = Invoke-ScriptAnalyzer -ScriptDefinition 'if ($a > ($b)){}' | Where-Object {$_.RuleName -eq $ruleName}
             $warnings.Count | Should -Be 1
@@ -65,13 +70,18 @@ Describe "PossibleIncorrectUsageOfComparisonOperator" {
             $warnings.Count | Should -Be 0
         }
 
+        It "returns no violations when using implicit clang style suppresion" {
+            $warnings = Invoke-ScriptAnalyzer -ScriptDefinition 'if ( ($a -eq $b) ){ }' | Where-Object {$_.RuleName -eq $ruleName}
+            $warnings.Count | Should -Be 0
+        }
+
         It "returns no violations when using an InvokeMemberExpressionAst like a .net method on the RHS" {
             $warnings = Invoke-ScriptAnalyzer -ScriptDefinition 'if ($a = [System.IO.Path]::GetTempFileName()){ }' | Where-Object {$_.RuleName -eq $ruleName}
             $warnings.Count | Should -Be 0
         }
 
         It "returns no violations when there is an InvokeMemberExpressionAst on the RHS that looks like a variable" {
-            $warnings = Invoke-ScriptAnalyzer -ScriptDefinition 'if ($a = $PSCmdlet.GetVariableValue($foo){ }' | Where-Object {$_.RuleName -eq $ruleName}
+            $warnings = Invoke-ScriptAnalyzer -ScriptDefinition 'if ($a = $PSCmdlet.GetVariableValue($foo)){ }' | Where-Object {$_.RuleName -eq $ruleName}
             $warnings.Count | Should -Be 0
         }
 

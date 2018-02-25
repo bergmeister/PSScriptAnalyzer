@@ -43,7 +43,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
                 foreach (var clause in ifStatementAst.Clauses)
                 {
                     var assignmentStatementAst = clause.Item1.Find(testAst => testAst is AssignmentStatementAst, searchNestedScriptBlocks: false) as AssignmentStatementAst;
-                    if (assignmentStatementAst != null)
+                    if (assignmentStatementAst != null && !ClangStylesuppresionIsUsed(assignmentStatementAst.Extent))
                     {
                         // Check if someone used '==', which can easily happen when the person is used to coding a lot in C#.
                         // In most cases, this will be a runtime error because PowerShell will look for a cmdlet name starting with '=', which is technically possible to define
@@ -80,6 +80,17 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// The community requested an implicit suppression mechanism that follows the clang style where warnings are not issued if the expression is wrapped in extra parenthesis
+        /// See here for details: https://github.com/Microsoft/clang/blob/349091162fcf2211a2e55cf81db934978e1c4f0c/test/SemaCXX/warn-assignment-condition.cpp#L15-L18
+        /// </summary>
+        /// <param name="scriptExtent"></param>
+        /// <returns></returns>
+        private bool ClangStylesuppresionIsUsed(IScriptExtent scriptExtent)
+        {
+            return scriptExtent.Text.StartsWith("(") && scriptExtent.Text.EndsWith(")");
         }
 
         /// <summary>
