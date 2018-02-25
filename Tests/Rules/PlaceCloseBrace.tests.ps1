@@ -32,7 +32,7 @@ function foo {
         }
 
         It "Should find a violation" {
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
         }
 
         It "Should mark the right extent" {
@@ -55,7 +55,7 @@ function foo {
         }
 
         It "Should find a violation" {
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
         }
 
         It "Should mark the right extent" {
@@ -75,7 +75,7 @@ $hashtable = @{a = 1; b = 2}
         }
 
         It "Should not find a violation" {
-            $violations.Count | Should -Be 0
+            $violations | Should -HaveCount 0
         }
     }
 
@@ -93,7 +93,7 @@ $hashtable = @{
         }
 
         It "Should find a violation" {
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
         }
     }
 
@@ -107,7 +107,7 @@ Get-Process * | % { "blah" }
         }
 
         It "Should not find a violation" {
-            $violations.Count | Should -Be 0
+            $violations | Should -HaveCount 0
         }
 
         It "Should ignore violations for one line if statement" {
@@ -116,7 +116,7 @@ $x = if ($true) { "blah" } else { "blah blah" }
 '@
             $ruleConfiguration.'IgnoreOneLineBlock' = $true
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
-            $violations.Count | Should -Be 0
+            $violations | Should -HaveCount 0
         }
 
         It "Should ignore violations for one line if statement even if NewLineAfter is true" {
@@ -126,7 +126,7 @@ $x = if ($true) { "blah" } else { "blah blah" }
             $ruleConfiguration.'IgnoreOneLineBlock' = $true
             $ruleConfiguration.'NewLineAfter' = $true
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
-            $violations.Count | Should -Be 0
+            $violations | Should -HaveCount 0
         }
     }
 
@@ -146,7 +146,7 @@ if (Test-Path "blah") {
 }
 '@
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
             $params = @{
                 RawContent       = $def
                 DiagnosticRecord = $violations[0]
@@ -166,7 +166,7 @@ if (Test-Path "blah") {
 }
 '@
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
             $params = @{
                 RawContent       = $def
                 DiagnosticRecord = $violations[0]
@@ -187,7 +187,7 @@ try {
 
 '@
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
             $params = @{
                 RawContent       = $def
                 DiagnosticRecord = $violations[0]
@@ -207,7 +207,7 @@ Some-Command -Param1 @{
     }
 '@
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
-            $violations.Count | Should -Be 0
+            $violations | Should -HaveCount 0
         }
 
         It "Should not find a violation for a close brace followed by parameter in a command expression" {
@@ -217,7 +217,7 @@ Some-Command -Param1 @{
 } -Param2
 '@
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
-            $violations.Count | Should -Be 0
+            $violations | Should -HaveCount 0
         }
     }
 
@@ -238,7 +238,7 @@ else {
 }
 '@
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
         }
 
         It "Should correct violation by cuddling the else branch statement" {
@@ -357,7 +357,7 @@ if ($true) {
 }
 '@
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
-            $violations.Count | Should -Be 0
+            $violations | Should -HaveCount 0
         }
     }
 }

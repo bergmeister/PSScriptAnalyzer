@@ -17,7 +17,7 @@ Describe "Resolve DSC Resource Dependency" {
         Function Test-EnvironmentVariables($oldEnv)
         {
             $newEnv = Get-Item Env:\* | Sort-Object -Property Key
-            $newEnv.Count | Should -Be $oldEnv.Count
+            $newEnv | Should -HaveCount $oldEnv.Count
             foreach ($index in 1..$newEnv.Count)
             {
                 $newEnv[$index].Key | Should -Be $oldEnv[$index].Key
@@ -124,7 +124,7 @@ Describe "Resolve DSC Resource Dependency" {
     Context "Invoke-ScriptAnalyzer without switch" {
         It "Has parse errors" -skip:$skipTest {
             $dr = Invoke-ScriptAnalyzer -Path $violationFilePath -ErrorVariable parseErrors -ErrorAction SilentlyContinue
-            $parseErrors.Count | Should -Be 1
+            $parseErrors | Should -HaveCount 1
         }
     }
 
@@ -169,7 +169,7 @@ Describe "Resolve DSC Resource Dependency" {
         It "Doesn't have parse errors" -skip:$skipTest {
             # invoke script analyzer
             $dr = Invoke-ScriptAnalyzer -Path $violationFilePath -ErrorVariable parseErrors -ErrorAction SilentlyContinue
-            $dr.Count | Should -Be 0
+            $dr | Should -HaveCount 0
         }
 
         It "Keeps PSModulePath unchanged before and after invocation" -skip:$skipTest {

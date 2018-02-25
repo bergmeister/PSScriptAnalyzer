@@ -9,7 +9,7 @@ $noViolationsDSC = Invoke-ScriptAnalyzer -ErrorAction SilentlyContinue $director
 Describe "CommandNotFound" {
     Context "When there are violations" {
         It "has 1 Command Not Found violation" {
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
         }
 
         It "has the correct description message" {
@@ -19,11 +19,11 @@ Describe "CommandNotFound" {
 
     Context "When there are no violations" {
         It "returns no violations" {
-            $noViolations.Count | Should -Be 0
+            $noViolations | Should -HaveCount 0
         }
 
         It "returns no violations for DSC configuration" {
-            $noViolationsDSC.Count | Should -Be 0
+            $noViolationsDSC | Should -HaveCount 0
         }
     }
 }

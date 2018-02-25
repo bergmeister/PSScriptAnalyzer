@@ -9,7 +9,7 @@ $noViolations = Invoke-ScriptAnalyzer $directory\AvoidUsingClearHostNoViolations
 Describe "AvoidUsingClearHost" {
     Context "When there are violations" {
         It "has 3 Clear-Host violations" {
-            $violations.Count | Should -Be 3
+            $violations | Should -HaveCount 3
         }
 
         It "has the correct description message for Clear-Host" {
@@ -19,7 +19,7 @@ Describe "AvoidUsingClearHost" {
 
     Context "When there are no violations" {
         It "returns no violations" {
-            $noViolations.Count | Should -Be 0
+            $noViolations | Should -HaveCount 0
         }
     }
 }

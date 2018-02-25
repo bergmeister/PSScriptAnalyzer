@@ -33,7 +33,7 @@ $hashtable = @{
             # }
 
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
             Test-CorrectionExtentFromContent $def $violations 1 ' ' '       '
         }
 
@@ -52,7 +52,7 @@ $hashtable = @{
             # }
 
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
             Test-CorrectionExtentFromContent $def $violations 1 '              ' '       '
         }
 

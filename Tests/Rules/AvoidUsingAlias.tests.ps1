@@ -12,7 +12,7 @@ Import-Module (Join-Path $testRootDirectory "PSScriptAnalyzerTestHelper.psm1")
 Describe "AvoidUsingAlias" {
     Context "When there are violations" {
         It "has 2 Avoid Using Alias Cmdlets violations" {
-            $violations.Count | Should -Be 2
+            $violations | Should -HaveCount 2
         }
 
         It "has the correct description message" {
@@ -40,7 +40,7 @@ gci -Path C:\
 
     Context "When there are no violations" {
         It "returns no violations" {
-            $noViolations.Count | Should -Be 0
+            $noViolations | Should -HaveCount 0
         }
 
         It "should return no violation for assignment statement-like command in dsc configuration" -skip:($IsLinux -or $IsMacOS) {
@@ -81,19 +81,19 @@ Configuration MyDscConfiguration {
                 }
             }
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $whiteListTestScriptDef -Settings $settings -IncludeRule $violationName
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
         }
 
         It "honors the whitelist provided through settings file" {
             # even though join-path returns string, if we do not use tostring, then invoke-scriptanalyzer cannot cast it to string type
             $settingsFilePath = (Join-Path $directory (Join-Path 'TestSettings' 'AvoidAliasSettings.psd1')).ToString()
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $whiteListTestScriptDef -Settings $settingsFilePath -IncludeRule $violationName
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
         }
 
         It "honors the whitelist in a case-insensitive manner" {
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition "CD" -Settings $settings -IncludeRule $violationName
-            $violations.Count | Should -Be 0
+            $violations | Should -HaveCount 0
         }
     }
 }

@@ -13,20 +13,20 @@ Describe "Settings Precedence" {
         It "runs rules from the explicit setting file" {
             $settingsFilepath = [System.IO.Path]::Combine($project1Root, "ExplicitSettings.psd1")
             $violations = Invoke-ScriptAnalyzer -Path $project1Root -Settings $settingsFilepath -Recurse
-            $violations.Count | Should -Be 2
+            $violations | Should -HaveCount 2
         }
     }
 
     Context "settings file is implicit" {
         It "runs rules from the implicit setting file" {
             $violations = Invoke-ScriptAnalyzer -Path $project1Root -Recurse
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
             $violations[0].RuleName | Should -Be "PSAvoidUsingCmdletAliases"
         }
 
         It "cannot find file if not named PSScriptAnalyzerSettings.psd1" {
             $violations = Invoke-ScriptAnalyzer -Path $project2Root -Recurse
-            $violations.Count | Should -Be 2
+            $violations | Should -HaveCount 2
         }
     }
 }
@@ -45,7 +45,7 @@ Describe "Settings Class" {
         ) {
             Param($Name)
 
-            ${settings}.${Name}.Count | Should -Be 0
+            ${settings}.${Name} | Should -HaveCount 0
         }
     }
 
@@ -56,7 +56,7 @@ Describe "Settings Class" {
         }
 
         It "Should return an IncludeRules array with 1 element" {
-            $settings.IncludeRules.Count | Should -Be 1
+            $settings.IncludeRules | Should -HaveCount 1
         }
 
         It "Should return the rule in the IncludeRules array" {
@@ -77,13 +77,13 @@ Describe "Settings Class" {
         }
 
         It "Should return the rule arguments" {
-            $settings.RuleArguments["PSAvoidUsingCmdletAliases"]["WhiteList"].Count | Should -Be 2
+            $settings.RuleArguments["PSAvoidUsingCmdletAliases"]["WhiteList"] | Should -HaveCount 2
             $settings.RuleArguments["PSAvoidUsingCmdletAliases"]["WhiteList"][0] | Should -Be "cd"
             $settings.RuleArguments["PSAvoidUsingCmdletAliases"]["WhiteList"][1] | Should -Be "cp"
         }
 
         It "Should Be case insensitive" {
-            $settings.RuleArguments["psAvoidUsingCmdletAliases"]["whiteList"].Count | Should -Be 2
+            $settings.RuleArguments["psAvoidUsingCmdletAliases"]["whiteList"] | Should -HaveCount 2
             $settings.RuleArguments["psAvoidUsingCmdletAliases"]["whiteList"][0] | Should -Be "cd"
             $settings.RuleArguments["psAvoidUsingCmdletAliases"]["whiteList"][1] | Should -Be "cp"
         }
@@ -97,17 +97,17 @@ Describe "Settings Class" {
 
         $expectedNumberOfIncludeRules = 3
         It "Should return $expectedNumberOfIncludeRules IncludeRules" {
-            $settings.IncludeRules.Count | Should -Be $expectedNumberOfIncludeRules
+            $settings.IncludeRules | Should -HaveCount $expectedNumberOfIncludeRules
         }
         
         $expectedNumberOfExcludeRules = 3
         It "Should return $expectedNumberOfExcludeRules ExcludeRules" {
-            $settings.ExcludeRules.Count | Should -Be $expectedNumberOfExcludeRules
+            $settings.ExcludeRules | Should -HaveCount $expectedNumberOfExcludeRules
         }
 
         $expectedNumberOfRuleArguments = 3
         It "Should return $expectedNumberOfRuleArguments rule argument" {
-            $settings.RuleArguments.Count | Should -Be 3
+            $settings.RuleArguments | Should -HaveCount 3
         }
 
         It "Should parse boolean type argument" {
@@ -131,7 +131,7 @@ Describe "Settings Class" {
             }
 
             $settings = New-Object -TypeName $settingsTypeName  -ArgumentList $settingsHashtable
-            $settings.CustomRulePath.Count | Should -Be 1
+            $settings.CustomRulePath | Should -HaveCount 1
             $settings.CustomRulePath[0] | Should -Be $rulePath
         }
 
@@ -142,7 +142,7 @@ Describe "Settings Class" {
             }
 
             $settings = New-Object -TypeName $settingsTypeName  -ArgumentList $settingsHashtable
-            $settings.CustomRulePath.Count | Should -Be $rulePaths.Count
+            $settings.CustomRulePath | Should -HaveCount $rulePaths.Count
             0..($rulePaths.Count - 1) | ForEach-Object { $settings.CustomRulePath[$_] | Should -Be $rulePaths[$_] }
 
         }
@@ -150,7 +150,7 @@ Describe "Settings Class" {
         It "Should detect the parameter in a settings file" {
             $settings = New-Object -TypeName $settingsTypeName `
                               -ArgumentList ([System.IO.Path]::Combine($project1Root, "CustomRulePathSettings.psd1"))
-            $settings.CustomRulePath.Count | Should -Be 2
+            $settings.CustomRulePath | Should -HaveCount 2
         }
     }
 

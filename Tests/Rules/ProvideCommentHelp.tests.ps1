@@ -31,14 +31,14 @@ function Test-Correction {
     param($scriptDef, $expectedCorrection, $settings)
 
     $violations = Invoke-ScriptAnalyzer -ScriptDefinition $scriptDef -Settings $settings
-    $violations.Count | Should -Be 1
+    $violations | Should -HaveCount 1
 
     # We split the lines because appveyor checks out files with "\n" endings
     # on windows, which results in inconsistent line endings between corrections
     # and result.
     $resultLines = $violations[0].SuggestedCorrections[0].Text -split "\r?\n"
     $expectedLines = $expectedCorrection -split "\r?\n"
-    $resultLines.Count | Should -Be $expectedLines.Count
+    $resultLines | Should -HaveCount $expectedLines.Count
     for ($i = 0; $i -lt $resultLines.Count; $i++) {
         $resultLine = $resultLines[$i]
         $expectedLine = $expectedLines[$i]
@@ -49,7 +49,7 @@ function Test-Correction {
 Describe "ProvideCommentHelp" {
     Context "When there are violations" {
         It "has 2 provide comment help violations" {
-            $violations.Count | Should -Be 2
+            $violations | Should -HaveCount 2
         }
 
         It "has the correct description message" {
@@ -334,14 +334,14 @@ $s$s$s$s
 
         if ($PSVersionTable.PSVersion -ge [Version]'5.0.0') {
             It "Does not count violation in DSC class" {
-                $dscViolations.Count | Should -Be 0
+                $dscViolations | Should -HaveCount 0
             }
         }
     }
 
     Context "When there are no violations" {
         It "returns no violations" {
-            $noViolations.Count | Should -Be 0
+            $noViolations | Should -HaveCount 0
         }
     }
 }

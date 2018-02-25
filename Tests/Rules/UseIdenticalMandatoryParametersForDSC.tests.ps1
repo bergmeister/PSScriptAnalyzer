@@ -15,7 +15,7 @@ Describe "UseIdenticalMandatoryParametersForDSC" {
         }
 
         It "Should find a violations" -skip:($IsLinux -or $IsMacOS) {
-            $violations.Count | Should -Be 5
+            $violations | Should -HaveCount 5
         }
 
         It "Should mark only the function name" -skip:($IsLinux -or $IsMacOS) {
@@ -30,7 +30,7 @@ Describe "UseIdenticalMandatoryParametersForDSC" {
 
         # todo add a test to check one violation per function
         It "Should find a violations" -pending {
-            $violations.Count | Should -Be 0
+            $violations | Should -HaveCount 0
         }
     }
 }

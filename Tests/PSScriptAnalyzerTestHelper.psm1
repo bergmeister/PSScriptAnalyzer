@@ -45,7 +45,7 @@ Function Test-CorrectionExtentFromContent {
     )
 
 	$corrections = $diagnosticRecord.SuggestedCorrections
-	$corrections.Count | Should -Be $correctionsCount
+	$corrections | Should -HaveCount $correctionsCount
 	$corrections[0].Text | Should -Be $correctionText
 	Get-ExtentTextFromContent $corrections[0] $rawContent | `
 		       Should -Be $violationText

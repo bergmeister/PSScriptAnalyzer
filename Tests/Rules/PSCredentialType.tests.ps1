@@ -15,7 +15,7 @@ Describe "PSCredentialType" {
             $expectedViolations = 2
         }
         It ("has {0} PSCredential type violation" -f $expectedViolations) {
-            $violations.Count | Should -Be $expectedViolations
+            $violations | Should -HaveCount $expectedViolations
         }
 
         It "has the correct description message" {
@@ -33,14 +33,14 @@ function Get-Credential
 }
 '@
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $scriptDef -IncludeRule $violationName
-            $violations.Count | Should -Be 0
+            $violations | Should -HaveCount 0
         }
 
     }
 
     Context ("When there are no violations") {
         It "returns no violations" {
-            $noViolations.Count | Should -Be 0
+            $noViolations | Should -HaveCount 0
         }
     }
 }

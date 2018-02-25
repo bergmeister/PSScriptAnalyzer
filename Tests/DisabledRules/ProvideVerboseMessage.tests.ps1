@@ -9,7 +9,7 @@ $noViolations = Invoke-ScriptAnalyzer $directory\GoodCmdlet.ps1 | Where-Object {
 Describe "ProvideVerboseMessage" {
     Context "When there are violations" {
         It "has 1 provide verbose violation" {
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
         }
 
         It "has the correct description message" {
@@ -17,13 +17,13 @@ Describe "ProvideVerboseMessage" {
         }
 
         It "Does not count violation in DSC class" {
-            $dscViolations.Count | Should -Be 0
+            $dscViolations | Should -HaveCount 0
         }
     }
 
     Context "When there are no violations" {
         It "returns no violations" {
-            $noViolations.Count | Should -Be 0
+            $noViolations | Should -HaveCount 0
         }
     }
 }

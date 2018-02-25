@@ -26,29 +26,29 @@ Describe "AvoidAssignmentToAutomaticVariables" {
             param ($VariableName)
 
             $warnings = Invoke-ScriptAnalyzer -ScriptDefinition "`$${VariableName} = 'foo'" | Where-Object { $_.RuleName -eq $ruleName }
-            $warnings.Count | Should -Be 1
+            $warnings | Should -HaveCount 1
             $warnings.Severity | Should -Be $readOnlyVariableSeverity
         }
 
         It "Using Variable '<VariableName>' as parameter name produces warning of severity error" -TestCases $testCases_ReadOnlyVariables {
             param ($VariableName)
 
-            [System.Array] $warnings = Invoke-ScriptAnalyzer -ScriptDefinition "function foo{Param(`$$VariableName)}" | Where-Object {$_.RuleName -eq $ruleName }
-            $warnings.Count | Should -Be 1
+            $warnings = Invoke-ScriptAnalyzer -ScriptDefinition "function foo{Param(`$$VariableName)}" | Where-Object {$_.RuleName -eq $ruleName }
+            $warnings | Should -HaveCount 1
             $warnings.Severity | Should -Be $readOnlyVariableSeverity
         }
 
         It "Using Variable '<VariableName>' as parameter name in param block produces warning of severity error" -TestCases $testCases_ReadOnlyVariables {
             param ($VariableName)
 
-            [System.Array] $warnings = Invoke-ScriptAnalyzer -ScriptDefinition "function foo(`$$VariableName){}" | Where-Object {$_.RuleName -eq $ruleName }
-            $warnings.Count | Should -Be 1
+            $warnings = Invoke-ScriptAnalyzer -ScriptDefinition "function foo(`$$VariableName){}" | Where-Object {$_.RuleName -eq $ruleName }
+            $warnings | Should -HaveCount 1
             $warnings.Severity | Should -Be $readOnlyVariableSeverity
         }
 
         It "Does not flag parameter attributes" {
-            [System.Array] $warnings = Invoke-ScriptAnalyzer -ScriptDefinition 'function foo{Param([Parameter(Mandatory=$true)]$param1)}' | Where-Object { $_.RuleName -eq $ruleName }
-            $warnings.Count | Should -Be 0
+            $warnings = Invoke-ScriptAnalyzer -ScriptDefinition 'function foo{Param([Parameter(Mandatory=$true)]$param1)}' | Where-Object { $_.RuleName -eq $ruleName }
+            $warnings | Should -HaveCount 0
         }
 
         It "Setting Variable '<VariableName>' throws exception to verify the variables is read-only" -TestCases $testCases_ReadOnlyVariables {

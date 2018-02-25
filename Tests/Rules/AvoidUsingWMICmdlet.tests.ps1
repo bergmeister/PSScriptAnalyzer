@@ -8,7 +8,7 @@ $noViolations = Invoke-ScriptAnalyzer $directory\AvoidUsingWMICmdletNoViolations
 Describe "AvoidUsingWMICmdlet" {
     Context "Script contains references to WMI cmdlets - Violation" {
         It "Have 5 WMI cmdlet Violations" {
-            $violations.Count | Should -Be 5
+            $violations | Should -HaveCount 5
         }
 
         It "has the correct description message for WMI rule violation" {
@@ -18,7 +18,7 @@ Describe "AvoidUsingWMICmdlet" {
 
     Context "Script contains no calls to WMI cmdlet - No violation" {
         It "results in no rule violations" {
-            $noViolations.Count | Should -Be 0
+            $noViolations | Should -HaveCount 0
         }
     }
 }

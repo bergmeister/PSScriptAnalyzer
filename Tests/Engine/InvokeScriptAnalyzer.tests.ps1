@@ -88,7 +88,7 @@ Describe "Test available parameters" {
 
     Context "It has 2 parameter sets: File and ScriptDefinition" {
         It "Has 2 parameter sets" {
-            $sa.ParameterSets.Count | Should -Be 2
+            $sa.ParameterSets | Should -HaveCount 2
         }
 
         It "Has File parameter set" {
@@ -122,7 +122,7 @@ Describe "Test ScriptDefinition" {
     Context "When given a script definition" {
         It "Does not run rules on script with more than 10 parser errors" {
             $moreThanTenErrors = Invoke-ScriptAnalyzer -ErrorAction SilentlyContinue -ScriptDefinition (Get-Content -Raw "$directory\CSharp.ps1")
-            $moreThanTenErrors.Count | Should -Be 0
+            $moreThanTenErrors | Should -HaveCount 0
         }
     }
 }
@@ -137,7 +137,7 @@ Describe "Test Path" {
 
         It "Does not run rules on script with more than 10 parser errors" {
             $moreThanTenErrors = Invoke-ScriptAnalyzer -ErrorAction SilentlyContinue $directory\CSharp.ps1
-            $moreThanTenErrors.Count | Should -Be 0
+            $moreThanTenErrors | Should -HaveCount 0
         }
     }
 
@@ -218,12 +218,12 @@ Describe "Test ExcludeRule" {
     Context "When used correctly" {
         It "excludes 1 rule" {
             $noViolations = Invoke-ScriptAnalyzer $directory\..\Rules\BadCmdlet.ps1 -ExcludeRule $singularNouns | Where-Object {$_.RuleName -eq $singularNouns}
-            $noViolations.Count | Should -Be 0
+            $noViolations | Should -HaveCount 0
         }
 
         It "excludes 3 rules" {
             $noViolations = Invoke-ScriptAnalyzer $directory\..\Rules\BadCmdlet.ps1 -ExcludeRule $rules | Where-Object {$rules -contains $_.RuleName}
-            $noViolations.Count | Should -Be 0
+            $noViolations | Should -HaveCount 0
         }
     }
 
@@ -247,7 +247,7 @@ Describe "Test IncludeRule" {
     Context "When used correctly" {
         It "includes 1 rule" {
             $violations = Invoke-ScriptAnalyzer $directory\..\Rules\BadCmdlet.ps1 -IncludeRule $approvedVerb | Where-Object {$_.RuleName -eq $approvedVerb}
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
         }
 
         It "includes the given rules" {
@@ -258,21 +258,21 @@ Describe "Test IncludeRule" {
                 $expectedNumViolations = 1
             }
             $violations = Invoke-ScriptAnalyzer $directory\..\Rules\BadCmdlet.ps1 -IncludeRule $rules
-            $violations.Count | Should -Be $expectedNumViolations
+            $violations | Should -HaveCount $expectedNumViolations
         }
     }
 
     Context "When used incorrectly" {
         It "does not include any rules" {
             $wrongInclude = Invoke-ScriptAnalyzer $directory\..\Rules\BadCmdlet.ps1 -IncludeRule "This is a wrong rule"
-            $wrongInclude.Count | Should -Be 0
+            $wrongInclude | Should -HaveCount 0
         }
     }
 
     Context "IncludeRule supports wild card" {
         It "includes 1 wildcard rule"{
             $includeWildcard = Invoke-ScriptAnalyzer $directory\..\Rules\BadCmdlet.ps1 -IncludeRule $avoidRules
-            $includeWildcard.Count | Should -Be 0
+            $includeWildcard | Should -HaveCount 0
         }
 
         it "includes 2 wildcardrules" {
@@ -284,7 +284,7 @@ Describe "Test IncludeRule" {
             }
             $includeWildcard = Invoke-ScriptAnalyzer $directory\..\Rules\BadCmdlet.ps1 -IncludeRule $avoidRules
             $includeWildcard += Invoke-ScriptAnalyzer $directory\..\Rules\BadCmdlet.ps1 -IncludeRule $useRules
-            $includeWildcard.Count | Should -Be $expectedNumViolations
+            $includeWildcard | Should -HaveCount $expectedNumViolations
         }
     }
 }
@@ -292,12 +292,12 @@ Describe "Test IncludeRule" {
 Describe "Test Exclude And Include" {1
     It "Exclude and Include different rules" {
         $violations = Invoke-ScriptAnalyzer $directory\TestScript.ps1 -IncludeRule "PSAvoidUsingEmptyCatchBlock" -ExcludeRule "PSAvoidUsingPositionalParameters"
-        $violations.Count | Should -Be 1
+        $violations | Should -HaveCount 1
     }
 
     It "Exclude and Include the same rule" {
         $violations = Invoke-ScriptAnalyzer $directory\TestScript.ps1 -IncludeRule "PSAvoidUsingEmptyCatchBlock" -ExcludeRule "PSAvoidUsingEmptyCatchBlock"
-        $violations.Count | Should -Be 0
+        $violations | Should -HaveCount 0
     }
 }
 
@@ -305,17 +305,17 @@ Describe "Test Severity" {
     Context "When used correctly" {
         It "works with one argument" {
             $errors = Invoke-ScriptAnalyzer $directory\TestScript.ps1 -Severity Information
-            $errors.Count | Should -Be 0
+            $errors | Should -HaveCount 0
         }
 
         It "works with 2 arguments" {
             $errors = Invoke-ScriptAnalyzer $directory\TestScript.ps1 -Severity Information, Warning
-            $errors.Count | Should -Be 1
+            $errors | Should -HaveCount 1
         }
 
         It "works with lowercase argument"{
              $errors = Invoke-ScriptAnalyzer $directory\TestScript.ps1 -Severity information, warning
-            $errors.Count | Should -Be 1
+            $errors | Should -HaveCount 1
         }
 
         It "works for dsc rules" {
@@ -352,33 +352,33 @@ Describe "Test CustomizedRulePath" {
     Context "When used correctly" {
         It "with the module folder path" {
             $customizedRulePath = Invoke-ScriptAnalyzer $directory\TestScript.ps1 -CustomizedRulePath $directory\CommunityAnalyzerRules | Where-Object {$_.RuleName -eq $measureRequired}
-            $customizedRulePath.Count | Should -Be 1
+            $customizedRulePath | Should -HaveCount 1
         }
 
         It "with the psd1 path" {
             $customizedRulePath = Invoke-ScriptAnalyzer $directory\TestScript.ps1 -CustomizedRulePath $directory\CommunityAnalyzerRules\CommunityAnalyzerRules.psd1 | Where-Object {$_.RuleName -eq $measureRequired}
-            $customizedRulePath.Count | Should -Be 1
+            $customizedRulePath | Should -HaveCount 1
 
         }
 
         It "with the psm1 path" {
             $customizedRulePath = Invoke-ScriptAnalyzer $directory\TestScript.ps1 -CustomizedRulePath $directory\CommunityAnalyzerRules\CommunityAnalyzerRules.psm1 | Where-Object {$_.RuleName -eq $measureRequired}
-            $customizedRulePath.Count | Should -Be 1
+            $customizedRulePath | Should -HaveCount 1
         }
 
         It "with IncludeRule" {
             $customizedRulePathInclude = Invoke-ScriptAnalyzer $directory\TestScript.ps1 -CustomizedRulePath $directory\CommunityAnalyzerRules\CommunityAnalyzerRules.psm1 -IncludeRule "Measure-RequiresModules"
-            $customizedRulePathInclude.Count | Should -Be 1
+            $customizedRulePathInclude | Should -HaveCount 1
         }
 
         It "with ExcludeRule" {
             $customizedRulePathExclude = Invoke-ScriptAnalyzer $directory\TestScript.ps1 -CustomizedRulePath $directory\CommunityAnalyzerRules\CommunityAnalyzerRules.psm1 -ExcludeRule "Measure-RequiresModules" | Where-Object {$_.RuleName -eq $measureRequired}
-            $customizedRulePathExclude.Count | Should -Be 0
+            $customizedRulePathExclude | Should -HaveCount 0
         }
 
 		It "When supplied with a collection of paths" {
             $customizedRulePath = Invoke-ScriptAnalyzer $directory\TestScript.ps1 -CustomRulePath ("$directory\CommunityAnalyzerRules", "$directory\samplerule", "$directory\samplerule\samplerule2")
-            $customizedRulePath.Count | Should -Be 3
+            $customizedRulePath | Should -HaveCount 3
         }
     }
 
@@ -393,7 +393,7 @@ Describe "Test CustomizedRulePath" {
                 }
 
                 $v = Invoke-ScriptAnalyzer -Path $directory\TestScript.ps1 -Settings $settings
-                $v.Count | Should -Be 1
+                $v | Should -HaveCount 1
             }
 
             It "Should use the IncludeDefaultRulePath parameter" {
@@ -404,7 +404,7 @@ Describe "Test CustomizedRulePath" {
                 }
 
                 $v = Invoke-ScriptAnalyzer -Path $directory\TestScript.ps1 -Settings $settings
-                $v.Count | Should -Be 2
+                $v | Should -HaveCount 2
             }
 
             It "Should use the RecurseCustomRulePath parameter" {
@@ -415,7 +415,7 @@ Describe "Test CustomizedRulePath" {
                 }
 
                 $v = Invoke-ScriptAnalyzer -Path $directory\TestScript.ps1 -Settings $settings
-                $v.Count | Should -Be 3
+                $v | Should -HaveCount 3
             }
         }
 
@@ -434,17 +434,17 @@ Describe "Test CustomizedRulePath" {
 
             It "Should combine CustomRulePaths" {
                 $v = Invoke-ScriptAnalyzer @isaParams -CustomRulePath "$directory\CommunityAnalyzerRules"
-                $v.Count | Should -Be 2
+                $v | Should -HaveCount 2
             }
 
             It "Should override the settings IncludeDefaultRules parameter" {
                 $v = Invoke-ScriptAnalyzer @isaParams -IncludeDefaultRules
-                $v.Count | Should -Be 2
+                $v | Should -HaveCount 2
             }
 
             It "Should override the settings RecurseCustomRulePath parameter" {
                 $v = Invoke-ScriptAnalyzer @isaParams -RecurseCustomRulePath
-                $v.Count | Should -Be 3
+                $v | Should -HaveCount 3
             }
         }
     }
@@ -483,15 +483,15 @@ Describe "Test -Fix Switch" {
     It "Fixes warnings" {
         # we expect the script to contain warnings
         $warningsBeforeFix = Invoke-ScriptAnalyzer $testScript
-        $warningsBeforeFix.Count | Should -Be 5
+        $warningsBeforeFix | Should -HaveCount 5
 
         # fix the warnings and expect that it should not return the fixed warnings
         $warningsWithFixSwitch = Invoke-ScriptAnalyzer $testScript -Fix
-        $warningsWithFixSwitch.Count | Should -Be 0
+        $warningsWithFixSwitch | Should -HaveCount 0
 
         # double check that the warnings are really fixed
         $warningsAfterFix = Invoke-ScriptAnalyzer $testScript
-        $warningsAfterFix.Count | Should -Be 0
+        $warningsAfterFix | Should -HaveCount 0
 
         # check content to ensure we have what we expect
         $actualScriptContentAfterFix = Get-Content $testScript -Raw

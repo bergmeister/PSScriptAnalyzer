@@ -8,7 +8,7 @@ $noViolations = Invoke-ScriptAnalyzer $directory\AvoidEmptyCatchBlockNoViolation
 Describe "UseDeclaredVarsMoreThanAssignments" {
     Context "When there are violations" {
         It "has 2 avoid using empty Catch block violations" {
-            $violations.Count | Should -Be 2
+            $violations | Should -HaveCount 2
         }
 
         It "has the correct description message" {
@@ -19,7 +19,7 @@ Describe "UseDeclaredVarsMoreThanAssignments" {
 
     Context "When there are no violations" {
         It "returns no violations" {
-            $noViolations.Count | Should -Be 0
+            $noViolations | Should -HaveCount 0
         }
     }
 }

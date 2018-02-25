@@ -38,7 +38,7 @@ Describe "UseManifestExportFields" {
     Context "Manifest contains violations" {
         It "detects FunctionsToExport with wildcard" {
             $results = Run-PSScriptAnalyzerRule $testManifestBadFunctionsWildcardPath
-            $results.Count | Should -Be 1
+            $results | Should -HaveCount 1
             $results[0].Extent.Text | Should -Be "'*'"
         }
 
@@ -51,7 +51,7 @@ Describe "UseManifestExportFields" {
 
         It "detects FunctionsToExport with null" {
             $results = Run-PSScriptAnalyzerRule $testManifestBadFunctionsNullPath
-            $results.Count | Should -Be 1
+            $results | Should -HaveCount 1
             $results[0].Extent.Text | Should -Be '$null'
         }
 
@@ -65,7 +65,7 @@ Describe "UseManifestExportFields" {
         It "detects array element containing wildcard" {
 	    # if more than two elements contain wildcard we can show only the first one as of now.
             $results = Run-PSScriptAnalyzerRule $testManifestBadFunctionsWildcardInArrayPath
-            $results.Count | Should -Be 2
+            $results | Should -HaveCount 2
 			($results | Where-Object {$_.Message -match "FunctionsToExport"}).Extent.Text | Should -Be "'Get-*'"
             ($results | Where-Object {$_.Message -match "CmdletsToExport"}).Extent.Text | Should -Be "'Update-*'"
 
@@ -73,13 +73,13 @@ Describe "UseManifestExportFields" {
 
         It "detects CmdletsToExport with wildcard" {
             $results = Run-PSScriptAnalyzerRule $testManifestBadCmdletsWildcardPath
-            $results.Count | Should -Be 1
+            $results | Should -HaveCount 1
             $results[0].Extent.Text | Should -Be "'*'"
         }
 
         It "detects AliasesToExport with wildcard" {
             $results = Run-PSScriptAnalyzerRule $testManifestBadAliasesWildcardPath
-            $results.Count | Should -Be 1
+            $results | Should -HaveCount 1
             $results[0].Extent.Text | Should -Be "'*'"
         }
 
@@ -91,14 +91,14 @@ Describe "UseManifestExportFields" {
 
         It "detects all the *ToExport violations" {
             $results = Run-PSScriptAnalyzerRule $testManifestBadAllPath
-            $results.Count | Should -Be 3
+            $results | Should -HaveCount 3
         }
     }
 
     Context "Manifest contains no violations" {
         It "detects all the *ToExport fields explicitly stating lists" {
             $results = Run-PSScriptAnalyzerRule $testManifestGoodPath
-            $results.Count | Should -Be 0
+            $results | Should -HaveCount 0
         }
     }
 
@@ -108,7 +108,7 @@ Describe "UseManifestExportFields" {
                 -Path "$directory/TestManifest/PowerShellDataFile.psd1" `
                 -IncludeRule "PSUseToExportFieldsInManifest" `
                 -OutVariable ruleViolation
-            $ruleViolation.Count | Should -Be 0
+            $ruleViolation | Should -HaveCount 0
         }
     }
 }

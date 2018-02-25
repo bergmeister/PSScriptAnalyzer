@@ -11,7 +11,7 @@ Describe "AvoidUsingPlainTextForPassword" {
     Context "When there are violations" {
     $expectedNumViolations = 7
         It "has $expectedNumViolations violations" {
-            $violations.Count | Should -Be $expectedNumViolations
+            $violations | Should -HaveCount $expectedNumViolations
         }
 
 	It "suggests corrections" {
@@ -33,7 +33,7 @@ Describe "AvoidUsingPlainTextForPassword" {
 
     Context "When there are no violations" {
         It "returns no violations" {
-            $noViolations.Count | Should -Be 0
+            $noViolations | Should -HaveCount 0
         }
     }
 }

@@ -14,7 +14,7 @@ $noViolations = Invoke-ScriptAnalyzer $directory\AvoidUsingFilePathNoViolations.
 Describe "AvoidUsingFilePath" {
     Context "When there are violations" {
         It "has 4 avoid using file path violations" {
-            $violations.Count | Should -Be 4
+            $violations | Should -HaveCount 4
         }
 
         It "has the correct description message with drive name" {
@@ -28,7 +28,7 @@ Describe "AvoidUsingFilePath" {
 
     Context "When there are no violations" {
         It "returns no violations" {
-            $noViolations.Count | Should -Be 0
+            $noViolations | Should -HaveCount 0
         }
     }
 }

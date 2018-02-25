@@ -11,7 +11,7 @@ $noViolationsTwo = Invoke-ScriptAnalyzer "$directory\TestFiles\BOMAbsent_ASCIIEn
 Describe "UseBOMForUnicodeEncodedFile" {
     Context "When there are violations" {
         It "has 1 rule violation for BOM Absent - UTF16 Encoded file" {
-            $violationsOne.Count | Should -Be 1
+            $violationsOne | Should -HaveCount 1
         }
 
         It "has the correct description message for BOM Absent - UTF16 Encoded file" {
@@ -19,7 +19,7 @@ Describe "UseBOMForUnicodeEncodedFile" {
         }
 
         It "has 1 rule violation for BOM Absent - Unknown Encoded file" {
-            $violationsTwo.Count | Should -Be 1
+            $violationsTwo | Should -HaveCount 1
         }
 
         It "has the correct description message for BOM Absent - Unknown Encoded file" {
@@ -30,11 +30,11 @@ Describe "UseBOMForUnicodeEncodedFile" {
 
     Context "When there are no violations" {
         It "returns no violations for BOM Present - UTF16 Encoded File" {
-            $noViolationsOne.Count | Should -Be 0
+            $noViolationsOne | Should -HaveCount 0
         }
 
         It "returns no violations for BOM Absent - ASCII Encoded File" {
-            $noViolationsTwo.Count | Should -Be 0
+            $noViolationsTwo | Should -HaveCount 0
         }
     }
 }

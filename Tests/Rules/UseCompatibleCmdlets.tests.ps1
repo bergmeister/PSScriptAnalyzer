@@ -12,7 +12,7 @@ Describe "UseCompatibleCmdlets" {
             $violationFilePath = Join-Path $ruleTestDirectory 'ScriptWithViolation.ps1'
             $settingsFilePath =  [System.IO.Path]::Combine($ruleTestDirectory, 'PSScriptAnalyzerSettings.psd1');
             $diagnosticRecords = Invoke-ScriptAnalyzer -Path $violationFilePath -IncludeRule $ruleName -Settings $settingsFilePath
-            $diagnosticRecords.Count | Should -Be 1
+            $diagnosticRecords | Should -HaveCount 1
         }
     }
 

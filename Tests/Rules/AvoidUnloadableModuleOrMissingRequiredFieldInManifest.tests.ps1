@@ -21,7 +21,7 @@ Describe "MissingRequiredFieldModuleManifest" {
 
     Context "When there are violations" {
         It "has 1 missing required field module manifest violation" {
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
         }
 
         It "has the correct description message" {
@@ -30,7 +30,7 @@ Describe "MissingRequiredFieldModuleManifest" {
 
         $numExpectedCorrections = 1
         It "has $numExpectedCorrections suggested corrections" {
-            $violations.SuggestedCorrections.Count | Should -Be $numExpectedCorrections
+            $violations.SuggestedCorrections | Should -HaveCount $numExpectedCorrections
         }
 
     # On Linux, mismatch in line endings cause this to fail
@@ -46,7 +46,7 @@ ModuleVersion = '1.0.0.0'
 
     Context "When there are no violations" {
         It "returns no violations" {
-            $noViolations.Count | Should -Be 0
+            $noViolations | Should -HaveCount 0
         }
     }
 
@@ -94,7 +94,7 @@ ModuleVersion = '1.0.0.0'
                 -Path "$directory/TestManifest/PowerShellDataFile.psd1" `
                 -IncludeRule "PSMissingModuleManifestField" `
                 -OutVariable ruleViolation
-            $ruleViolation.Count | Should -Be 0
+            $ruleViolation | Should -HaveCount 0
         }
     }
 }

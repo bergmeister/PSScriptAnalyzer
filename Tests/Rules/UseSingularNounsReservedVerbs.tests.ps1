@@ -20,7 +20,7 @@ if (-not (Test-PSEditionCoreCLR))
     Describe "UseSingularNouns" {
         Context "When there are violations" {
             It "has a cmdlet singular noun violation" {
-                $nounViolations.Count | Should -Be 1
+                $nounViolations | Should -HaveCount 1
             }
 
             It "has the correct description message" {
@@ -44,13 +44,13 @@ Function Add-SomeData
                 Invoke-ScriptAnalyzer -ScriptDefinition $nounViolationScript `
                     -IncludeRule "PSUseSingularNouns" `
                     -OutVariable violations
-                $violations.Count | Should -Be 0
+                $violations | Should -HaveCount 0
             }
         }
 
         Context "When there are no violations" {
             It "returns no violations" {
-                $nounNoViolations.Count | Should -Be 0
+                $nounNoViolations | Should -HaveCount 0
             }
         }
     }
@@ -59,7 +59,7 @@ Function Add-SomeData
 Describe "UseApprovedVerbs" {
     Context "When there are violations" {
         It "has an approved verb violation" {
-            $verbViolations.Count | Should -Be 1
+            $verbViolations | Should -HaveCount 1
         }
 
         It "has the correct description message" {
@@ -73,7 +73,7 @@ Describe "UseApprovedVerbs" {
 
     Context "When there are no violations" {
         It "returns no violations" {
-            $verbNoViolations.Count | Should -Be 0
+            $verbNoViolations | Should -HaveCount 0
         }
     }
 }

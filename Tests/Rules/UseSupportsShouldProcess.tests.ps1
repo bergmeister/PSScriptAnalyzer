@@ -33,7 +33,7 @@ $s$s$s$s$s$s$s$s
 }
 "@
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
             $violations[0].SuggestedCorrections[0].Text | Should -Be $expectedCorrection
         }
 
@@ -56,7 +56,7 @@ function foo {
 }
 '@
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
             $violations[0].SuggestedCorrections[0].Text | Should -Be $expectedCorrection
         }
 
@@ -81,7 +81,7 @@ function foo {
 }
 '@
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
             $violations[0].SuggestedCorrections[0].Text | Should -Be $expectedCorrection
         }
 
@@ -105,7 +105,7 @@ function foo {
 }
 '@
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
             $violations[0].SuggestedCorrections[0].Text | Should -Be $expectedCorrection
 
         }
@@ -130,7 +130,7 @@ $s$s$s$s$s$s$s$s
 }
 "@
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
             $violations[0].SuggestedCorrections[0].Text | Should -Be $expectedCorrection
         }
 
@@ -153,7 +153,7 @@ $s$s$s$s$s$s$s$s
 }
 "@
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
             $violations[0].SuggestedCorrections[0].Text | Should -Be $expectedCorrection
             # TODO Make test-correction extent take more than 1 corrections
             # or modify the rule such that it outputs only 1 correction.
@@ -180,7 +180,7 @@ $s$s$s$s$s$s$s$s
 }
 "@
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
             $violations[0].SuggestedCorrections[0].Text | Should -Be $expectedCorrection
         }
 
@@ -204,7 +204,7 @@ $s$s$s$s$s$s$s$s
 }
 "@
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
             $violations[0].SuggestedCorrections[0].Text | Should -Be $expectedCorrection
         }
 
@@ -224,7 +224,7 @@ function foo {
 }
 '@
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
             $violations[0].SuggestedCorrections[0].Text | Should -Be $expectedCorrection
         }
 
@@ -244,7 +244,7 @@ function foo {
 }
 '@
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
             $violations[0].SuggestedCorrections[0].Text | Should -Be $expectedCorrection
         }
 
@@ -264,7 +264,7 @@ function foo {
 }
 '@
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
             $violations[0].SuggestedCorrections[0].Text | Should -Be $expectedCorrection
         }
 
@@ -283,7 +283,7 @@ function foo {
 }
 '@
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
-            $violations.Count | Should -Be 1
+            $violations | Should -HaveCount 1
             $violations[0].SuggestedCorrections[0].Text | Should -Be $expectedCorrection
         }
 
