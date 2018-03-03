@@ -4,7 +4,7 @@
 using System;
 using System.Management.Automation.Host;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
+namespace Microsoft.PowerShell.ScriptAnalyzer.Generic
 {
     internal static class ConsoleHostHelper
     {

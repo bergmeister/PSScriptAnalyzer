@@ -11,7 +11,7 @@
 //
 
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
+namespace Microsoft.PowerShell.ScriptAnalyzer.Generic
 {
     internal class ExternalRule : IExternalRule
     {

@@ -14,11 +14,11 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Management.Automation.Language;
-using Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic;
+using Microsoft.PowerShell.ScriptAnalyzer.Generic;
 using System.ComponentModel.Composition;
 using System.Globalization;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
+namespace Microsoft.PowerShell.ScriptAnalyzer.BuiltinRules
 {
     /// <summary>
     /// AvoidUnitializedVariable: Check if any uninitialized variable is used.

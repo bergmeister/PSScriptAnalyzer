@@ -1,7 +1,7 @@
 Function Get-ExtentTextFromContent
 {
 	    Param(
-	[Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.CorrectionExtent] $violation,
+	[Microsoft.PowerShell.ScriptAnalyzer.Generic.CorrectionExtent] $violation,
 	[string] $rawContent
 	)
 	$scriptContent = New-Object -TypeName 'System.Collections.ArrayList'
@@ -22,7 +22,7 @@ Function Test-CorrectionExtent
 {
 	Param(
 		[string] $violationFilepath,
-		[Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord] $diagnosticRecord,
+		[Microsoft.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord] $diagnosticRecord,
 		[int] $correctionsCount,
 		[string] $violationText,
 		[string] $correctionText
@@ -38,7 +38,7 @@ Function Test-CorrectionExtent
 Function Test-CorrectionExtentFromContent {
     param(
         [string] $rawContent,
-        [Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord] $diagnosticRecord,
+        [Microsoft.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord] $diagnosticRecord,
 		[int] $correctionsCount,
         [string] $violationText,
         [string] $correctionText

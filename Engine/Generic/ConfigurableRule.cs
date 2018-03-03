@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Management.Automation.Language;
 using System.Reflection;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
+namespace Microsoft.PowerShell.ScriptAnalyzer.Generic
 {
     // This is still an experimental class. Use at your own risk!
     public abstract class ConfigurableRule : IScriptRule

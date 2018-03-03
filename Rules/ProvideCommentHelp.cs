@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation.Language;
-using Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic;
+using Microsoft.PowerShell.ScriptAnalyzer.Generic;
 #if !CORECLR
 using System.ComponentModel.Composition;
 #endif
@@ -23,7 +23,7 @@ using System.Management.Automation;
 using System.Text;
 using System.IO;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
+namespace Microsoft.PowerShell.ScriptAnalyzer.BuiltinRules
 {
     /// <summary>
     /// ProvideCommentHelp: Analyzes ast to check that cmdlets have help.

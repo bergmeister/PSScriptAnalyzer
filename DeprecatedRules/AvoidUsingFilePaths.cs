@@ -16,7 +16,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Management.Automation.Language;
-using Microsoft.Windows.Powershell.ScriptAnalyzer.Generic;
+using Microsoft.Powershell.ScriptAnalyzer.Generic;
 using System.ComponentModel.Composition;
 using System.Resources;
 using System.Globalization;
@@ -24,7 +24,7 @@ using System.Threading;
 using System.Reflection;
 using System.IO;
 
-namespace Microsoft.Windows.Powershell.ScriptAnalyzer.BuiltinRules
+namespace Microsoft.Powershell.ScriptAnalyzer.BuiltinRules
 {
     /// <summary>
     /// AvoidUsingFilePaths: Check that rooted file paths are not used.

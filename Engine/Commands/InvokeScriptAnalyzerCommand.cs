@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic;
+using Microsoft.PowerShell.ScriptAnalyzer.Generic;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,9 +12,9 @@ using System.Linq;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Commands
+namespace Microsoft.PowerShell.ScriptAnalyzer.Commands
 {
-    using PSSASettings = Microsoft.Windows.PowerShell.ScriptAnalyzer.Settings;
+    using PSSASettings = Microsoft.PowerShell.ScriptAnalyzer.Settings;
 
     /// <summary>
     /// InvokeScriptAnalyzerCommand: Cmdlet to statically check PowerShell scripts.

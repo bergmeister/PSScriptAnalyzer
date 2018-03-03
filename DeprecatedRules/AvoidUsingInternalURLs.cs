@@ -16,12 +16,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Management.Automation.Language;
-using Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic;
+using Microsoft.PowerShell.ScriptAnalyzer.Generic;
 using System.ComponentModel.Composition;
 using System.Globalization;
 using System.IO;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
+namespace Microsoft.PowerShell.ScriptAnalyzer.BuiltinRules
 {
     /// <summary>
     /// AvoidUsingInternalURLs: Check if a URL is potentially an internal URL,

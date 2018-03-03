@@ -1,5 +1,5 @@
 ---
-external help file: Microsoft.Windows.PowerShell.ScriptAnalyzer.dll-Help.xml
+external help file: Microsoft.PowerShell.ScriptAnalyzer.dll-Help.xml
 schema: 2.0.0
 ---
 
@@ -227,7 +227,7 @@ Enter the path to a file that defines rules or a directory that contains files t
 Wildcard characters are supported.
 To add rules defined in subdirectories of the path, use the RecurseCustomRulePath parameter.
 
-By default, Invoke-ScriptAnalyzer uses only rules defined in the Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules.dll file in the PSScriptAnalyzer module.
+By default, Invoke-ScriptAnalyzer uses only rules defined in the Microsoft.PowerShell.ScriptAnalyzer.BuiltinRules.dll file in the PSScriptAnalyzer module.
 
 If Invoke-ScriptAnalyzer cannot find rules in the CustomRulePath, it runs the standard rules without notice.
 
@@ -383,7 +383,7 @@ Accept wildcard characters: False
 Returns rules that are suppressed, instead of analyzing the files in the path.
 
 When you used SuppressedOnly, Invoke-ScriptAnalyzer returns a SuppressedRecord object
-(Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.SuppressedRecord).
+(Microsoft.PowerShell.ScriptAnalyzer.Generic.SuppressedRecord).
 
 To suppress a rule, use the SuppressMessageAttribute.
 For help, see the examples.
@@ -526,10 +526,10 @@ You cannot pipe input to this cmdlet.
 
 ## OUTPUTS
 
-### Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord
+### Microsoft.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord
 By default, Invoke-ScriptAnalyzer returns one DiagnosticRecord object to report a rule violation.
 
-### Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.SuppressedRecord
+### Microsoft.PowerShell.ScriptAnalyzer.Generic.SuppressedRecord
 If you use the SuppressedOnly parameter, Invoke-ScriptAnalyzer instead returns a SuppressedRecord object.
 
 ## NOTES

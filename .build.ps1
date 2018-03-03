@@ -142,8 +142,8 @@ task createModule {
 
     foreach ($Framework in $buildData.Frameworks.Keys) {
         foreach ($Configuration in $buildData.Frameworks[$Framework].Configuration) {
-            $itemsToCopyBinaries = @("$solutionDir\Engine\bin\$Configuration\$Framework\Microsoft.Windows.PowerShell.ScriptAnalyzer.dll",
-                "$solutionDir\Rules\bin\$Configuration\$Framework\Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules.dll")
+            $itemsToCopyBinaries = @("$solutionDir\Engine\bin\$Configuration\$Framework\Microsoft.PowerShell.ScriptAnalyzer.dll",
+                "$solutionDir\Rules\bin\$Configuration\$Framework\Microsoft.PowerShell.ScriptAnalyzer.BuiltinRules.dll")
 
             if ($Framework -eq "netstandard1.6") {
                 $destinationDirBinaries = "$destinationDir\coreclr"
@@ -180,7 +180,7 @@ $outputDocsPath = Join-Path $modulePath 'en-US'
 $bdInputs = (Get-ChildItem $docsPath -File -Recurse)
 $bdOutputs = @(
     "$outputDocsPath/about_PSScriptAnalyzer.help.txt",
-    "$outputDocsPath/Microsoft.Windows.PowerShell.ScriptAnalyzer.dll-Help.xml"
+    "$outputDocsPath/Microsoft.PowerShell.ScriptAnalyzer.dll-Help.xml"
 )
 
 task buildDocs -Inputs $bdInputs -Outputs $bdOutputs {

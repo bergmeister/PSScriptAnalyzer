@@ -15,14 +15,14 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Management.Automation;
 using System.Management.Automation.Language;
-using Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic;
+using Microsoft.PowerShell.ScriptAnalyzer.Generic;
 #if !CORECLR
 using System.ComponentModel.Composition;
 #endif
 using System.Globalization;
 using System.Reflection;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
+namespace Microsoft.PowerShell.ScriptAnalyzer.BuiltinRules
 {
     /// <summary>
     /// UseShouldProcessCorrectly: Analyzes the ast to check that if the ShouldProcess attribute is present, the function calls ShouldProcess and vice versa.

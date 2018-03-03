@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation.Language;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
+namespace Microsoft.PowerShell.ScriptAnalyzer
 {
     // TODO Move all token query related methods here
     /// <summary>

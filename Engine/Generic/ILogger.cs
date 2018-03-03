@@ -11,9 +11,9 @@
 //
 
 using System;
-using Microsoft.Windows.PowerShell.ScriptAnalyzer.Commands;
+using Microsoft.PowerShell.ScriptAnalyzer.Commands;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
+namespace Microsoft.PowerShell.ScriptAnalyzer.Generic
 {
     /// <summary>
     /// ILogger: An interface for a PSScriptAnalyzer logger to output the results of PSScriptAnalyzer rules.

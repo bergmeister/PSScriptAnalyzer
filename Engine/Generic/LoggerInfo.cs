@@ -12,7 +12,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
+namespace Microsoft.PowerShell.ScriptAnalyzer.Generic
 {
     /// <summary>
     /// Represents an internal class to properly display the name and description of a logger.

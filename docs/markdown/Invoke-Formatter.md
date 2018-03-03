@@ -1,5 +1,5 @@
 ---
-external help file: Microsoft.Windows.PowerShell.ScriptAnalyzer.dll-Help.xml
+external help file: Microsoft.PowerShell.ScriptAnalyzer.dll-Help.xml
 schema: 2.0.0
 ---
 

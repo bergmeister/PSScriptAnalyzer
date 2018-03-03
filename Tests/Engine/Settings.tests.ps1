@@ -6,7 +6,7 @@ $directory = Split-Path $MyInvocation.MyCommand.Path
 $settingsTestDirectory = [System.IO.Path]::Combine($directory, "SettingsTest")
 $project1Root = [System.IO.Path]::Combine($settingsTestDirectory, "Project1")
 $project2Root = [System.IO.Path]::Combine($settingsTestDirectory, "Project2")
-$settingsTypeName = 'Microsoft.Windows.PowerShell.ScriptAnalyzer.Settings'
+$settingsTypeName = 'Microsoft.PowerShell.ScriptAnalyzer.Settings'
 
 Describe "Settings Precedence" {
     Context "settings object is explicit" {

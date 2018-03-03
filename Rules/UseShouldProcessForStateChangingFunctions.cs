@@ -17,9 +17,9 @@ using System.Management.Automation;
 using System.Management.Automation.Language;
 using System.Globalization;
 using System.Linq;
-using Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic;
+using Microsoft.PowerShell.ScriptAnalyzer.Generic;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
+namespace Microsoft.PowerShell.ScriptAnalyzer.BuiltinRules
 {   
     /// <summary>
     /// UseShouldProcessForStateChangingFunctions: Analyzes the ast to check if ShouldProcess is included in Advanced functions if the Verb of the function could change system state.

@@ -19,11 +19,11 @@ using System.Linq;
 using System.Management.Automation.Language;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic;
+using Microsoft.PowerShell.ScriptAnalyzer.Generic;
 
 using Newtonsoft.Json.Linq;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
+namespace Microsoft.PowerShell.ScriptAnalyzer.BuiltinRules
 {
     /// <summary>
     /// A class to check if a script uses Cmdlets compatible with a given version and edition of PowerShell.

@@ -71,7 +71,7 @@ function Invoke-ScriptAnalyzer {
 	# The following is the error statement when the test runs as an administrator. 
 	# Assert failed on "Initialize" with "7" argument(s): "Test failed due to terminating error: The module was expected to contain an assembly manifest. (Exception from HRESULT: 0x80131018)"
 
-	$scriptAnalyzer = New-Object "Microsoft.Windows.PowerShell.ScriptAnalyzer.ScriptAnalyzer";
+	$scriptAnalyzer = New-Object "Microsoft.PowerShell.ScriptAnalyzer.ScriptAnalyzer";
 	$scriptAnalyzer.Initialize(
 		$runspace, 
 		$testOutputWriter, 
@@ -125,7 +125,7 @@ function Invoke-ScriptAnalyzer {
 Add-Type -Language CSharp @"
 using System.Management.Automation;
 using System.Management.Automation.Host;
-using Microsoft.Windows.PowerShell.ScriptAnalyzer;
+using Microsoft.PowerShell.ScriptAnalyzer;
 
 public class PesterTestOutputWriter : IOutputWriter 
 {
@@ -172,7 +172,7 @@ public class PesterTestOutputWriter : IOutputWriter
 			record);
 	}
 }
-"@ -ReferencedAssemblies "Microsoft.Windows.PowerShell.ScriptAnalyzer" -ErrorAction SilentlyContinue
+"@ -ReferencedAssemblies "Microsoft.PowerShell.ScriptAnalyzer" -ErrorAction SilentlyContinue
 
 if ($testOutputWriter -eq $null)
 {

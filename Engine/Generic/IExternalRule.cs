@@ -11,7 +11,7 @@
 //
 
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
+namespace Microsoft.PowerShell.ScriptAnalyzer.Generic
 {
     /// <summary>
     /// Represents an interface for an external analyzer rule.

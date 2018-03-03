@@ -18,9 +18,9 @@ using System.ComponentModel.Composition;
 using System.Globalization;
 using System.Linq;
 using System.Management.Automation.Language;
-using Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic;
+using Microsoft.PowerShell.ScriptAnalyzer.Generic;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
+namespace Microsoft.PowerShell.ScriptAnalyzer.BuiltinRules
 {
     /// <summary>
     /// A class to walk an AST to check if hashtable is not initialized using [hashtable]::new or new-object hashtable

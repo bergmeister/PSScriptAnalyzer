@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation.Language;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
+namespace Microsoft.PowerShell.ScriptAnalyzer.Generic
 {
     /// <summary>
     /// Represents an abstract class for rule that checks whether the script
@@ -36,7 +36,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
             // Finds all CommandAsts.
             IEnumerable<Ast> commandAsts = ast.FindAll(testAst => testAst is CommandAst, true);
 
-            List<String> cmdletNameAndAliases = Microsoft.Windows.PowerShell.ScriptAnalyzer.Helper.Instance.CmdletNameAndAliases(GetCmdletName());
+            List<String> cmdletNameAndAliases = Microsoft.PowerShell.ScriptAnalyzer.Helper.Instance.CmdletNameAndAliases(GetCmdletName());
 
             // Iterates all CommandAsts and check the command name.
             foreach (CommandAst cmdAst in commandAsts)

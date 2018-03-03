@@ -6,9 +6,9 @@ using System.Globalization;
 using System.Linq;
 using System.Management.Automation.Language;
 using System.Text;
-using Microsoft.Windows.PowerShell.ScriptAnalyzer.Extensions;
+using Microsoft.PowerShell.ScriptAnalyzer.Extensions;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
+namespace Microsoft.PowerShell.ScriptAnalyzer
 {
     /// <summary>
     /// A class to represent text to which `TextEdit`s can be applied.

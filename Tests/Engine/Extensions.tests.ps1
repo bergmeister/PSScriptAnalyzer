@@ -27,7 +27,7 @@ function Test-Extent {
     $translatedExtent.EndColumnNumber | Should -Be $expectedEndColumnNumber
 }
 
-$extNamespace = [Microsoft.Windows.PowerShell.ScriptAnalyzer.Extensions.Extensions]
+$extNamespace = [Microsoft.PowerShell.ScriptAnalyzer.Extensions.Extensions]
 
 Describe "String extension methods" {
     Context "When a text is given to GetLines" {

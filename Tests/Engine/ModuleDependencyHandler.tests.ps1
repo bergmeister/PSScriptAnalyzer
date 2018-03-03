@@ -33,7 +33,7 @@ Describe "Resolve DSC Resource Dependency" {
     Context "Module handler class" {
         BeforeAll {
             if ( $skipTest ) { return }
-            $moduleHandlerType = [Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.ModuleDependencyHandler]
+            $moduleHandlerType = [Microsoft.PowerShell.ScriptAnalyzer.Generic.ModuleDependencyHandler]
             $oldEnvVars = Get-Item Env:\* | Sort-Object -Property Key
             $oldPSModulePath = $env:PSModulePath
         }
@@ -155,7 +155,7 @@ Describe "Resolve DSC Resource Dependency" {
             # to setup the temporary module
             $rsp = [runspacefactory]::CreateRunspace()
             $rsp.Open()
-            $depHandler = [Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.ModuleDependencyHandler]::new($rsp)
+            $depHandler = [Microsoft.PowerShell.ScriptAnalyzer.Generic.ModuleDependencyHandler]::new($rsp)
             $pssaAppDataPath = $depHandler.PSSAAppDataPath
             $tempModulePath = $depHandler.TempModulePath
             $rsp.Dispose()

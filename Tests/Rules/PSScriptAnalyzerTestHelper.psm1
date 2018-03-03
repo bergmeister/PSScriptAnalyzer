@@ -1,7 +1,7 @@
 Function Get-ExtentText
 {
 	Param(
-	[Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.CorrectionExtent] $violation,
+	[Microsoft.PowerShell.ScriptAnalyzer.Generic.CorrectionExtent] $violation,
 	[string] $scriptPath
 	)
 	$scriptContent = Get-Content -Path $scriptPath
@@ -16,7 +16,7 @@ Function Test-CorrectionExtent
 {
 	Param(
 		[string] $violationFilepath,
-		[Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord] $diagnosticRecord,
+		[Microsoft.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord] $diagnosticRecord,
 		[int] $correctionsCount,
 		[string] $violationText,
 		[string] $correctionText

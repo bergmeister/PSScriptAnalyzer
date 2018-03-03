@@ -17,10 +17,10 @@ using System.ComponentModel.Composition;
 #endif
 using System.Globalization;
 using System.Management.Automation.Language;
-using Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic;
-using Microsoft.Windows.PowerShell.ScriptAnalyzer.Extensions;
+using Microsoft.PowerShell.ScriptAnalyzer.Generic;
+using Microsoft.PowerShell.ScriptAnalyzer.Extensions;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
+namespace Microsoft.PowerShell.ScriptAnalyzer.BuiltinRules
 {
     /// <summary>
     /// A class to that implements the UseSupportsShouldProcess rule.

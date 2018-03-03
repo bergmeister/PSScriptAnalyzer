@@ -16,7 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Management.Automation.Language;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
+namespace Microsoft.PowerShell.ScriptAnalyzer.Generic
 {
     /// <summary>
     /// Represents a result from a PSScriptAnalyzer rule.

@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
+namespace Microsoft.PowerShell.ScriptAnalyzer
 {
     /// <summary>
     /// Class to represent lines in a text.

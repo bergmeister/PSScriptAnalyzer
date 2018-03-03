@@ -5,9 +5,9 @@ using System;
 using System.Globalization;
 using System.Management.Automation;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Commands
+namespace Microsoft.PowerShell.ScriptAnalyzer.Commands
 {
-    using PSSASettings = Microsoft.Windows.PowerShell.ScriptAnalyzer.Settings;
+    using PSSASettings = Microsoft.PowerShell.ScriptAnalyzer.Settings;
 
     /// <summary>
     /// A cmdlet to format a PowerShell script text.

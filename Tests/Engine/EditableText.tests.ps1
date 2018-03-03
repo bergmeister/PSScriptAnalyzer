@@ -4,8 +4,8 @@ $testRootDirectory = Split-Path -Parent $directory
 Import-Module PSScriptAnalyzer
 Import-Module (Join-Path $testRootDirectory "PSScriptAnalyzerTestHelper.psm1")
 
-$editableTextType = "Microsoft.Windows.PowerShell.ScriptAnalyzer.EditableText"
-$textEditType = "Microsoft.Windows.PowerShell.ScriptAnalyzer.TextEdit"
+$editableTextType = "Microsoft.PowerShell.ScriptAnalyzer.EditableText"
+$textEditType = "Microsoft.PowerShell.ScriptAnalyzer.TextEdit"
 
 Describe "EditableText class" {
     Context "When a sigle edit is given for application" {
@@ -114,7 +114,7 @@ function foo {
 }
 '@
             $text = New-Object `
-                -TypeName "Microsoft.Windows.PowerShell.ScriptAnalyzer.EditableText" `
+                -TypeName "Microsoft.PowerShell.ScriptAnalyzer.EditableText" `
                 -ArgumentList @($def)
 
             {$text.Lines.Add("abc")} | Should -Throw
@@ -133,7 +133,7 @@ property1 = "value"
 }
 '@
             $text = New-Object `
-                -TypeName "Microsoft.Windows.PowerShell.ScriptAnalyzer.EditableText" `
+                -TypeName "Microsoft.PowerShell.ScriptAnalyzer.EditableText" `
                 -ArgumentList @($def)
             $text.LineCount | Should -Be 9
         }

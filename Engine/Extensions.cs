@@ -4,7 +4,7 @@ using System.Linq;
 using System.Management.Automation;
 using System.Management.Automation.Language;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Extensions
+namespace Microsoft.PowerShell.ScriptAnalyzer.Extensions
 {
     public static class Extensions
     {

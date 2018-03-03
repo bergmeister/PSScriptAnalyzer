@@ -471,7 +471,7 @@ Describe "Test CustomizedRulePath" {
             {
                 if (-not $testingLibraryUsage)
 			    {
-                    $Error[0].FullyQualifiedErrorId | Should -Match "PathNotFound,Microsoft.Windows.PowerShell.ScriptAnalyzer.Commands.InvokeScriptAnalyzerCommand"
+                    $Error[0].FullyQualifiedErrorId | Should -Match "PathNotFound,Microsoft.PowerShell.ScriptAnalyzer.Commands.InvokeScriptAnalyzerCommand"
                 }
             }
         }

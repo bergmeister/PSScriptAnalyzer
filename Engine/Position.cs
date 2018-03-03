@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
+namespace Microsoft.PowerShell.ScriptAnalyzer
 {
     /// <summary>
     /// Class to represent position in text.

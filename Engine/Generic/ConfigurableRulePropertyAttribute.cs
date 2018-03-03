@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
+namespace Microsoft.PowerShell.ScriptAnalyzer.Generic
 {
     /// <summary>
     /// The attribute class to designate if a property is configurable or not.

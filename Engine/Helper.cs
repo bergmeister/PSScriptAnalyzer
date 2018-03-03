@@ -18,12 +18,12 @@ using System.Linq;
 using System.Management.Automation;
 using System.Management.Automation.Language;
 using System.Globalization;
-using Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic;
+using Microsoft.PowerShell.ScriptAnalyzer.Generic;
 using System.Management.Automation.Runspaces;
 using System.Collections;
 using System.Reflection;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
+namespace Microsoft.PowerShell.ScriptAnalyzer
 {
 
     /// <summary>

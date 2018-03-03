@@ -12,7 +12,7 @@
 //
 
 using System.Text.RegularExpressions;
-using Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic;
+using Microsoft.PowerShell.ScriptAnalyzer.Generic;
 using System;
 using System.Collections.Generic;
 #if !CORECLR
@@ -33,7 +33,7 @@ using System.Collections;
 using System.Diagnostics;
 using System.Text;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
+namespace Microsoft.PowerShell.ScriptAnalyzer
 {
     public sealed class ScriptAnalyzer
     {
@@ -1372,7 +1372,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                 catch
                 {
                     // User may provide an invalid module name, like c:\temp.
-                    // It's a invalid name for a Windows PowerShell module,
+                    // It's a invalid name for a PowerShell module,
                     // But we need test it further since we allow user to provide a folder to extend rules.
                     // You can also consider following two commands.
                     //   Get-ScriptAnalyzerRule -RuleExtension "ContosoAnalyzerRules", "C:\Temp\ExtendScriptAnalyzerRules.dll"

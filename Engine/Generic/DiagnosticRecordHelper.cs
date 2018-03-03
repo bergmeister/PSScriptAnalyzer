@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
+namespace Microsoft.PowerShell.ScriptAnalyzer.Generic
 {
     public static class DiagnosticRecordHelper
     {

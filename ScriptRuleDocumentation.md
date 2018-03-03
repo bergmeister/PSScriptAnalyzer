@@ -26,7 +26,7 @@ The purpose of this documentation is to server as a basic guide on creating your
 - Output type should be DiagnosticRecord:
 
 ``` PowerShell
-[OutputType([Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord[]])]
+[OutputType([Microsoft.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord[]])]
 ```
 
 - Make sure each function takes either a Token or an Ast as a parameter
@@ -44,7 +44,7 @@ Param
 - DiagnosticRecord should have four properties: Message, Extent, RuleName and Severity
 
 ``` PowerShell
-$result = [Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord[]]@{
+$result = [Microsoft.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord[]]@{
     "Message"  = "This is a sample rule"
     "Extent"   = $ast.Extent
     "RuleName" = $PSCmdlet.MyInvocation.InvocationName
@@ -74,14 +74,14 @@ Export-ModuleMember -Function (FunctionName)
         .INPUTS
         [System.Management.Automation.Language.ScriptBlockAst]
         .OUTPUTS
-        [Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord[]]
+        [Microsoft.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord[]]
         .NOTES
         None
 #>
 function Measure-RequiresRunAsAdministrator
 {
     [CmdletBinding()]
-    [OutputType([Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord[]])]
+    [OutputType([Microsoft.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord[]])]
     Param
     (
         [Parameter(Mandatory = $true)]
@@ -139,7 +139,7 @@ function Measure-RequiresRunAsAdministrator
                 if ((!$ScriptBlockAst.ScriptRequirements.IsElevationRequired) -and
                 ($methodAst.Count -ne 0) -and ($assignmentAst.Count -ne 0))
                 {
-                    $result = [Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord]@{
+                    $result = [Microsoft.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord]@{
                         'Message' = $Messages.MeasureRequiresRunAsAdministrator
                         'Extent' = $assignmentAst.Extent
                         'RuleName' = $PSCmdlet.MyInvocation.InvocationName
@@ -152,7 +152,7 @@ function Measure-RequiresRunAsAdministrator
             {
                 if (($methodAst.Count -ne 0) -and ($assignmentAst.Count -ne 0))
                 {
-                    $result = [Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord]@{
+                    $result = [Microsoft.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord]@{
                         'Message' = $Messages.MeasureRequiresRunAsAdministrator
                         'Extent' = $assignmentAst.Extent
                         'RuleName' = $PSCmdlet.MyInvocation.InvocationName

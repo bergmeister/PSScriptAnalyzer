@@ -18,7 +18,7 @@ using System.Management.Automation.Language;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
+namespace Microsoft.PowerShell.ScriptAnalyzer.Generic
 {
     public class CorrectionExtent : TextEdit
     {

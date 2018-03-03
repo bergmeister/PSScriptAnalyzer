@@ -1,5 +1,5 @@
 ---
-external help file: Microsoft.Windows.PowerShell.ScriptAnalyzer.dll-Help.xml
+external help file: Microsoft.PowerShell.ScriptAnalyzer.dll-Help.xml
 schema: 2.0.0
 ---
 
@@ -77,7 +77,7 @@ The command uses the RecurseCustomRulePath parameter to get rules defined in sub
 
 ### -CustomRulePath
 Gets the Script Analyzer rules in the specified path in addition to the standard Script Analyzer rules.
-By default, PSScriptAnalyzer gets only the standard rules specified in the Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules.dll file in the module.
+By default, PSScriptAnalyzer gets only the standard rules specified in the Microsoft.PowerShell.ScriptAnalyzer.BuiltinRules.dll file in the module.
 
 Enter the path to a .NET assembly or module that contains Script Analyzer rules.
 You can enter only one value, but wildcards are supported.
@@ -93,7 +93,7 @@ Aliases: CustomizedRulePath
 
 Required: False
 Position: Named
-Default value: The rules in Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules.dll.
+Default value: The rules in Microsoft.PowerShell.ScriptAnalyzer.BuiltinRules.dll.
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -157,7 +157,7 @@ You cannot pipe input to this cmdlet.
 
 ## OUTPUTS
 
-### Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.RuleInfo
+### Microsoft.PowerShell.ScriptAnalyzer.Generic.RuleInfo
 The RuleInfo object is a custom object created especially for Script Analyzer. It is not documented on MSDN.
 
 ## NOTES

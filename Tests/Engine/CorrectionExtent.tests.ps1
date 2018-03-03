@@ -1,7 +1,7 @@
 Import-Module PSScriptAnalyzer
 
 Describe "Correction Extent" {
-    $type = [Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.CorrectionExtent]
+    $type = [Microsoft.PowerShell.ScriptAnalyzer.Generic.CorrectionExtent]
 
     Context "Object construction" {
         It "creates the object with correct properties" {

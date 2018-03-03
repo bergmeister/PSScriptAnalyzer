@@ -12,7 +12,7 @@
 
 using System.Management.Automation;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
+namespace Microsoft.PowerShell.ScriptAnalyzer
 {
     /// <summary>
     /// Provides an interface for writing output to a PowerShell session.

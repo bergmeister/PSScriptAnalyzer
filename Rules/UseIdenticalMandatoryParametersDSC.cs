@@ -23,10 +23,10 @@ using System.Management.Automation.Language;
 using System.Reflection;
 using Microsoft.Management.Infrastructure;
 using Microsoft.PowerShell.DesiredStateConfiguration.Internal;
-using Microsoft.Windows.PowerShell.ScriptAnalyzer.Extensions;
-using Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic;
+using Microsoft.PowerShell.ScriptAnalyzer.Extensions;
+using Microsoft.PowerShell.ScriptAnalyzer.Generic;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
+namespace Microsoft.PowerShell.ScriptAnalyzer.BuiltinRules
 {
     /// <summary>
     /// UseIdenticalMandatoryParametersDSC: Check that the Get/Test/Set TargetResource

@@ -20,7 +20,7 @@
 function Measure-RequiresRunAsAdministrator
 {
     [CmdletBinding()]
-    [OutputType([Microsoft.Windows.Powershell.ScriptAnalyzer.Generic.DiagnosticRecord[]])]
+    [OutputType([Microsoft.Powershell.ScriptAnalyzer.Generic.DiagnosticRecord[]])]
     Param
     (
         [Parameter(Mandatory = $true)]
@@ -29,7 +29,7 @@ function Measure-RequiresRunAsAdministrator
         $testAst
     )        
         $dr = New-Object `
-            -Typename "Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord" `
+            -Typename "Microsoft.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord" `
             -ArgumentList "This is help",$ast.Extent,$PSCmdlet.MyInvocation.InvocationName,Warning,$null        
         return @($dr)
 }

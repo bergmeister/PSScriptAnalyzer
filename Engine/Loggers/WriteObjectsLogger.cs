@@ -11,8 +11,8 @@
 //
 
 using System;
-using Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic;
-using Microsoft.Windows.PowerShell.ScriptAnalyzer.Commands;
+using Microsoft.PowerShell.ScriptAnalyzer.Generic;
+using Microsoft.PowerShell.ScriptAnalyzer.Commands;
 #if !CORECLR
 using System.ComponentModel.Composition;
 #endif // CORECLR
@@ -21,7 +21,7 @@ using System.Reflection;
 using System.Resources;
 using System.Threading;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Loggers
+namespace Microsoft.PowerShell.ScriptAnalyzer.Loggers
 {
     /// <summary>
     /// WriteObjectsLogger: Logs Diagnostics though WriteObject.
@@ -36,11 +36,11 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Loggers
 #if CORECLR
         private CultureInfo cul = System.Globalization.CultureInfo.CurrentCulture;
         private ResourceManager rm = new ResourceManager(
-            "Microsoft.Windows.PowerShell.ScriptAnalyzer.Strings",
+            "Microsoft.PowerShell.ScriptAnalyzer.Strings",
             typeof(WriteObjectsLogger).GetTypeInfo().Assembly);
 #else
         private CultureInfo cul = Thread.CurrentThread.CurrentCulture;
-        private ResourceManager rm = new ResourceManager("Microsoft.Windows.PowerShell.ScriptAnalyzer.Strings",
+        private ResourceManager rm = new ResourceManager("Microsoft.PowerShell.ScriptAnalyzer.Strings",
                                                                   Assembly.GetExecutingAssembly());
 #endif
 

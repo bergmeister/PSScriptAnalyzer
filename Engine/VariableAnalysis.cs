@@ -16,7 +16,7 @@ using System.Linq;
 using System.Management.Automation.Language;
 using System.Globalization;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
+namespace Microsoft.PowerShell.ScriptAnalyzer
 {
     /// <summary>
     /// This class is used to analyze variable based on data flow

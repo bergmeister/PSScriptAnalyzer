@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Management.Automation.Language;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
+namespace Microsoft.PowerShell.ScriptAnalyzer.Generic
 {
     /// <summary>
     /// Represents an abstract class for rule that checks that

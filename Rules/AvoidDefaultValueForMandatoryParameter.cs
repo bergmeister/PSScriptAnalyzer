@@ -8,9 +8,9 @@ using System.Management.Automation.Language;
 using System.ComponentModel.Composition;
 #endif
 using System.Globalization;
-using Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic;
+using Microsoft.PowerShell.ScriptAnalyzer.Generic;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
+namespace Microsoft.PowerShell.ScriptAnalyzer.BuiltinRules
 {
     /// <summary>
     /// AvoidDefaultValueForMandatoryParameter: Check if a mandatory parameter does not have a default value.

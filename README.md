@@ -299,10 +299,10 @@ ScriptAnalyzer engine and functionality can now be directly consumed as a librar
 
 Here are the public interfaces:
 ``` c#
-using Microsoft.Windows.PowerShell.ScriptAnalyzer;
+using Microsoft.PowerShell.ScriptAnalyzer;
 
 public void Initialize(System.Management.Automation.Runspaces.Runspace runspace,
-Microsoft.Windows.PowerShell.ScriptAnalyzer.IOutputWriter outputWriter,
+Microsoft.PowerShell.ScriptAnalyzer.IOutputWriter outputWriter,
 [string[] customizedRulePath = null],
 [string[] includeRuleNames = null],
 [string[] excludeRuleNames = null],

@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Management.Automation;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
+namespace Microsoft.PowerShell.ScriptAnalyzer
 {
     /// <summary>
     /// A class to provide code formatting capability.

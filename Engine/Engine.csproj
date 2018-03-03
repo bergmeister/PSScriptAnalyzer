@@ -3,9 +3,9 @@
   <PropertyGroup>
     <VersionPrefix>1.16.1</VersionPrefix>
     <TargetFrameworks>netstandard1.6;net451</TargetFrameworks>
-    <AssemblyName>Microsoft.Windows.PowerShell.ScriptAnalyzer</AssemblyName>
+    <AssemblyName>Microsoft.PowerShell.ScriptAnalyzer</AssemblyName>
     <PackageId>Engine</PackageId>
-    <RootNamespace>Microsoft.Windows.PowerShell.ScriptAnalyzer</RootNamespace> <!-- Namespace needs to match Assembly name for ressource binding -->
+    <RootNamespace>Microsoft.PowerShell.ScriptAnalyzer</RootNamespace> <!-- Namespace needs to match Assembly name for ressource binding -->
   </PropertyGroup>
 
   <ItemGroup>

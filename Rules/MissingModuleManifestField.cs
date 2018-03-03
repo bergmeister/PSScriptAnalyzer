@@ -14,14 +14,14 @@ using System;
 using System.Collections.Generic;
 using System.Management.Automation.Language;
 using System.Management.Automation;
-using Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic;
+using Microsoft.PowerShell.ScriptAnalyzer.Generic;
 #if !CORECLR
 using System.ComponentModel.Composition;
 #endif
 using System.Globalization;
 using System.Text;
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
+namespace Microsoft.PowerShell.ScriptAnalyzer.BuiltinRules
 {
     /// <summary>
     /// MissingModuleManifestField: Run Test Module Manifest to check that none of the required fields are missing.

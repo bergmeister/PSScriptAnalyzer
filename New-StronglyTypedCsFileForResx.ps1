@@ -137,7 +137,7 @@ if (-not (Test-Path "$projectRoot/global.json"))
 }
 $inputFilePath = Join-Path $projectRoot "$project/Strings.resx"
 $outputFilePath = Join-Path $projectRoot "$project/Strings.Designer.cs"
-$className = "Microsoft.Windows.PowerShell.ScriptAnalyzer"
+$className = "Microsoft.PowerShell.ScriptAnalyzer"
 if ($project -eq "Rules")
 {
     $className += ".BuiltinRules"

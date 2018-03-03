@@ -10,7 +10,7 @@
 // THE SOFTWARE.
 //
 
-namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
+namespace Microsoft.PowerShell.ScriptAnalyzer.Generic
 {
     /// <summary>
     /// Represents a suppressed diagnostic record
