@@ -1,8 +1,6 @@
-environment:
-  matrix:
-  - APPVEYOR_BUILD_WORKER_IMAGE: ubuntu
-    PowerShellEdition: PowerShellCore
-    BuildConfiguration: Release
+image:
+- Visual Studio 2017
+- Ubuntu
 
 # cache Nuget packages and dotnet CLI cache
 cache:
@@ -10,49 +8,26 @@ cache:
   - '%LocalAppData%\Microsoft\dotnet -> appveyor.yml'
 
 install:
-  - ps: Import-Module .\tools\Appveyor.psm1
-  - ps:   if ($env:PowerShellEdition -eq 'WindowsPowerShell') { Invoke-AppveyorInstall }
-  - pwsh: if ($env:PowerShellEdition -eq 'PowerShellCore')    { Import-Module .\tools\Appveyor.psm1; Invoke-AppveyorInstall }
+  - pwsh: Import-Module .\tools\Appveyor.psm1; Invoke-AppveyorInstall
 
 build_script:
-  - ps:   |
-            if ($env:PowerShellEdition -eq 'WindowsPowerShell') {
-                Invoke-AppveyorBuild -CheckoutPath $env:APPVEYOR_BUILD_FOLDER -BuildConfiguration $env:BuildConfiguration -BuildType 'FullCLR'
-            }
   - pwsh: |
-            if ($env:PowerShellEdition -eq 'PowerShellCore') {
-                Import-Module .\tools\Appveyor.psm1 # Appveyor does not persist pwsh sessions like it does for ps
-                Invoke-AppveyorBuild -CheckoutPath $env:APPVEYOR_BUILD_FOLDER -BuildConfiguration $env:BuildConfiguration -BuildType 'NetStandard'
-            }
+            Import-Module .\tools\Appveyor.psm1 # Appveyor does not persist pwsh sessions like it does for ps
+            Invoke-AppveyorBuild -CheckoutPath $env:APPVEYOR_BUILD_FOLDER -BuildConfiguration Release -BuildType 'NetStandard'
 
 # Test scripts are not in a module function because the tests behave differently for unknown reasons in AppVeyor
 test_script:
-  - SET PATH=C:\Program Files\WindowsPowerShell\Modules\;%PATH%;
-  - ps:   |
-            if ($env:PowerShellEdition -eq 'WindowsPowerShell') {
-                $modulePath = $env:PSModulePath.Split(';') | Where-Object { Test-Path $_} | Select-Object -First 1
-                Copy-Item "${env:APPVEYOR_BUILD_FOLDER}\out\PSScriptAnalyzer" "$modulePath\" -Recurse -Force
-                $testResultsFile = ".\TestResults.xml"
-                $testScripts = "${env:APPVEYOR_BUILD_FOLDER}\Tests\Engine","${env:APPVEYOR_BUILD_FOLDER}\Tests\Rules"
-                $testResults = Invoke-Pester -Script $testScripts -OutputFormat NUnitXml -OutputFile $testResultsFile -PassThru
-                (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/${env:APPVEYOR_JOB_ID}", (Resolve-Path $testResultsFile))
-                if ($testResults.FailedCount -gt 0) {
-                    throw "$($testResults.FailedCount) tests failed."
-                }
-            }
   - pwsh: |
-            if ($env:PowerShellEdition -eq 'PowerShellCore') {
-                $modulePath = $env:PSModulePath.Split(';') | Where-Object { Test-Path $_} | Select-Object -First 1
-                Copy-Item "${env:APPVEYOR_BUILD_FOLDER}\out\PSScriptAnalyzer" "$modulePath\" -Recurse -Force
-                $testResultsFile = ".\TestResults.xml"
-                $testScripts = "${env:APPVEYOR_BUILD_FOLDER}\Tests\Engine","${env:APPVEYOR_BUILD_FOLDER}\Tests\Rules"
-                $testResults = Invoke-Pester -Script $testScripts -OutputFormat NUnitXml -OutputFile $testResultsFile -PassThru
-                (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/${env:APPVEYOR_JOB_ID}", (Resolve-Path $testResultsFile))
-                if ($testResults.FailedCount -gt 0) {
-                    throw "$($testResults.FailedCount) tests failed."
-                }
+            $modulePath = $env:PSModulePath.Split(';') | Where-Object { Test-Path $_} | Select-Object -First 1
+            Copy-Item "${env:APPVEYOR_BUILD_FOLDER}\out\PSScriptAnalyzer" "$modulePath\" -Recurse -Force
+            $testResultsFile = ".\TestResults.xml"
+            $testScripts = "${env:APPVEYOR_BUILD_FOLDER}\Tests\Engine","${env:APPVEYOR_BUILD_FOLDER}\Tests\Rules"
+            $testResults = Invoke-Pester -Script $testScripts -OutputFormat NUnitXml -OutputFile $testResultsFile -PassThru
+            (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/${env:APPVEYOR_JOB_ID}", (Resolve-Path $testResultsFile))
+            if ($testResults.FailedCount -gt 0) {
+                throw "$($testResults.FailedCount) tests failed."
             }
 
 # Upload the project along with test results as a zip archive
 on_finish:
-  - ps: Invoke-AppveyorFinish
+  - pwsh: Import-Module .\tools\Appveyor.psm1; Invoke-AppveyorFinish
