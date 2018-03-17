@@ -1,6 +1,6 @@
 environment:
   matrix:
-  - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+  - APPVEYOR_BUILD_WORKER_IMAGE: ubuntu
     PowerShellEdition: PowerShellCore
     BuildConfiguration: Release
 
