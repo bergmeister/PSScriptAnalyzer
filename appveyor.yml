@@ -2,7 +2,7 @@ environment:
   matrix:
   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     BuildConfiguration: Release
-  - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+  - APPVEYOR_BUILD_WORKER_IMAGE: ubuntu
     BuildConfiguration: Release
 
 # clone directory
