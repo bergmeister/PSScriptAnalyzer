@@ -1,10 +1,8 @@
 environment:
   matrix:
   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    PowerShellEdition: Desktop
     BuildConfiguration: Release
   - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
-    PowerShellEdition: Desktop
     BuildConfiguration: Release
 
 # clone directory
