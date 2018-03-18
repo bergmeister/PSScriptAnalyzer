@@ -3,9 +3,6 @@ environment:
   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     PowerShellEdition: Desktop
     BuildConfiguration: Release
-  - APPVEYOR_BUILD_WORKER_IMAGE: WMF 4
-    PowerShellEdition: Desktop
-    BuildConfiguration: PSv3Release
 
 # clone directory
 clone_folder: c:\projects\psscriptanalyzer
@@ -67,7 +64,6 @@ branches:
 
 # Run Pester tests and store the results
 test_script:
-    - SET PATH=c:\Program Files\WindowsPowerShell\Modules\;%PATH%;
     - ps: |
         copy-item "C:\projects\psscriptanalyzer\out\PSScriptAnalyzer" "$Env:ProgramFiles\WindowsPowerShell\Modules\" -Recurse -Force
         $testResultsFile = ".\TestResults.xml"
