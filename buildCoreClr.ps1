@@ -69,7 +69,7 @@ if ($build)
     Write-Progress "Copying files to $destinationDir"
     CopyToDestinationDir $itemsToCopyCommon $destinationDir
     CopyToDestinationDir $itemsToCopyBinaries $destinationDirBinaries
-    copy-item -Path  "$solutionDir\Engine\bin\$Configuration\$Framework\publish\*" -Destination $destinationDirBinaries
+    Copy-Item -Path  "$solutionDir\Engine\bin\$Configuration\$Framework\publish\*" -Destination $destinationDirBinaries -Recurse
 
     # Copy Settings File
     Copy-Item -Path "$solutionDir\Engine\Settings" -Destination $destinationDir -Force -Recurse
