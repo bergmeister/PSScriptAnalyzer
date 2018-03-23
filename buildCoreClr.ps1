@@ -45,12 +45,12 @@ if ($build)
 
     Write-Progress "Building Engine"
     Push-Location Engine\
-    dotnet build Engine.csproj --framework $Framework --configuration $Configuration
+    dotnet publish Engine.csproj --framework $Framework --configuration $Configuration
     Pop-Location
 
     Write-Progress "Building for framework $Framework, configuration $Configuration"
     Push-Location Rules\
-    dotnet build Rules.csproj --framework $Framework --configuration $Configuration
+    dotnet publish Rules.csproj --framework $Framework --configuration $Configuration
     Pop-Location
 
     Function CopyToDestinationDir($itemsToCopy, $destination)
@@ -69,6 +69,7 @@ if ($build)
     Write-Progress "Copying files to $destinationDir"
     CopyToDestinationDir $itemsToCopyCommon $destinationDir
     CopyToDestinationDir $itemsToCopyBinaries $destinationDirBinaries
+    copy-item -Path  "$solutionDir\Engine\bin\$Configuration\$Framework\publish\*" -Destination $destinationDirBinaries
 
     # Copy Settings File
     Copy-Item -Path "$solutionDir\Engine\Settings" -Destination $destinationDir -Force -Recurse

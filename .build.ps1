@@ -62,7 +62,7 @@ function Get-BuildTaskParams($project) {
             $d = $($Task.Data)
             foreach ($frmwrk in $d.Frameworks.Keys) {
                 foreach ($config in $d.Frameworks[$frmwrk].Configuration) {
-                    dotnet build --framework $frmwrk --configuration $config
+                    dotnet publish --framework $frmwrk --configuration $config
                 }
             }
         }
