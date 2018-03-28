@@ -335,7 +335,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Commands
                 this.includeRule,
                 this.excludeRule,
                 this.severity,
-                combRulePaths == null || combIncludeDefaultRules,
+                combIncludeDefaultRules,
                 this.suppressedOnly);
         }
 
