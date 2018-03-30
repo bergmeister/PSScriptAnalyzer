@@ -2,7 +2,7 @@
 
 ### From Source
 
-* [.NET Core 2.1.4 SDK](https://github.com/dotnet/core/blob/master/release-notes/download-archives/2.0.5-download.md)
+* [.NET Core 2.1.101 SDK](https://www.microsoft.com/net/download/dotnet-core/sdk-2.1.101) or newer
 * [PlatyPS 0.9.0 or greater](https://github.com/PowerShell/platyPS/releases)
 * Recommended for development: [Visual Studio Code](https://code.visualstudio.com/download)
 * Optionally for development: [Visual Studio](https://www.visualstudio.com/downloads/)
