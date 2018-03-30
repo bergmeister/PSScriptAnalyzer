@@ -68,7 +68,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
                     && (ScriptAnalyzer.Instance.DSCResourceRules != null
                         && ScriptAnalyzer.Instance.DSCResourceRules.Count(item => String.Equals(item.GetName(), _ruleName, StringComparison.OrdinalIgnoreCase)) == 0))
                 {
-                    Error = String.Format(Strings.RuleSuppressionRuleNameNotFound, _ruleName);
+                    Error = String.Format(EngineStrings.RuleSuppressionRuleNameNotFound, _ruleName);
                 }
             }
         }
@@ -155,7 +155,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
 
                     if (positionalArguments.Any(item => !(item is StringConstantExpressionAst)))
                     {
-                        Error = Strings.StringConstantArgumentsSuppressionAttributeError;
+                        Error = EngineStrings.StringConstantArgumentsSuppressionAttributeError;
                     }
                     else
                     {
@@ -193,12 +193,12 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
                     {
                         if (name.Extent.StartOffset < lastPositionalArgumentsOffset)
                         {
-                            Error = Strings.NamedArgumentsBeforePositionalError;
+                            Error = EngineStrings.NamedArgumentsBeforePositionalError;
                             break;
                         }
                         else if (!(name.Argument is StringConstantExpressionAst))
                         {
-                            Error = Strings.StringConstantArgumentsSuppressionAttributeError;
+                            Error = EngineStrings.StringConstantArgumentsSuppressionAttributeError;
                             break;
                         }
 
@@ -207,7 +207,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
                             case "rulename":
                                 if (!String.IsNullOrWhiteSpace(RuleName))
                                 {
-                                    Error = String.Format(Strings.NamedAndPositionalArgumentsConflictError, name);
+                                    Error = String.Format(EngineStrings.NamedAndPositionalArgumentsConflictError, name);
                                 }
 
                                 RuleName = (name.Argument as StringConstantExpressionAst).Value;
@@ -216,7 +216,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
                             case "rulesuppressionid":
                                 if (!String.IsNullOrWhiteSpace(RuleSuppressionID))
                                 {
-                                    Error = String.Format(Strings.NamedAndPositionalArgumentsConflictError, name);
+                                    Error = String.Format(EngineStrings.NamedAndPositionalArgumentsConflictError, name);
                                 }
 
                                 RuleSuppressionID = (name.Argument as StringConstantExpressionAst).Value;
@@ -225,14 +225,14 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
                             case "scope":
                                 if (!String.IsNullOrWhiteSpace(Scope))
                                 {
-                                    Error = String.Format(Strings.NamedAndPositionalArgumentsConflictError, name);
+                                    Error = String.Format(EngineStrings.NamedAndPositionalArgumentsConflictError, name);
                                 }
 
                                 Scope = (name.Argument as StringConstantExpressionAst).Value;
 
                                 if (!scopeSet.Contains(Scope))
                                 {
-                                    Error = Strings.WrongScopeArgumentSuppressionAttributeError;
+                                    Error = EngineStrings.WrongScopeArgumentSuppressionAttributeError;
                                 }
 
                                 goto default;
@@ -240,7 +240,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
                             case "target":
                                 if (!String.IsNullOrWhiteSpace(Target))
                                 {
-                                    Error = String.Format(Strings.NamedAndPositionalArgumentsConflictError, name);
+                                    Error = String.Format(EngineStrings.NamedAndPositionalArgumentsConflictError, name);
                                 }
 
                                 Target = (name.Argument as StringConstantExpressionAst).Value;
@@ -249,7 +249,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
                             case "justification":
                                 if (!String.IsNullOrWhiteSpace(Justification))
                                 {
-                                    Error = String.Format(Strings.NamedAndPositionalArgumentsConflictError, name);
+                                    Error = String.Format(EngineStrings.NamedAndPositionalArgumentsConflictError, name);
                                 }
 
                                 Justification = (name.Argument as StringConstantExpressionAst).Value;
@@ -270,13 +270,13 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
                 else if (String.IsNullOrWhiteSpace(RuleName))
                 {
                     RuleName = String.Empty;
-                    Error = Strings.NullRuleNameError;
+                    Error = EngineStrings.NullRuleNameError;
                 }
 
                 // Must have scope and target together
                 if (String.IsNullOrWhiteSpace(Scope) && !String.IsNullOrWhiteSpace(Target))
                 {
-                    Error = Strings.TargetWithoutScopeSuppressionAttributeError;
+                    Error = EngineStrings.TargetWithoutScopeSuppressionAttributeError;
                 }
             }
 
@@ -287,11 +287,11 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
             {
                 if (String.IsNullOrWhiteSpace(attrAst.Extent.File))
                 {
-                    Error = String.Format(CultureInfo.CurrentCulture, Strings.RuleSuppressionErrorFormatScriptDefinition, StartAttributeLine, Error);
+                    Error = String.Format(CultureInfo.CurrentCulture, EngineStrings.RuleSuppressionErrorFormatScriptDefinition, StartAttributeLine, Error);
                 }
                 else
                 {
-                    Error = String.Format(CultureInfo.CurrentCulture, Strings.RuleSuppressionErrorFormat, StartAttributeLine,
+                    Error = String.Format(CultureInfo.CurrentCulture, EngineStrings.RuleSuppressionErrorFormat, StartAttributeLine,
                         System.IO.Path.GetFileName(attrAst.Extent.File), Error);
                 }
             }
@@ -378,13 +378,13 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
                         {
                             if (String.IsNullOrWhiteSpace(scopeAst.Extent.File))
                             {
-                                ruleSupp.Error = String.Format(CultureInfo.CurrentCulture, Strings.RuleSuppressionErrorFormatScriptDefinition, ruleSupp.StartAttributeLine,
-                                    String.Format(Strings.TargetCannotBeFoundError, ruleSupp.Target, ruleSupp.Scope));
+                                ruleSupp.Error = String.Format(CultureInfo.CurrentCulture, EngineStrings.RuleSuppressionErrorFormatScriptDefinition, ruleSupp.StartAttributeLine,
+                                    String.Format(EngineStrings.TargetCannotBeFoundError, ruleSupp.Target, ruleSupp.Scope));
                             }
                             else
                             {
-                                ruleSupp.Error = String.Format(CultureInfo.CurrentCulture, Strings.RuleSuppressionErrorFormat, ruleSupp.StartAttributeLine,
-                                    System.IO.Path.GetFileName(scopeAst.Extent.File), String.Format(Strings.TargetCannotBeFoundError, ruleSupp.Target, ruleSupp.Scope));
+                                ruleSupp.Error = String.Format(CultureInfo.CurrentCulture, EngineStrings.RuleSuppressionErrorFormat, ruleSupp.StartAttributeLine,
+                                    System.IO.Path.GetFileName(scopeAst.Extent.File), String.Format(EngineStrings.TargetCannotBeFoundError, ruleSupp.Target, ruleSupp.Scope));
                             }
 
                             result.Add(ruleSupp);

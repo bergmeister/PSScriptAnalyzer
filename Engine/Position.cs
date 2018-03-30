@@ -21,14 +21,14 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             if (line < 1)
             {
                 throw new ArgumentException(
-                    String.Format(CultureInfo.CurrentCulture, Strings.PositionLineLessThanOne),
+                    String.Format(CultureInfo.CurrentCulture, EngineStrings.PositionLineLessThanOne),
                     nameof(line));
             }
 
             if (column < 1)
             {
                 throw new ArgumentException(
-                    String.Format(CultureInfo.CurrentCulture, Strings.PositionColumnLessThanOne),
+                    String.Format(CultureInfo.CurrentCulture, EngineStrings.PositionColumnLessThanOne),
                     nameof(column));
             }
 
@@ -76,7 +76,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             if (newLine < 1)
             {
                 throw new ArgumentException(
-                    String.Format(CultureInfo.CurrentCulture, Strings.PositionLineLessThanOne),
+                    String.Format(CultureInfo.CurrentCulture, EngineStrings.PositionLineLessThanOne),
                     nameof(lineDelta));
             }
 
@@ -84,7 +84,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             if (newColumn < 1)
             {
                 throw new ArgumentException(
-                    String.Format(CultureInfo.CurrentCulture, Strings.PositionColumnLessThanOne),
+                    String.Format(CultureInfo.CurrentCulture, EngineStrings.PositionColumnLessThanOne),
                     nameof(columnDelta));
             }
 
@@ -113,7 +113,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             {
                 throw new ArgumentException(String.Format(
                     CultureInfo.CurrentCulture,
-                    Strings.PositionRefPosLessThanInputPos));
+                    EngineStrings.PositionRefPosLessThanInputPos));
             }
 
             if (pos.Line == refPos.Line)

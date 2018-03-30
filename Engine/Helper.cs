@@ -1494,13 +1494,13 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                     // checks whether are given a string or a file path
                     if (String.IsNullOrWhiteSpace(diagnostics.First().Extent.File))
                     {
-                        ruleSuppression.Error = String.Format(CultureInfo.CurrentCulture, Strings.RuleSuppressionErrorFormatScriptDefinition, ruleSuppression.StartAttributeLine,
-                                String.Format(Strings.RuleSuppressionIDError, ruleSuppression.RuleSuppressionID));
+                        ruleSuppression.Error = String.Format(CultureInfo.CurrentCulture, EngineStrings.RuleSuppressionErrorFormatScriptDefinition, ruleSuppression.StartAttributeLine,
+                                String.Format(EngineStrings.RuleSuppressionIDError, ruleSuppression.RuleSuppressionID));
                     }
                     else
                     {
-                        ruleSuppression.Error = String.Format(CultureInfo.CurrentCulture, Strings.RuleSuppressionErrorFormat, ruleSuppression.StartAttributeLine,
-                                System.IO.Path.GetFileName(diagnostics.First().Extent.File), String.Format(Strings.RuleSuppressionIDError, ruleSuppression.RuleSuppressionID));
+                        ruleSuppression.Error = String.Format(CultureInfo.CurrentCulture, EngineStrings.RuleSuppressionErrorFormat, ruleSuppression.StartAttributeLine,
+                                System.IO.Path.GetFileName(diagnostics.First().Extent.File), String.Format(EngineStrings.RuleSuppressionIDError, ruleSuppression.RuleSuppressionID));
                     }
                     errorRecords.Add(new ErrorRecord(new ArgumentException(ruleSuppression.Error), ruleSuppression.Error, ErrorCategory.InvalidArgument, ruleSuppression));
                     //this.outputWriter.WriteError(new ErrorRecord(new ArgumentException(ruleSuppression.Error), ruleSuppression.Error, ErrorCategory.InvalidArgument, ruleSuppression));
@@ -3766,7 +3766,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             {
                 throw new ArgumentException(
                     String.Format(
-                        Strings.DigraphVertexAlreadyExists,
+                        EngineStrings.DigraphVertexAlreadyExists,
                         vertex),
                     "vertex");
             }
@@ -3793,7 +3793,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             if (fromVertexList.Contains(toIdx))
             {
                 throw new ArgumentException(String.Format(
-                    Strings.DigraphEdgeAlreadyExists,
+                    EngineStrings.DigraphEdgeAlreadyExists,
                     fromVertex.ToString(),
                     toVertex.ToString()));
             }
@@ -3867,7 +3867,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             {
                 throw new ArgumentOutOfRangeException(
                     String.Format(
-                        Strings.DigraphVertexDoesNotExists,
+                        EngineStrings.DigraphVertexDoesNotExists,
                         vertex.ToString()),
                     "vertex");
             }

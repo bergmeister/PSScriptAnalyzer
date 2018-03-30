@@ -153,7 +153,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             {
                 throw new ArgumentException(String.Format(
                     CultureInfo.CurrentCulture,
-                    Strings.EditableTextRangeIsNotContained));
+                    EngineStrings.EditableTextRangeIsNotContained));
             }
         }
 
@@ -182,7 +182,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             if (remainder != 0)
             {
                 throw new ArgumentException(
-                    String.Format(CultureInfo.CurrentCulture, Strings.EditableTextInvalidLineEnding),
+                    String.Format(CultureInfo.CurrentCulture, EngineStrings.EditableTextInvalidLineEnding),
                     nameof(text));
             }
 

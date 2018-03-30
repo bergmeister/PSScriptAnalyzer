@@ -88,7 +88,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             {
                 throw new ArgumentException(String.Format(
                     CultureInfo.CurrentCulture,
-                    Strings.RangeRefPosShouldStartBeforeRangeStartPos));
+                    EngineStrings.RangeRefPosShouldStartBeforeRangeStartPos));
             }
 
             return range.Shift(
@@ -112,7 +112,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             {
                 throw new ArgumentException(String.Format(
                     CultureInfo.CurrentCulture,
-                    Strings.RangeStartPosGreaterThanEndPos));
+                    EngineStrings.RangeStartPosGreaterThanEndPos));
             }
         }
     }

@@ -318,11 +318,11 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                             new InvalidDataException(
                                 string.Format(
                                     CultureInfo.CurrentCulture,
-                                    Strings.WrongKeyFormat,
+                                    EngineStrings.WrongKeyFormat,
                                     kvp.Item1.Extent.StartLineNumber,
                                     kvp.Item1.Extent.StartColumnNumber,
                                     profile)),
-                            Strings.ConfigurationKeyNotAString,
+                            EngineStrings.ConfigurationKeyNotAString,
                             ErrorCategory.InvalidData,
                             profile));
                     hasError = true;
@@ -389,11 +389,11 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                                             new InvalidDataException(
                                                 string.Format(
                                                     CultureInfo.CurrentCulture,
-                                                    Strings.WrongValueFormat,
+                                                    EngineStrings.WrongValueFormat,
                                                     element.Extent.StartLineNumber,
                                                     element.Extent.StartColumnNumber,
                                                     "")),
-                                        Strings.ConfigurationValueNotAString,
+                                        EngineStrings.ConfigurationValueNotAString,
                                         ErrorCategory.InvalidData,
                                         null));
                                     hasError = true;
@@ -413,11 +413,11 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                             new InvalidDataException(
                                 string.Format(
                                     CultureInfo.CurrentCulture,
-                                    Strings.WrongValueFormat,
+                                    EngineStrings.WrongValueFormat,
                                     kvp.Item2.Extent.StartLineNumber,
                                     kvp.Item2.Extent.StartColumnNumber,
                                     profile)),
-                            Strings.ConfigurationValueWrongFormat,
+                            EngineStrings.ConfigurationValueWrongFormat,
                             ErrorCategory.InvalidData,
                             profile));
                     hasError = true;
@@ -447,8 +447,8 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                 {
                     writer.WriteError(
                         new ErrorRecord(
-                            new InvalidDataException(string.Format(CultureInfo.CurrentCulture, Strings.KeyNotString, key)),
-                            Strings.ConfigurationKeyNotAString,
+                            new InvalidDataException(string.Format(CultureInfo.CurrentCulture, EngineStrings.KeyNotString, key)),
+                            EngineStrings.ConfigurationKeyNotAString,
                             ErrorCategory.InvalidData,
                             hashtable));
                     hasError = true;
@@ -459,8 +459,8 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                 {
                     writer.WriteError(
                         new ErrorRecord(
-                            new InvalidDataException(string.Format(CultureInfo.CurrentCulture, Strings.WrongValueHashTable, valueHashtableObj, key)),
-                            Strings.WrongConfigurationKey,
+                            new InvalidDataException(string.Format(CultureInfo.CurrentCulture, EngineStrings.WrongValueHashTable, valueHashtableObj, key)),
+                            EngineStrings.WrongConfigurationKey,
                             ErrorCategory.InvalidData,
                             hashtable));
                     hasError = true;
@@ -524,8 +524,8 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                         {
                             writer.WriteError(
                                 new ErrorRecord(
-                                    new InvalidDataException(string.Format(CultureInfo.CurrentCulture, Strings.WrongValueHashTable, value, key)),
-                                    Strings.WrongConfigurationKey,
+                                    new InvalidDataException(string.Format(CultureInfo.CurrentCulture, EngineStrings.WrongValueHashTable, value, key)),
+                                    EngineStrings.WrongConfigurationKey,
                                     ErrorCategory.InvalidData,
                                     profile));
                             hasError = true;
@@ -553,8 +553,8 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                                 {
                                     writer.WriteError(
                                         new ErrorRecord(
-                                            new InvalidDataException(string.Format(CultureInfo.CurrentCulture, Strings.WrongValueHashTable, val, key)),
-                                            Strings.WrongConfigurationKey,
+                                            new InvalidDataException(string.Format(CultureInfo.CurrentCulture, EngineStrings.WrongValueHashTable, val, key)),
+                                            EngineStrings.WrongConfigurationKey,
                                             ErrorCategory.InvalidData,
                                             profile));
                                     hasError = true;
@@ -572,8 +572,8 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                     default:
                         writer.WriteError(
                             new ErrorRecord(
-                                new InvalidDataException(string.Format(CultureInfo.CurrentCulture, Strings.WrongKeyHashTable, key)),
-                                Strings.WrongConfigurationKey,
+                                new InvalidDataException(string.Format(CultureInfo.CurrentCulture, EngineStrings.WrongKeyHashTable, key)),
+                                EngineStrings.WrongConfigurationKey,
                                 ErrorCategory.InvalidData,
                                 profile));
                         hasError = true;
@@ -594,8 +594,8 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             }
             catch
             {
-                writer.WriteError(new ErrorRecord(new FileNotFoundException(string.Format(CultureInfo.CurrentCulture, Strings.FileNotFound, profile)),
-                    Strings.ConfigurationFileNotFound, ErrorCategory.ResourceUnavailable, profile));
+                writer.WriteError(new ErrorRecord(new FileNotFoundException(string.Format(CultureInfo.CurrentCulture, EngineStrings.FileNotFound, profile)),
+                    EngineStrings.ConfigurationFileNotFound, ErrorCategory.ResourceUnavailable, profile));
                 hasError = true;
             }
 
@@ -609,8 +609,8 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                 // no hashtable, raise warning
                 if (hashTableAsts.Count() == 0)
                 {
-                    writer.WriteError(new ErrorRecord(new ArgumentException(string.Format(CultureInfo.CurrentCulture, Strings.InvalidProfile, profile)),
-                        Strings.ConfigurationFileHasNoHashTable, ErrorCategory.ResourceUnavailable, profile));
+                    writer.WriteError(new ErrorRecord(new ArgumentException(string.Format(CultureInfo.CurrentCulture, EngineStrings.InvalidProfile, profile)),
+                        EngineStrings.ConfigurationFileHasNoHashTable, ErrorCategory.ResourceUnavailable, profile));
                     hasError = true;
                 }
                 else
@@ -636,10 +636,10 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                                     new InvalidDataException(
                                         string.Format(
                                             CultureInfo.CurrentCulture,
-                                            Strings.WrongKey,
+                                            EngineStrings.WrongKey,
                                             key,
                                             profile)),
-                                    Strings.WrongConfigurationKey,
+                                    EngineStrings.WrongConfigurationKey,
                                     ErrorCategory.InvalidData,
                                     profile));
                             hasError = true;
@@ -656,8 +656,8 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                     {
                         writer.WriteError(
                             new ErrorRecord(
-                                new ArgumentException(string.Format(CultureInfo.CurrentCulture, Strings.InvalidProfile, profile)),
-                                Strings.ConfigurationFileHasInvalidHashtable,
+                                new ArgumentException(string.Format(CultureInfo.CurrentCulture, EngineStrings.InvalidProfile, profile)),
+                                EngineStrings.ConfigurationFileHasInvalidHashtable,
                                 ErrorCategory.ResourceUnavailable,
                                 profile));
                         hasError = true;
@@ -821,7 +821,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                         new Exception(),
                         string.Format(
                             CultureInfo.CurrentCulture,
-                            Strings.RulesNotFound),
+                            EngineStrings.RulesNotFound),
                         ErrorCategory.ResourceExists,
                         this));
             }
@@ -844,7 +844,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                 this.validationResults = this.CheckRuleExtension(paths.ToArray(), path);
                 foreach (string extension in this.validationResults["InvalidPaths"])
                 {
-                    this.outputWriter.WriteWarning(string.Format(CultureInfo.CurrentCulture, Strings.MissingRuleExtension, extension));
+                    this.outputWriter.WriteWarning(string.Format(CultureInfo.CurrentCulture, EngineStrings.MissingRuleExtension, extension));
                 }
             }
             else
@@ -1325,7 +1325,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             {
                 try
                 {
-                    this.outputWriter.WriteVerbose(string.Format(CultureInfo.CurrentCulture, Strings.CheckModuleName, childPath));
+                    this.outputWriter.WriteVerbose(string.Format(CultureInfo.CurrentCulture, EngineStrings.CheckModuleName, childPath));
 
                     string resolvedPath = string.Empty;
 
@@ -1379,7 +1379,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                     string resolvedPath = basePath
                         .GetResolvedPSPathFromPSPath(childPath).First().ToString();
 
-                    this.outputWriter.WriteDebug(string.Format(CultureInfo.CurrentCulture, Strings.CheckAssemblyFile, resolvedPath));
+                    this.outputWriter.WriteDebug(string.Format(CultureInfo.CurrentCulture, EngineStrings.CheckAssemblyFile, resolvedPath));
 
                     if (String.Equals(Path.GetExtension(resolvedPath), ".dll", StringComparison.OrdinalIgnoreCase))
                     {
@@ -1510,7 +1510,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             Token[] scriptTokens = null;
             ParseError[] errors = null;
 
-            this.outputWriter.WriteVerbose(string.Format(CultureInfo.CurrentCulture, Strings.VerboseScriptDefinitionMessage));
+            this.outputWriter.WriteVerbose(string.Format(CultureInfo.CurrentCulture, EngineStrings.VerboseScriptDefinitionMessage));
 
             try
             {
@@ -1526,14 +1526,14 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             {
                 foreach (ParseError error in errors)
                 {
-                    string parseErrorMessage = String.Format(CultureInfo.CurrentCulture, Strings.ParseErrorFormatForScriptDefinition, error.Message.TrimEnd('.'), error.Extent.StartLineNumber, error.Extent.StartColumnNumber);
+                    string parseErrorMessage = String.Format(CultureInfo.CurrentCulture, EngineStrings.ParseErrorFormatForScriptDefinition, error.Message.TrimEnd('.'), error.Extent.StartLineNumber, error.Extent.StartColumnNumber);
                     this.outputWriter.WriteError(new ErrorRecord(new ParseException(parseErrorMessage), parseErrorMessage, ErrorCategory.ParserError, error.ErrorId));
                 }
             }
 
             if (errors != null && errors.Length > 10)
             {
-                string manyParseErrorMessage = String.Format(CultureInfo.CurrentCulture, Strings.ParserErrorMessageForScriptDefinition);
+                string manyParseErrorMessage = String.Format(CultureInfo.CurrentCulture, EngineStrings.ParserErrorMessageForScriptDefinition);
                 this.outputWriter.WriteError(new ErrorRecord(new ParseException(manyParseErrorMessage), manyParseErrorMessage, ErrorCategory.ParserError, scriptDefinition));
 
                 return new List<DiagnosticRecord>();
@@ -1695,7 +1695,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                 this.outputWriter.ThrowTerminatingError(
                     new ErrorRecord(
                         new FileNotFoundException(),
-                        string.Format(CultureInfo.CurrentCulture, Strings.FileNotFound, path),
+                        string.Format(CultureInfo.CurrentCulture, EngineStrings.FileNotFound, path),
                         ErrorCategory.InvalidArgument,
                         this));
             }
@@ -1757,7 +1757,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                 this.outputWriter.WriteError(
                     new ErrorRecord(
                         new FileNotFoundException(),
-                        string.Format(CultureInfo.CurrentCulture, Strings.FileNotFound, path),
+                        string.Format(CultureInfo.CurrentCulture, EngineStrings.FileNotFound, path),
                         ErrorCategory.InvalidArgument,
                         this));
             }
@@ -1805,7 +1805,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             Token[] scriptTokens = null;
             ParseError[] errors = null;
 
-            this.outputWriter.WriteVerbose(string.Format(CultureInfo.CurrentCulture, Strings.VerboseFileMessage, filePath));
+            this.outputWriter.WriteVerbose(string.Format(CultureInfo.CurrentCulture, EngineStrings.VerboseFileMessage, filePath));
 
             //Parse the file
             if (File.Exists(filePath))
@@ -1834,14 +1834,14 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                     {
                         foreach (ParseError error in errors)
                         {
-                            string parseErrorMessage = String.Format(CultureInfo.CurrentCulture, Strings.ParserErrorFormat, error.Extent.File, error.Message.TrimEnd('.'), error.Extent.StartLineNumber, error.Extent.StartColumnNumber);
+                            string parseErrorMessage = String.Format(CultureInfo.CurrentCulture, EngineStrings.ParserErrorFormat, error.Extent.File, error.Message.TrimEnd('.'), error.Extent.StartLineNumber, error.Extent.StartColumnNumber);
                             this.outputWriter.WriteError(new ErrorRecord(new ParseException(parseErrorMessage), parseErrorMessage, ErrorCategory.ParserError, error.ErrorId));
                         }
                     }
 
                     if (errors != null && errors.Length > 10)
                     {
-                        string manyParseErrorMessage = String.Format(CultureInfo.CurrentCulture, Strings.ParserErrorMessage, System.IO.Path.GetFileName(filePath));
+                        string manyParseErrorMessage = String.Format(CultureInfo.CurrentCulture, EngineStrings.ParserErrorMessage, System.IO.Path.GetFileName(filePath));
                         this.outputWriter.WriteError(new ErrorRecord(new ParseException(manyParseErrorMessage), manyParseErrorMessage, ErrorCategory.ParserError, filePath));
                         return new List<DiagnosticRecord>();
                     }
@@ -1850,7 +1850,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             else
             {
                 this.outputWriter.ThrowTerminatingError(new ErrorRecord(new FileNotFoundException(),
-                    string.Format(CultureInfo.CurrentCulture, Strings.InvalidPath, filePath),
+                    string.Format(CultureInfo.CurrentCulture, EngineStrings.InvalidPath, filePath),
                     ErrorCategory.InvalidArgument, filePath));
 
                 return null;
@@ -2043,7 +2043,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                     {
                         bool helpRule = String.Equals(scriptRule.GetName(), "PSUseUTF8EncodingForHelpFile", StringComparison.OrdinalIgnoreCase);
                         List<object> result = new List<object>();
-                        result.Add(string.Format(CultureInfo.CurrentCulture, Strings.VerboseRunningMessage, scriptRule.GetName()));
+                        result.Add(string.Format(CultureInfo.CurrentCulture, EngineStrings.VerboseRunningMessage, scriptRule.GetName()));
 
                         // Ensure that any unhandled errors from Rules are converted to non-terminating errors
                         // We want the Engine to continue functioning even if one or more Rules throws an exception
@@ -2079,7 +2079,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                         }
                         catch (Exception scriptRuleException)
                         {
-                            result.Add(new ErrorRecord(scriptRuleException, Strings.RuleErrorMessage, ErrorCategory.InvalidOperation, scriptAst.Extent.File));
+                            result.Add(new ErrorRecord(scriptRuleException, EngineStrings.RuleErrorMessage, ErrorCategory.InvalidOperation, scriptAst.Extent.File));
                         }
 
                         verboseOrErrors.Add(result);
@@ -2119,7 +2119,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                 {
                     if (IsRuleAllowed(tokenRule))
                     {
-                        this.outputWriter.WriteVerbose(string.Format(CultureInfo.CurrentCulture, Strings.VerboseRunningMessage, tokenRule.GetName()));
+                        this.outputWriter.WriteVerbose(string.Format(CultureInfo.CurrentCulture, EngineStrings.VerboseRunningMessage, tokenRule.GetName()));
 
                         // Ensure that any unhandled errors from Rules are converted to non-terminating errors
                         // We want the Engine to continue functioning even if one or more Rules throws an exception
@@ -2138,7 +2138,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                         }
                         catch (Exception tokenRuleException)
                         {
-                            this.outputWriter.WriteError(new ErrorRecord(tokenRuleException, Strings.RuleErrorMessage, ErrorCategory.InvalidOperation, fileName));
+                            this.outputWriter.WriteError(new ErrorRecord(tokenRuleException, EngineStrings.RuleErrorMessage, ErrorCategory.InvalidOperation, fileName));
                         }
                     }
                 }
@@ -2157,7 +2157,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                     {
                         if (IsRuleAllowed(dscResourceRule))
                         {
-                            this.outputWriter.WriteVerbose(string.Format(CultureInfo.CurrentCulture, Strings.VerboseRunningMessage, dscResourceRule.GetName()));
+                            this.outputWriter.WriteVerbose(string.Format(CultureInfo.CurrentCulture, EngineStrings.VerboseRunningMessage, dscResourceRule.GetName()));
 
                             // Ensure that any unhandled errors from Rules are converted to non-terminating errors
                             // We want the Engine to continue functioning even if one or more Rules throws an exception
@@ -2185,7 +2185,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                             }
                             catch (Exception dscResourceRuleException)
                             {
-                                this.outputWriter.WriteError(new ErrorRecord(dscResourceRuleException, Strings.RuleErrorMessage, ErrorCategory.InvalidOperation, filePath));
+                                this.outputWriter.WriteError(new ErrorRecord(dscResourceRuleException, EngineStrings.RuleErrorMessage, ErrorCategory.InvalidOperation, filePath));
                             }
                         }
                     }
@@ -2199,7 +2199,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                     {
                         if (IsRuleAllowed(dscResourceRule))
                         {
-                            this.outputWriter.WriteVerbose(string.Format(CultureInfo.CurrentCulture, Strings.VerboseRunningMessage, dscResourceRule.GetName()));
+                            this.outputWriter.WriteVerbose(string.Format(CultureInfo.CurrentCulture, EngineStrings.VerboseRunningMessage, dscResourceRule.GetName()));
 
                             // Ensure that any unhandled errors from Rules are converted to non-terminating errors
                             // We want the Engine to continue functioning even if one or more Rules throws an exception
@@ -2218,7 +2218,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                             }
                             catch (Exception dscResourceRuleException)
                             {
-                                this.outputWriter.WriteError(new ErrorRecord(dscResourceRuleException, Strings.RuleErrorMessage, ErrorCategory.InvalidOperation, filePath));
+                                this.outputWriter.WriteError(new ErrorRecord(dscResourceRuleException, EngineStrings.RuleErrorMessage, ErrorCategory.InvalidOperation, filePath));
                             }
                         }
                     }
@@ -2238,7 +2238,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                     if (IsRuleAllowed(exRule))
                     {
                         string ruleName = string.Format(CultureInfo.CurrentCulture, "{0}\\{1}", exRule.GetSourceName(), exRule.GetName());
-                        this.outputWriter.WriteVerbose(string.Format(CultureInfo.CurrentCulture, Strings.VerboseRunningMessage, ruleName));
+                        this.outputWriter.WriteVerbose(string.Format(CultureInfo.CurrentCulture, EngineStrings.VerboseRunningMessage, ruleName));
 
                         // Ensure that any unhandled errors from Rules are converted to non-terminating errors
                         // We want the Engine to continue functioning even if one or more Rules throws an exception
@@ -2248,7 +2248,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                         }
                         catch (Exception externalRuleException)
                         {
-                            this.outputWriter.WriteError(new ErrorRecord(externalRuleException, Strings.RuleErrorMessage, ErrorCategory.InvalidOperation, fileName));
+                            this.outputWriter.WriteError(new ErrorRecord(externalRuleException, EngineStrings.RuleErrorMessage, ErrorCategory.InvalidOperation, fileName));
                         }
                     }
                 }
