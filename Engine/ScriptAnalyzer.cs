@@ -833,6 +833,9 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
         {
             List<string> paths = new List<string>();
 
+            var scriptRulesPath = PathResolver.GetFolderInShippedModuleDirectory("ScriptRules");
+            paths.Add(Path.Combine(scriptRulesPath, "CommunityAnalyzerRules", "CommunityAnalyzerRules.psd1"));
+
             if (customizedRulePath != null)
             {
                 paths.AddRange(
