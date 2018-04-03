@@ -26,26 +26,6 @@ function Invoke-AppVeyorInstall {
         Install-Module -Name platyPS -Force -Scope CurrentUser -RequiredVersion '0.9.0'
     }
 
-    # Windows image still has version 6.0.0 of pwsh but 6.0.2 is required due to System.Management.Automation package https://github.com/appveyor/ci/issues/2230
-    if ($PSVersionTable.PSEdition -eq 'Core' -and $PSVersionTable.PSVersion -lt [version]'6.0.2') {
-        $msiPath = "$env:TEMP\PowerShell-6.0.2-win-x64.msi"
-        (New-Object Net.WebClient).DownloadFile('https://github.com/PowerShell/PowerShell/releases/download/v6.0.2/PowerShell-6.0.2-win-x64.msi', $msiPath)
-        Write-Verbose 'Installing pwsh 6.0.2' -Verbose
-        Start-Process 'msiexec.exe' -Wait -ArgumentList '/i $msiPath /quiet'
-        Remove-Item $msiPath
-        $env:Path = "$env:ProgramFiles\PowerShell\6.0.2;$env:Path"
-        # refresh path in powershell https://gist.github.com/bill-long/230830312b70742321e0
-        foreach($level in "Machine","User") {
-            [Environment]::GetEnvironmentVariables($level).GetEnumerator() | ForEach-Object {
-                # For Path variables, append the new values, if they're not already in there
-                if($_.Name -match 'Path$') { 
-                    $_.Value = ($((Get-Content "Env:$($_.Name)") + ";$($_.Value)") -split ';' | Select-Object -unique) -join ';'
-                }
-                $_
-            } | Set-Content -Path { "Env:$($_.Name)" }
-        }
-    }
-
     # the legacy WMF4 image only has the old preview SDKs of dotnet
     $globalDotJson = Get-Content (Join-Path $PSScriptRoot '..\global.json') -Raw | ConvertFrom-Json
     $dotNetCoreSDKVersion = $globalDotJson.sdk.version
