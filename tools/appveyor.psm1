@@ -30,7 +30,7 @@ function Invoke-AppVeyorInstall {
     if ($PSVersionTable.PSEdition -eq 'Core' -and $PSVersionTable.PSVersion -lt [version]'6.0.2') {
         $msiPath = "$env:TEMP\PowerShell-6.0.2-win-x64.msi"
         (New-Object Net.WebClient).DownloadFile('https://github.com/PowerShell/PowerShell/releases/download/v6.0.2/PowerShell-6.0.2-win-x64.msi', $msiPath)
-        Write-Verbose 'Installing pwsh 6.0.2'
+        Write-Verbose 'Installing pwsh 6.0.2' -Verbose
         Start-Process 'msiexec.exe' -Wait -ArgumentList '/i $msiPath /quiet'
         Remove-Item $msiPath
         $env:Path = "$env:ProgramFiles\PowerShell\6.0.2;$env:Path"
