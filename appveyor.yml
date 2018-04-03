@@ -18,6 +18,7 @@ cache:
 install:
   - ps:   if ($env:PowerShellEdition -eq 'WindowsPowerShell') { Import-Module .\tools\appveyor.psm1; Invoke-AppveyorInstall }
   - pwsh: if ($env:PowerShellEdition -eq 'PowerShellCore')    { Import-Module .\tools\appveyor.psm1; Invoke-AppveyorInstall }
+  - SET PATH=C:\Program Files\PowerShell\6.0.2\;%PATH%;
 
 build_script:
   - ps:   |
@@ -44,7 +45,6 @@ test_script:
                     throw "$($testResults.FailedCount) tests failed."
                 }
             }
-  - SET PATH=C:\Program Files\PowerShell\6.0.2\;%PATH%;
   - pwsh: |
             if ($env:PowerShellEdition -eq 'PowerShellCore') {
                 $modulePath = $env:PSModulePath.Split([System.IO.Path]::PathSeparator) | Where-Object { Test-Path $_} | Select-Object -First 1
