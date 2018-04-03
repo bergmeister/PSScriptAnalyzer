@@ -44,6 +44,7 @@ test_script:
                     throw "$($testResults.FailedCount) tests failed."
                 }
             }
+  - SET PATH=C:\Program Files\PowerShell\6.0.2\;%PATH%;
   - pwsh: |
             if ($env:PowerShellEdition -eq 'PowerShellCore') {
                 $modulePath = $env:PSModulePath.Split([System.IO.Path]::PathSeparator) | Where-Object { Test-Path $_} | Select-Object -First 1
