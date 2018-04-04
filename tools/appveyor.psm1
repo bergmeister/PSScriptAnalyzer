@@ -26,6 +26,16 @@ function Invoke-AppVeyorInstall {
         Install-Module -Name platyPS -Force -Scope CurrentUser -RequiredVersion '0.9.0'
     }
 
+    # Windows image still has version 6.0.0 of pwsh but 6.0.2 is required due to System.Management.Automation package https://github.com/appveyor/ci/issues/2230
+    if ($PSVersionTable.PSVersion -lt [version]'6.0.2' -and $IsWindows) {
+        $msiPath = "$env:TEMP\PowerShell-6.0.2-win-x64.msi"
+        (New-Object Net.WebClient).DownloadFile('https://github.com/PowerShell/PowerShell/releases/download/v6.0.2/PowerShell-6.0.2-win-x64.msi', $msiPath)
+        Write-Verbose 'Installing pwsh 6.0.2' -Verbose
+        Start-Process 'msiexec.exe' -Wait -ArgumentList "/i $msiPath /quiet"
+        Remove-Item $msiPath
+        $env:Path = "$env:ProgramFiles\PowerShell\6.0.2;$env:Path"
+    }
+
     # the legacy WMF4 image only has the old preview SDKs of dotnet
     $globalDotJson = Get-Content (Join-Path $PSScriptRoot '..\global.json') -Raw | ConvertFrom-Json
     $dotNetCoreSDKVersion = $globalDotJson.sdk.version
