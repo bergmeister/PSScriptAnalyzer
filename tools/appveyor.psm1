@@ -30,8 +30,8 @@ function Invoke-AppVeyorInstall {
     $globalDotJson = Get-Content (Join-Path $PSScriptRoot '..\global.json') -Raw | ConvertFrom-Json
     $dotNetCoreSDKVersion = $globalDotJson.sdk.version
     $isVstsOnMac = $null -ne $env:VSTS_PROCESS_LOOKUP_ID -and $IsMacOS
-    Write-Verbose -Verbose "isVstsOnMac: $isVstsOnMac"
-    if ($isVstsOnMac -or -not ((dotnet --version).StartsWith($dotNetCoreSDKVersion))) {
+    Write-Host "isVstsOnMac: $isVstsOnMac"
+    if (-not $isVstsOnMac -and ((dotnet --version).StartsWith($dotNetCoreSDKVersion))) {
         Invoke-WebRequest 'https://dot.net/v1/dotnet-install.ps1' -OutFile dotnet-install.ps1
         .\dotnet-install.ps1 -Version $dotNetCoreSDKVersion
         Remove-Item .\dotnet-install.ps1
