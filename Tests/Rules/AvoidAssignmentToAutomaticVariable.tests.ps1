@@ -63,6 +63,11 @@ Describe "AvoidAssignmentToAutomaticVariables" {
             $warnings.Count | Should -Be 0
         }
 
+        It "Does not flag RHS of variable assignment (Bug in 1.17.0, issue 1013)" {
+            [System.Array] $warnings = Invoke-ScriptAnalyzer -ScriptDefinition '[foo]::bar = $true'
+            $warnings.Count | Should -Be 0
+        }
+
         It "Does not flag parameter attributes" {
             [System.Array] $warnings = Invoke-ScriptAnalyzer -ScriptDefinition 'function foo{Param([Parameter(Mandatory=$true)]$param1)}'
             $warnings.Count | Should -Be 0
