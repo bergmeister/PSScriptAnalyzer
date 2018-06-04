@@ -47,6 +47,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
             foreach (AssignmentStatementAst assignmentStatementAst in assignmentStatementAsts)
             {
                 var variableExpressionAst = assignmentStatementAst.Find(testAst => testAst is VariableExpressionAst && testAst.Extent == assignmentStatementAst.Left, searchNestedScriptBlocks: false) as VariableExpressionAst;
+                if (variableExpressionAst == null) { continue; }
                 var variableName = variableExpressionAst.VariablePath.UserPath;
                 if (_readOnlyAutomaticVariables.Contains(variableName, StringComparer.OrdinalIgnoreCase))
                 {
