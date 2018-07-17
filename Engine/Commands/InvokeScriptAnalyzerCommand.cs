@@ -281,8 +281,9 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Commands
                 this.SessionState,
                 recurseCustomRulePath);
 
-            if (IsFileParameterSet())
+            if (IsFileParameterSet() && Path != null)
             {
+                // just used to obtain the directory to use to find settings below
                 ProcessPath();
             }
 
@@ -352,6 +353,11 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Commands
                 return;
             }
 
+            if (IsFileParameterSet())
+            {
+                ProcessPath();
+            }
+            
 #if !PSV3
             // TODO Support dependency resolution for analyzing script definitions
             if (saveDscDependency)
