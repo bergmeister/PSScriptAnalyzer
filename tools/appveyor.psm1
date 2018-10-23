@@ -20,10 +20,10 @@ function Invoke-AppVeyorInstall {
 
     if ($null -eq (Get-Module -ListAvailable PowershellGet)) {
         # WMF 4 image build
-        nuget install platyPS -Version 0.9.0 -source https://www.powershellgallery.com/api/v2 -outputDirectory "$Env:ProgramFiles\WindowsPowerShell\Modules\." -ExcludeVersion
+        nuget install platyPS -Version 0.12.0 -source https://www.powershellgallery.com/api/v2 -outputDirectory "$Env:ProgramFiles\WindowsPowerShell\Modules\." -ExcludeVersion
     }
     else {
-        Install-Module -Name platyPS -Force -Scope CurrentUser -RequiredVersion '0.9.0'
+        Install-Module -Name platyPS -Force -Scope CurrentUser -RequiredVersion '0.12.0'
     }
 
     # the legacy WMF4 image only has the old preview SDKs of dotnet
