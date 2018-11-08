@@ -282,7 +282,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             Debug.Assert(includeRuleList != null);
             Debug.Assert(excludeRuleList != null);
 
-            switch (key.ToLower())
+            switch (key.ToLowerInvariant())
             {
                 case "severity":
                     severityList.AddRange(values);
@@ -509,7 +509,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             settings.Keys.CopyTo(settingsKeys, 0);
             foreach (var settingKey in settingsKeys)
             {
-                var key = settingKey.ToLower();
+            var key = settingKey.ToLowerInvariant();
                 object value = settings[key];
                 switch (key)
                 {
@@ -1843,7 +1843,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             if (File.Exists(filePath))
             {
                 // processing for non help script
-                if (!(Path.GetFileName(filePath).ToLower().StartsWith("about_") && Path.GetFileName(filePath).ToLower().EndsWith(".help.txt")))
+                if (!(Path.GetFileName(filePath).ToLowerInvariant().StartsWith("about_") && Path.GetFileName(filePath).ToLowerInvariant().EndsWith(".help.txt")))
                 {
                     try
                     {

@@ -303,7 +303,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
         public PSObject FindModule(string moduleName)
         {
             ThrowIfNull(moduleName, "moduleName");
-            moduleName = moduleName.ToLower();
+            moduleName = moduleName.ToLowerInvariant();
             if (modulesFound.ContainsKey(moduleName))
             {
                 return modulesFound[moduleName];

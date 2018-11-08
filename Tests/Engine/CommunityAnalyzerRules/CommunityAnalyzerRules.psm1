@@ -71,7 +71,7 @@ function Measure-RequiresRunAsAdministrator
                 if ($ast -is [System.Management.Automation.Language.AssignmentStatementAst])
                 {
                     [System.Management.Automation.Language.AssignmentStatementAst]$asAst = $Ast;
-                    if ($asAst.Right.ToString().ToLower() -eq "[system.security.principal.windowsbuiltinrole]::administrator")
+                    if ($asAst.Right.ToString().ToLowerInvariant() -eq "[system.security.principal.windowsbuiltinrole]::administrator")
                     {
                         $returnValue = $true
                     }

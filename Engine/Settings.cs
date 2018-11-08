@@ -537,7 +537,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                     else if (pureExp is VariableExpressionAst)
                     {
                         var varExprAst = (VariableExpressionAst)pureExp;
-                        switch (varExprAst.VariablePath.UserPath.ToLower())
+                        switch (varExprAst.VariablePath.UserPath.ToLowerInvariant())
                         {
                             case "true":
                                 output[key] = true;

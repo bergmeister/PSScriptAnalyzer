@@ -202,7 +202,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
                             break;
                         }
 
-                        switch (name.ArgumentName.ToLower())
+                        switch (name.ArgumentName.ToLowerInvariant())
                         {
                             case "rulename":
                                 if (!String.IsNullOrWhiteSpace(RuleName))
@@ -354,7 +354,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
                     Regex reg = new Regex(String.Format("^{0}$", ruleSupp.Target.Replace(@"*", ".*")), RegexOptions.IgnoreCase);
                     IEnumerable<Ast> targetAsts = null;
 
-                    switch (ruleSupp.Scope.ToLower())
+                    switch (ruleSupp.Scope.ToLowerInvariant())
                     {
                         case "function":
                             targetAsts = scopeAst.FindAll(item => item is FunctionDefinitionAst && reg.IsMatch((item as FunctionDefinitionAst).Name), true);
