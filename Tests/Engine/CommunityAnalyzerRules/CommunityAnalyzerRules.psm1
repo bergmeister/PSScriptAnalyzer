@@ -1,7 +1,14 @@
 ﻿#Requires -Version 3.0
 
 # Import Localized Data
-Import-LocalizedData -BindingVariable Messages
+if ([System.Threading.Thread]::CurrentThread.CurrentCulture.Name -ne 'en-US')
+{
+    Import-LocalizedData -BindingVariable Messages -UICulture 'en-US'
+}
+else
+{
+    Import-LocalizedData -BindingVariable Messages
+}
 
 <#
 .SYNOPSIS
@@ -191,6 +198,7 @@ function Measure-RequiresModules
                 {
                     foreach ($ast in $asts)
                     {
+                        Write-Verbose -Verbose "messages is null: $($null -eq $Messages.MeasureRequiresModules)"
                         $result = New-Object `
                                 -Typename "Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord" `
                                 -ArgumentList $Messages.MeasureRequiresModules,$ast.Extent,$PSCmdlet.MyInvocation.InvocationName,Information,$null
@@ -205,6 +213,8 @@ function Measure-RequiresModules
                 {
                     foreach ($ast in $asts)
                     {
+                        # bug: in PSCore the message is null
+                        Write-Verbose -Verbose "2messages is null: $($null -eq $Messages.MeasureRequiresModules)"
                         $result = New-Object `
                                 -Typename "Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord" `
                                 -ArgumentList $Messages.MeasureRequiresModules,$ast.Extent,$PSCmdlet.MyInvocation.InvocationName,Information,$null
