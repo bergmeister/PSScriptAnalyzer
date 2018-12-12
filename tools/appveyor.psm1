@@ -59,7 +59,24 @@ function Invoke-AppveyorTest {
     Write-Verbose -Verbose ("Running tests on PowerShell version " + $PSVersionTable.PSVersion)
 
     $modulePath = $env:PSModulePath.Split([System.IO.Path]::PathSeparator) | Where-Object { Test-Path $_} | Select-Object -First 1
-    Copy-Item "${CheckoutPath}\out\PSScriptAnalyzer" "$modulePath\" -Recurse -Force
+	Copy-Item "${CheckoutPath}\out\PSScriptAnalyzer" "$modulePath\" -Recurse -Force
+
+
+	$violationMessage = "Missing 'Get-TargetResource' function. DSC Resource must implement Get, Set and Test-TargetResource functions."
+	$classViolationMessage = "Missing 'Set' function. DSC Class must implement Get, Set and Test functions."
+	$violationName = "PSDSCStandardDSCFunctionsInResource"
+	$directory = Join-Path $PSScriptRoot '../Tests/Rules'
+	$violations = Invoke-ScriptAnalyzer $directory\DSCResourceModule\DSCResources\MSFT_WaitForAll\MSFT_WaitForAll.psm1 | Where-Object {$_.RuleName -eq $violationName}
+	$noViolations = Invoke-ScriptAnalyzer $directory\DSCResourceModule\DSCResources\MSFT_WaitForAny\MSFT_WaitForAny.psm1 | Where-Object {$_.RuleName -eq $violationName}
+
+	if ($PSVersionTable.PSVersion -ge [Version]'5.0.0')
+	{
+		$classViolations = Invoke-ScriptAnalyzer -ErrorAction SilentlyContinue $directory\DSCResourceModule\DSCResources\BadDscResource\BadDscResource.psm1 | Where-Object {$_.RuleName -eq $violationName}
+		$noClassViolations = Invoke-ScriptAnalyzer -ErrorAction SilentlyContinue $directory\DSCResourceModule\DSCResources\MyDscResource\MyDscResource.psm1 | Where-Object {$_.RuleName -eq $violationName}
+	}
+
+
+
     $testResultsFile = ".\TestResults.xml"
     $testScripts = "${CheckoutPath}\Tests\Engine","${CheckoutPath}\Tests\Rules","${CheckoutPath}\Tests\Documentation"
     $testResults = Invoke-Pester -Script $testScripts -OutputFormat NUnitXml -OutputFile $testResultsFile -PassThru
