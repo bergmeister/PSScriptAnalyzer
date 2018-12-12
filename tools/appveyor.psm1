@@ -30,11 +30,17 @@ function Invoke-AppVeyorInstall {
         Install-Module -Name platyPS -Force -Scope CurrentUser -RequiredVersion '0.9.0'
     }
 
-    # the legacy WMF4 image only has the old preview SDKs of dotnet
-    $globalDotJson = Get-Content (Join-Path $PSScriptRoot '..\global.json') -Raw | ConvertFrom-Json
-    $dotNetCoreSDKVersion = $globalDotJson.sdk.version
-    # don't try to run this script on linux - we have to do the negative check because IsLinux will be defined in core, but not windows
-    if (-not ((dotnet --version).StartsWith($dotNetCoreSDKVersion)) -and ! $IsLinux ) {
+	$globalDotJson = Get-Content (Join-Path $PSScriptRoot '..\global.json') -Raw | ConvertFrom-Json
+	$dotNetCoreSDKVersion = $globalDotJson.sdk.version
+	if ($PSVersionTable.PSVersion.Major -eq '4') {
+		# the legacy WMF4 image only has the old .Net Core CLI that does not have the --list-sdks parameter
+		$requiredDotNetSDKsAvailable = (dotnet --version).StartsWith($dotNetCoreSDKVersion)
+	}
+	else {
+		$dotnetSDKs = dotnet --list-sdks
+		$requiredDotNetSDKsAvailable = $dotnetSDKs -match $requiredDotNetCoreSDKVersion
+	}
+    if (-not $requiredDotNetSDKsAvailable) {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 # https://github.com/dotnet/announcements/issues/77
         Invoke-WebRequest 'https://dot.net/v1/dotnet-install.ps1' -OutFile dotnet-install.ps1
         .\dotnet-install.ps1 -Version $dotNetCoreSDKVersion
