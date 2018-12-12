@@ -62,6 +62,12 @@ function Invoke-AppveyorTest {
 	Copy-Item "${CheckoutPath}\out\PSScriptAnalyzer" "$modulePath\" -Recurse -Force
 
 
+    $testResultsFile = ".\TestResults.xml"
+    $testScripts = "${CheckoutPath}\Tests\Engine","${CheckoutPath}\Tests\Rules","${CheckoutPath}\Tests\Documentation"
+    $testResults = Invoke-Pester -Script $testScripts -OutputFormat NUnitXml -OutputFile $testResultsFile -PassThru
+    (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/${env:APPVEYOR_JOB_ID}", (Resolve-Path $testResultsFile))
+
+
 	$violationMessage = "Missing 'Get-TargetResource' function. DSC Resource must implement Get, Set and Test-TargetResource functions."
 	$classViolationMessage = "Missing 'Set' function. DSC Class must implement Get, Set and Test functions."
 	$violationName = "PSDSCStandardDSCFunctionsInResource"
@@ -76,12 +82,7 @@ function Invoke-AppveyorTest {
 	}
 
 
-
-    $testResultsFile = ".\TestResults.xml"
-    $testScripts = "${CheckoutPath}\Tests\Engine","${CheckoutPath}\Tests\Rules","${CheckoutPath}\Tests\Documentation"
-    $testResults = Invoke-Pester -Script $testScripts -OutputFormat NUnitXml -OutputFile $testResultsFile -PassThru
-    (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/${env:APPVEYOR_JOB_ID}", (Resolve-Path $testResultsFile))
-    if ($testResults.FailedCount -gt 0) {
+	if ($testResults.FailedCount -gt 0) {
         throw "$($testResults.FailedCount) tests failed."
     }
 }
