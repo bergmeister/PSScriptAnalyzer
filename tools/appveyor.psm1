@@ -16,7 +16,7 @@ function Invoke-AppVeyorInstall {
         else {
             # Visual Studio 2017 build (has already Pester v3, therefore a different installation mechanism is needed to make it also use the new version 4)
             Write-Verbose -Verbose "Installing Pester via Install-Module"
-            Install-Module -Name Pester -Force -SkipPublisherCheck -Scope CurrentUser
+            Install-Module -Name Pester -Force -SkipPublisherCheck -Scope CurrentUser -RequiredVersion $requiredPesterVersion
         }
     }
 
@@ -68,12 +68,12 @@ function Invoke-AppveyorTest {
     (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/${env:APPVEYOR_JOB_ID}", (Resolve-Path $testResultsFile))
 
 
-	$violationMessage = "Missing 'Get-TargetResource' function. DSC Resource must implement Get, Set and Test-TargetResource functions."
-	$classViolationMessage = "Missing 'Set' function. DSC Class must implement Get, Set and Test functions."
-	$violationName = "PSDSCStandardDSCFunctionsInResource"
-	$directory = Join-Path $PSScriptRoot '../Tests/Rules'
-	$violations = Invoke-ScriptAnalyzer $directory\DSCResourceModule\DSCResources\MSFT_WaitForAll\MSFT_WaitForAll.psm1 | Where-Object {$_.RuleName -eq $violationName}
-	$noViolations = Invoke-ScriptAnalyzer $directory\DSCResourceModule\DSCResources\MSFT_WaitForAny\MSFT_WaitForAny.psm1 | Where-Object {$_.RuleName -eq $violationName}
+	# $violationMessage = "Missing 'Get-TargetResource' function. DSC Resource must implement Get, Set and Test-TargetResource functions."
+	# $classViolationMessage = "Missing 'Set' function. DSC Class must implement Get, Set and Test functions."
+	# $violationName = "PSDSCStandardDSCFunctionsInResource"
+	# $directory = Join-Path $PSScriptRoot '../Tests/Rules'
+	# $violations = Invoke-ScriptAnalyzer $directory\DSCResourceModule\DSCResources\MSFT_WaitForAll\MSFT_WaitForAll.psm1 | Where-Object {$_.RuleName -eq $violationName}
+	# $noViolations = Invoke-ScriptAnalyzer $directory\DSCResourceModule\DSCResources\MSFT_WaitForAny\MSFT_WaitForAny.psm1 | Where-Object {$_.RuleName -eq $violationName}
 
 	if ($PSVersionTable.PSVersion -ge [Version]'5.0.0')
 	{
