@@ -1,6 +1,7 @@
 environment:
   PSVersion: 5
   BuildConfiguration: Release
+  LANG: en-us.UTF-8
   matrix:
   - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
     PowerShellEdition: PowerShellCore
