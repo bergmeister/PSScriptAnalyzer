@@ -4,4 +4,4 @@ environment:
   LANG: en_US.UTF-8
 
 build_script:
-  - pwsh: Install-Module -Name Pester -Force -Scope CurrentUser; Invoke-Pester ./Tests/Documentation/RuleDocumentation.tests.ps1
+  - pwsh: $env:LANG; Install-Module -Name Pester -Force -Scope CurrentUser; Invoke-Pester ./Tests/Documentation/RuleDocumentation.tests.ps1
