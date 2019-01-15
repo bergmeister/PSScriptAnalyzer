@@ -142,7 +142,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             ruleArguments = new Dictionary<string, Dictionary<string, object>>(StringComparer.OrdinalIgnoreCase);
             if (commandInfoCache == null)
             {
-                commandInfoCache = new Dictionary<CommandLookupKey, CommandInfo>();
+                commandInfoCache = new Dictionary<CommandLookupKey, CommandInfo>(new CommandLookupKeyEqualityComparer());
             }
 
             IEnumerable<CommandInfo> aliases = this.invokeCommand.GetCommands("*", CommandTypes.Alias, true);

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Generic;
 using System.Management.Automation;
 
 namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
@@ -34,6 +35,24 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                 hash = hash * 31 + CommandTypes.GetHashCode();
                 return hash;
             }
+        }
+
+        public int GetHashCode(CommandLookupKey obj)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    internal class CommandLookupKeyEqualityComparer : IEqualityComparer<CommandLookupKey>
+    {
+        public bool Equals(CommandLookupKey x, CommandLookupKey y)
+        {
+            return x.Equals(y);
+        }
+
+        public int GetHashCode(CommandLookupKey obj)
+        {
+            return obj.GetHashCode();
         }
     }
 }
