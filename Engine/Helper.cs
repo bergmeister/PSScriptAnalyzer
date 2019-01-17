@@ -143,6 +143,22 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             if (commandInfoCache == null)
             {
                 commandInfoCache = new Dictionary<CommandLookupKey, CommandInfo>();
+                using (var ps = System.Management.Automation.PowerShell.Create())
+                {
+                    var psCommand = ps.AddCommand("Get-Command")
+                        .AddParameter("ALl");
+
+                    var commandInfos = psCommand.Invoke<CommandInfo>();
+
+                    foreach(var commandInfo in commandInfos)
+                    {
+                        var key = new CommandLookupKey(commandInfo.Name, commandInfo.CommandType);
+                        if (!commandInfoCache.ContainsKey(key))
+                        {
+                            commandInfoCache.Add(new CommandLookupKey(commandInfo.Name, commandInfo.CommandType), commandInfo);
+                        }
+                    }
+                }
             }
 
             IEnumerable<CommandInfo> aliases = this.invokeCommand.GetCommands("*", CommandTypes.Alias, true);
@@ -613,7 +629,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             }
 
             var commandInfo = GetCommandInfo(cmdAst.GetCommandName());
-            return (commandInfo != null && commandInfo.CommandType == System.Management.Automation.CommandTypes.Cmdlet);
+            return (commandInfo != null && commandInfo.CommandType == CommandTypes.Cmdlet);
         }
 
         /// <summary>
@@ -651,29 +667,29 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
         }
 
 
-        /// <summary>
-        /// Get a CommandInfo object of the given command name
-        /// </summary>
-        /// <returns>Returns null if command does not exists</returns>
-        private CommandInfo GetCommandInfoInternal(string cmdName, CommandTypes? commandType)
-        {
-            using (var ps = System.Management.Automation.PowerShell.Create())
-            {
-                var psCommand = ps.AddCommand("Get-Command")
-                    .AddParameter("Name", cmdName)
-                    .AddParameter("ErrorAction", "SilentlyContinue");
+        ///// <summary>
+        ///// Get a CommandInfo object of the given command name
+        ///// </summary>
+        ///// <returns>Returns null if command does not exists</returns>
+        //private CommandInfo GetCommandInfoInternal(string cmdName, CommandTypes? commandType)
+        //{
+        //    using (var ps = System.Management.Automation.PowerShell.Create())
+        //    {
+        //        var psCommand = ps.AddCommand("Get-Command")
+        //            .AddParameter("Name", cmdName)
+        //            .AddParameter("ErrorAction", "SilentlyContinue");
 
-                if(commandType!=null)
-                {
-                    psCommand.AddParameter("CommandType", commandType);
-                }
+        //        if(commandType!=null)
+        //        {
+        //            psCommand.AddParameter("CommandType", commandType);
+        //        }
 
-                var commandInfo = psCommand.Invoke<CommandInfo>()
-                         .FirstOrDefault();
+        //        var commandInfo = psCommand.Invoke<CommandInfo>()
+        //                 .FirstOrDefault();
 
-                return commandInfo;
-            }
-        }
+        //        return commandInfo;
+        //    }
+        //}
 
         /// <summary>
 
@@ -708,9 +724,10 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                     return commandInfoCache[key];
                 }
 
-                var commandInfo = GetCommandInfoInternal(cmdletName, commandType);
-                commandInfoCache.Add(key, commandInfo);
-                return commandInfo;
+                return null;
+                //var commandInfo = GetCommandInfoInternal(cmdletName, commandType);
+                //commandInfoCache.Add(key, commandInfo);
+                //return commandInfo;
             }
         }
 
@@ -735,9 +752,10 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                     return commandInfoCache[key];
                 }
 
-                var commandInfo = GetCommandInfoInternal(name, commandType);
-                commandInfoCache.Add(key, commandInfo);
-                return commandInfo;
+                return null;
+                //var commandInfo = GetCommandInfoInternal(name, commandType);
+                //commandInfoCache.Add(key, commandInfo);
+                //return commandInfo;
             }
         }
 
