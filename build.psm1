@@ -127,10 +127,15 @@ function Start-ScriptAnalyzerBuild
         )
 
     END {
+        # Destination for the composed module when built
+        $destinationDir = "$projectRoot\out\PSScriptAnalyzer"
+
         if ( $All )
         {
             # Build the CrossCompatibility module
             & $PSScriptRoot\CrossCompatibility\build.ps1 -Configuration $Configuration
+            Copy-CrossCompatibilityModule -Destination "$destinationDir/CrossCompatibility"
+            $crossCompatibilityAlreadyBuilt = $true
 
             # Build all the versions of the analyzer
             foreach($psVersion in 3..6) {
@@ -153,8 +158,12 @@ function Start-ScriptAnalyzerBuild
             $framework = "net452"
         }
 
-        # Build CrossCompatibility module
-        & $PSScriptRoot\CrossCompatibility\build.ps1 -Framework $framework -Configuration $Configuration
+        # Build CrossCompatibility module, if the caller has not already built it
+        if (-not $crossCompatibilityAlreadyBuilt)
+        {
+            & $PSScriptRoot\CrossCompatibility\build.ps1 -Framework $framework -Configuration $Configuration
+            Copy-CrossCompatibilityModule -Destination "$destinationDir/CrossCompatibility"
+        }
 
         # build the appropriate assembly
         if ($PSVersion -match "[34]" -and $Framework -eq "core")
@@ -173,6 +182,7 @@ function Start-ScriptAnalyzerBuild
             "$projectRoot\Engine\ScriptAnalyzer.format.ps1xml", "$projectRoot\Engine\ScriptAnalyzer.types.ps1xml"
             )
 
+<<<<<<< HEAD
         $destinationDir = "$projectRoot\out\PSScriptAnalyzer"
         switch ($PSVersion)
         {
@@ -196,6 +206,22 @@ function Start-ScriptAnalyzerBuild
             {
                 throw "Unsupported PSVersion: '$PSVersion'"
             }
+=======
+        $settingsFiles = Get-Childitem "$projectRoot\Engine\Settings" | ForEach-Object -MemberName FullName
+
+        # this is normalizing case as well as selecting the proper location
+        if ( $Framework -eq "core" ) {
+            $destinationDirBinaries = "$destinationDir\coreclr"
+        }
+        elseif ($PSVersion -eq '3') {
+            $destinationDirBinaries = "$destinationDir\PSv3"
+        }
+        elseif ($PSVersion -eq '4') {
+            $destinationDirBinaries = "$destinationDir\PSv4"
+        }
+        else {
+            $destinationDirBinaries = $destinationDir
+>>>>>>> Begin fixing case sensitivity
         }
 
         $config = "PSV${PSVersion}${Configuration}"
@@ -289,4 +315,38 @@ function Get-TestFailures
     $logPath = (Resolve-Path $logfile).Path
     $results = [xml](Get-Content $logPath)
     $results.SelectNodes(".//test-case[@result='Failure']")
+}
+
+# Copies the built CrossCompatibility module to the output destination for PSSA
+function Copy-CrossCompatibilityModule
+{
+    param(
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [string]
+        $Destination
+    )
+
+    $destInfo = Get-Item -Path $Destination -ErrorAction SilentlyContinue
+
+    # Can't copy to a file
+    if ($destInfo -and -not $destInfo.PSIsContainer)
+    {
+        throw "Destination exists but is not a directory"
+    }
+
+    # Create the destination if it does not exist
+    if (-not $destInfo)
+    {
+        New-Item -Path $Destination -ItemType Directory
+    }
+
+    $outputAssets = @(
+        "$PSScriptRoot/CrossCompatibility/CrossCompatibility.psd1"
+        "$PSScriptRoot/CrossCompatibility/CrossCompatibility.psm1"
+        "$PSScriptRoot/CrossCompatibility/CrossCompatibilityBinary"
+        "$PSScriptRoot/CrossCompatibility/profiles"
+    )
+
+    $outputAssets | Copy-Item -Destination $Destination -Recurse -Force
 }
