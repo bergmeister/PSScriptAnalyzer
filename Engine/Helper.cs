@@ -719,7 +719,15 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             var key = new CommandLookupKey(name, commandType);
             lock (getCommandLock)
             {
-                if (commandInfoCache.ContainsKey(key))
+                if (commandType == null)
+                {
+                    var searchedKey = commandInfoCache.Keys.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                    if (!searchedKey.Equals(default(CommandLookupKey)) && searchedKey.Name != null)
+                    {
+                        return commandInfoCache[searchedKey];
+                    }
+                }
+                else if (commandInfoCache.ContainsKey(key))
                 {
                     return commandInfoCache[key];
                 }
@@ -747,7 +755,15 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             var key = new CommandLookupKey(name, commandType);
             lock (getCommandLock)
             {
-                if (commandInfoCache.ContainsKey(key))
+                if (commandType == null)
+                {
+                    var searchedKey = commandInfoCache.Keys.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                    if (!searchedKey.Equals(default(CommandLookupKey)) && searchedKey.Name != null)
+                    {
+                        return commandInfoCache[searchedKey];
+                    }
+                }
+                else if (commandInfoCache.ContainsKey(key))
                 {
                     return commandInfoCache[key];
                 }

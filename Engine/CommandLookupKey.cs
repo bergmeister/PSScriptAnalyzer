@@ -8,7 +8,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
 {
     internal struct CommandLookupKey : IEquatable<CommandLookupKey>
     {
-        private readonly string Name;
+        public readonly string Name;
 
         private readonly CommandTypes CommandTypes;
 
@@ -20,8 +20,8 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
 
         public bool Equals(CommandLookupKey other)
         {
-            return CommandTypes == other.CommandTypes
-                && Name.Equals(other.Name, StringComparison.OrdinalIgnoreCase);
+            return CommandTypes == other.CommandTypes &&
+                Name != null && Name.Equals(other.Name, StringComparison.OrdinalIgnoreCase);
         }
 
         public override int GetHashCode()
