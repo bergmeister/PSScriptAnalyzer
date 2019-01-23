@@ -110,6 +110,13 @@ function Start-DocumentationBuild
     $null = New-ExternalHelp -Path $markdownDocsPath -OutputPath $outputDocsPath -Force
 }
 
+function Copy-CompatibilityProfiles
+{
+    $profileDir = [System.IO.Path]::Combine($PSScriptRoot, 'CrossCompatibility', 'profiles')
+    $destination = [System.IO.Path]::Combine($PSScriptRoot, 'out', 'PSScriptAnalyzer', 'compatibility_profiles')
+    Copy-Item -Recurse -Force -Path $profileDir -Destination $destination
+}
+
 # build script analyzer (and optionally build everything with -All)
 function Start-ScriptAnalyzerBuild
 {
@@ -132,16 +139,18 @@ function Start-ScriptAnalyzerBuild
 
         if ( $All )
         {
-            # Build the CrossCompatibility module
-            & $PSScriptRoot\CrossCompatibility\build.ps1 -Configuration $Configuration
-            Copy-CrossCompatibilityModule -Destination "$destinationDir/CrossCompatibility"
-            $crossCompatibilityAlreadyBuilt = $true
-
             # Build all the versions of the analyzer
             foreach($psVersion in 3..6) {
                 Start-ScriptAnalyzerBuild -Configuration $Configuration -PSVersion $psVersion
             }
             return
+        }
+
+        if (-not $profilesCopied)
+        {
+            Copy-CompatibilityProfiles
+            # Set the variable in the caller's scope, so this will only happen once
+            Set-Variable -Name profilesCopied -Value $true -Scope 1
         }
 
         $documentationFileExists = Test-Path (Join-Path $PSScriptRoot 'out\PSScriptAnalyzer\en-us\Microsoft.Windows.PowerShell.ScriptAnalyzer.dll-Help.xml')
@@ -156,13 +165,6 @@ function Start-ScriptAnalyzerBuild
         }
         else {
             $framework = "net452"
-        }
-
-        # Build CrossCompatibility module, if the caller has not already built it
-        if (-not $crossCompatibilityAlreadyBuilt)
-        {
-            & $PSScriptRoot\CrossCompatibility\build.ps1 -Framework $framework -Configuration $Configuration
-            Copy-CrossCompatibilityModule -Destination "$destinationDir/CrossCompatibility"
         }
 
         # build the appropriate assembly
@@ -182,7 +184,6 @@ function Start-ScriptAnalyzerBuild
             "$projectRoot\Engine\ScriptAnalyzer.format.ps1xml", "$projectRoot\Engine\ScriptAnalyzer.types.ps1xml"
             )
 
-<<<<<<< HEAD
         $destinationDir = "$projectRoot\out\PSScriptAnalyzer"
         switch ($PSVersion)
         {
@@ -206,22 +207,6 @@ function Start-ScriptAnalyzerBuild
             {
                 throw "Unsupported PSVersion: '$PSVersion'"
             }
-=======
-        $settingsFiles = Get-Childitem "$projectRoot\Engine\Settings" | ForEach-Object -MemberName FullName
-
-        # this is normalizing case as well as selecting the proper location
-        if ( $Framework -eq "core" ) {
-            $destinationDirBinaries = "$destinationDir\coreclr"
-        }
-        elseif ($PSVersion -eq '3') {
-            $destinationDirBinaries = "$destinationDir\PSv3"
-        }
-        elseif ($PSVersion -eq '4') {
-            $destinationDirBinaries = "$destinationDir\PSv4"
-        }
-        else {
-            $destinationDirBinaries = $destinationDir
->>>>>>> Begin fixing case sensitivity
         }
 
         $config = "PSV${PSVersion}${Configuration}"
@@ -245,8 +230,8 @@ function Start-ScriptAnalyzerBuild
         Publish-File $itemsToCopyCommon $destinationDir
 
         $itemsToCopyBinaries = @(
-            "$projectRoot\CrossCompatibility\CrossCompatibility\bin\${config}\${frameworkName}\CrossCompatibility.dll"
             "$projectRoot\Engine\bin\${config}\${frameworkName}\Microsoft.Windows.PowerShell.ScriptAnalyzer.dll",
+            "$projectRoot\Rules\bin\${config}\${frameworkName}\CrossCompatibility.dll"
             "$projectRoot\Rules\bin\${config}\${frameworkName}\Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules.dll"
             )
         Publish-File $itemsToCopyBinaries $destinationDirBinaries
@@ -315,49 +300,4 @@ function Get-TestFailures
     $logPath = (Resolve-Path $logfile).Path
     $results = [xml](Get-Content $logPath)
     $results.SelectNodes(".//test-case[@result='Failure']")
-}
-
-# Copies the built CrossCompatibility module to the output destination for PSSA
-function Copy-CrossCompatibilityModule
-{
-    param(
-        [Parameter()]
-        [ValidateNotNullOrEmpty()]
-        [string]
-        $Destination
-    )
-
-    $destInfo = Get-Item -Path $Destination -ErrorAction SilentlyContinue
-
-    # Can't copy to a file
-    if ($destInfo -and -not $destInfo.PSIsContainer)
-    {
-        throw "Destination exists but is not a directory"
-    }
-
-    # Create the destination if it does not exist
-    if (-not $destInfo)
-    {
-        New-Item -Path $Destination -ItemType Directory
-    }
-
-    $outputAssets = @(
-        "$PSScriptRoot/CrossCompatibility/CrossCompatibility.psd1"
-        "$PSScriptRoot/CrossCompatibility/CrossCompatibility.psm1"
-        "$PSScriptRoot/CrossCompatibility/CrossCompatibilityBinary"
-        "$PSScriptRoot/CrossCompatibility/profiles"
-    )
-
-    foreach ($assetPath in $outputAssets)
-    {
-        try
-        {
-            Copy-Item -Path $assetPath -Destination $Destination -Recurse -Force -ErrorAction Stop
-        }
-        catch
-        {
-            # Display the problem as a warning, but continue
-            Write-Warning $_
-        }
-    }
 }
