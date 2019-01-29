@@ -230,9 +230,9 @@ function Start-ScriptAnalyzerBuild
         Publish-File $itemsToCopyCommon $destinationDir
 
         $itemsToCopyBinaries = @(
-            "$projectRoot\Engine\bin\${config}\${frameworkName}\Microsoft.Windows.PowerShell.ScriptAnalyzer.dll",
-            "$projectRoot\Rules\bin\${config}\${frameworkName}\CrossCompatibility.dll"
-            "$projectRoot\Rules\bin\${config}\${frameworkName}\Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules.dll"
+            "$projectRoot\Engine\bin\${config}\${framework}\Microsoft.Windows.PowerShell.ScriptAnalyzer.dll",
+            "$projectRoot\Rules\bin\${config}\${framework}\CrossCompatibility.dll"
+            "$projectRoot\Rules\bin\${config}\${framework}\Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules.dll"
             )
         Publish-File $itemsToCopyBinaries $destinationDirBinaries
 
