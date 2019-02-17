@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Management.Automation;
 using System.Management.Automation.Language;
+using System.Threading.Tasks;
 
 namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
 {
@@ -29,6 +30,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
         private Dictionary<string, Dictionary<string, object>> ruleArguments;
         private PSVersionTable psVersionTable;
         private Dictionary<CommandLookupKey, CommandInfo> commandInfoCache;
+        private bool commandInfoCacheInitialized;
 
         #endregion
 
@@ -142,23 +144,27 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             ruleArguments = new Dictionary<string, Dictionary<string, object>>(StringComparer.OrdinalIgnoreCase);
             if (commandInfoCache == null)
             {
-                commandInfoCache = new Dictionary<CommandLookupKey, CommandInfo>();
-                using (var ps = System.Management.Automation.PowerShell.Create())
+                Task.Run(() =>
                 {
-                    var psCommand = ps.AddCommand("Get-Command")
-                        .AddParameter("ALl");
-
-                    var commandInfos = psCommand.Invoke<CommandInfo>();
-
-                    foreach(var commandInfo in commandInfos)
+                    using (var ps = System.Management.Automation.PowerShell.Create())
                     {
-                        var key = new CommandLookupKey(commandInfo.Name, commandInfo.CommandType);
-                        if (!commandInfoCache.ContainsKey(key))
+                        var psCommand = ps.AddCommand("Get-Command")
+                            .AddParameter("ALl");
+
+                        var commandInfos = psCommand.Invoke<CommandInfo>();
+
+                        commandInfoCache = new Dictionary<CommandLookupKey, CommandInfo>();
+                        foreach (var commandInfo in commandInfos)
                         {
-                            commandInfoCache.Add(new CommandLookupKey(commandInfo.Name, commandInfo.CommandType), commandInfo);
+                            var key = new CommandLookupKey(commandInfo.Name, commandInfo.CommandType);
+                            if (!commandInfoCache.ContainsKey(key))
+                            {
+                                commandInfoCache.Add(new CommandLookupKey(commandInfo.Name, commandInfo.CommandType), commandInfo);
+                            }
                         }
+                        commandInfoCacheInitialized = true;
                     }
-                }
+                });
             }
 
             IEnumerable<CommandInfo> aliases = this.invokeCommand.GetCommands("*", CommandTypes.Alias, true);
@@ -667,29 +673,29 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
         }
 
 
-        ///// <summary>
-        ///// Get a CommandInfo object of the given command name
-        ///// </summary>
-        ///// <returns>Returns null if command does not exists</returns>
-        //private CommandInfo GetCommandInfoInternal(string cmdName, CommandTypes? commandType)
-        //{
-        //    using (var ps = System.Management.Automation.PowerShell.Create())
-        //    {
-        //        var psCommand = ps.AddCommand("Get-Command")
-        //            .AddParameter("Name", cmdName)
-        //            .AddParameter("ErrorAction", "SilentlyContinue");
+        /// <summary>
+        /// Get a CommandInfo object of the given command name
+        /// </summary>
+        /// <returns>Returns null if command does not exists</returns>
+        private CommandInfo GetCommandInfoInternal(string cmdName, CommandTypes? commandType)
+        {
+            using (var ps = System.Management.Automation.PowerShell.Create())
+            {
+                var psCommand = ps.AddCommand("Get-Command")
+                    .AddParameter("Name", cmdName)
+                    .AddParameter("ErrorAction", "SilentlyContinue");
 
-        //        if(commandType!=null)
-        //        {
-        //            psCommand.AddParameter("CommandType", commandType);
-        //        }
+                if (commandType != null)
+                {
+                    psCommand.AddParameter("CommandType", commandType);
+                }
 
-        //        var commandInfo = psCommand.Invoke<CommandInfo>()
-        //                 .FirstOrDefault();
+                var commandInfo = psCommand.Invoke<CommandInfo>()
+                         .FirstOrDefault();
 
-        //        return commandInfo;
-        //    }
-        //}
+                return commandInfo;
+            }
+        }
 
         /// <summary>
 
@@ -719,23 +725,30 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             var key = new CommandLookupKey(name, commandType);
             lock (getCommandLock)
             {
-                if (commandType == null)
+                if (commandInfoCacheInitialized)
                 {
-                    var searchedKey = commandInfoCache.Keys.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-                    if (searchedKey.Name != null)
+                    if (commandType == null)
                     {
-                        return commandInfoCache[searchedKey];
+                        var searchedKey = commandInfoCache.Keys.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                        if (searchedKey.Name != null)
+                        {
+                            return commandInfoCache[searchedKey];
+                        }
                     }
+                    else if (commandInfoCache.ContainsKey(key))
+                    {
+                        return commandInfoCache[key];
+                    }
+                    return null;
                 }
-                else if (commandInfoCache.ContainsKey(key))
+
+                if (commandInfoCache.ContainsKey(key))
                 {
                     return commandInfoCache[key];
                 }
-
-                return null;
-                //var commandInfo = GetCommandInfoInternal(cmdletName, commandType);
-                //commandInfoCache.Add(key, commandInfo);
-                //return commandInfo;
+                var commandInfo = GetCommandInfoInternal(cmdletName, commandType);
+                commandInfoCache.Add(key, commandInfo);
+                return commandInfo;
             }
         }
 
@@ -755,23 +768,30 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             var key = new CommandLookupKey(name, commandType);
             lock (getCommandLock)
             {
-                if (commandType == null)
+                if (commandInfoCacheInitialized)
                 {
-                    var searchedKey = commandInfoCache.Keys.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-                    if (searchedKey.Name != null)
+                    if (commandType == null)
                     {
-                        return commandInfoCache[searchedKey];
+                        var searchedKey = commandInfoCache.Keys.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                        if (searchedKey.Name != null)
+                        {
+                            return commandInfoCache[searchedKey];
+                        }
                     }
+                    else if (commandInfoCache.ContainsKey(key))
+                    {
+                        return commandInfoCache[key];
+                    }
+                    return null;
                 }
-                else if (commandInfoCache.ContainsKey(key))
+
+                if (commandInfoCache.ContainsKey(key))
                 {
                     return commandInfoCache[key];
                 }
-
-                return null;
-                //var commandInfo = GetCommandInfoInternal(name, commandType);
-                //commandInfoCache.Add(key, commandInfo);
-                //return commandInfo;
+                var commandInfo = GetCommandInfoInternal(name, commandType);
+                commandInfoCache.Add(key, commandInfo);
+                return commandInfo;
             }
         }
 
