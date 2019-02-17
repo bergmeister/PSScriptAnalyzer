@@ -723,25 +723,26 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             }
 
             var key = new CommandLookupKey(name, commandType);
+
+            if (commandInfoCacheInitialized)
+            {
+                if (commandType == null)
+                {
+                    var searchedKey = commandInfoCache.Keys.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                    if (searchedKey.Name != null)
+                    {
+                        return commandInfoCache[searchedKey];
+                    }
+                }
+                else if (commandInfoCache.ContainsKey(key))
+                {
+                    return commandInfoCache[key];
+                }
+                return null;
+            }
+
             lock (getCommandLock)
             {
-                if (commandInfoCacheInitialized)
-                {
-                    if (commandType == null)
-                    {
-                        var searchedKey = commandInfoCache.Keys.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-                        if (searchedKey.Name != null)
-                        {
-                            return commandInfoCache[searchedKey];
-                        }
-                    }
-                    else if (commandInfoCache.ContainsKey(key))
-                    {
-                        return commandInfoCache[key];
-                    }
-                    return null;
-                }
-
                 if (commandInfoCache.ContainsKey(key))
                 {
                     return commandInfoCache[key];
@@ -766,25 +767,25 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             }
 
             var key = new CommandLookupKey(name, commandType);
+
+            if (commandInfoCacheInitialized)
+            {
+                if (commandType == null)
+                {
+                    var searchedKey = commandInfoCache.Keys.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                    if (searchedKey.Name != null)
+                    {
+                        return commandInfoCache[searchedKey];
+                    }
+                }
+                else if (commandInfoCache.ContainsKey(key))
+                {
+                    return commandInfoCache[key];
+                }
+                return null;
+            }
             lock (getCommandLock)
             {
-                if (commandInfoCacheInitialized)
-                {
-                    if (commandType == null)
-                    {
-                        var searchedKey = commandInfoCache.Keys.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-                        if (searchedKey.Name != null)
-                        {
-                            return commandInfoCache[searchedKey];
-                        }
-                    }
-                    else if (commandInfoCache.ContainsKey(key))
-                    {
-                        return commandInfoCache[key];
-                    }
-                    return null;
-                }
-
                 if (commandInfoCache.ContainsKey(key))
                 {
                     return commandInfoCache[key];
