@@ -144,16 +144,16 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             ruleArguments = new Dictionary<string, Dictionary<string, object>>(StringComparer.OrdinalIgnoreCase);
             if (commandInfoCache == null)
             {
+                commandInfoCache = new Dictionary<CommandLookupKey, CommandInfo>();
                 Task.Run(() =>
                 {
                     using (var ps = System.Management.Automation.PowerShell.Create())
                     {
                         var psCommand = ps.AddCommand("Get-Command")
-                            .AddParameter("ALl");
+                            .AddParameter("All");
 
                         var commandInfos = psCommand.Invoke<CommandInfo>();
 
-                        commandInfoCache = new Dictionary<CommandLookupKey, CommandInfo>();
                         foreach (var commandInfo in commandInfos)
                         {
                             var key = new CommandLookupKey(commandInfo.Name, commandInfo.CommandType);
