@@ -30,7 +30,8 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
         private Dictionary<string, Dictionary<string, object>> ruleArguments;
         private PSVersionTable psVersionTable;
         private Dictionary<CommandLookupKey, CommandInfo> commandInfoCache;
-        private bool commandInfoCacheInitialized;
+        private Dictionary<CommandLookupKey, CommandInfo> lightWeightCommandInfoCache;
+        private bool lightWeightCommandInfoCacheInitialized;
 
         #endregion
 
@@ -145,6 +146,10 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             if (commandInfoCache == null)
             {
                 commandInfoCache = new Dictionary<CommandLookupKey, CommandInfo>();
+            }
+            if (lightWeightCommandInfoCache == null)
+            {
+                lightWeightCommandInfoCache = new Dictionary<CommandLookupKey, CommandInfo>();
                 Task.Run(() =>
                 {
                     using (var ps = System.Management.Automation.PowerShell.Create())
@@ -155,12 +160,12 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                         foreach (var commandInfo in commandInfos)
                         {
                             var key = new CommandLookupKey(commandInfo.Name, commandInfo.CommandType);
-                            if (!commandInfoCache.ContainsKey(key))
+                            if (!lightWeightCommandInfoCache.ContainsKey(key))
                             {
-                                commandInfoCache.Add(new CommandLookupKey(commandInfo.Name, commandInfo.CommandType), commandInfo);
+                                lightWeightCommandInfoCache.Add(new CommandLookupKey(commandInfo.Name, commandInfo.CommandType), commandInfo);
                             }
                         }
-                        commandInfoCacheInitialized = true;
+                        lightWeightCommandInfoCacheInitialized = true;
                     }
                 });
             }
@@ -722,33 +727,24 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
 
             var key = new CommandLookupKey(name, commandType);
 
-            if (commandInfoCacheInitialized)
+            if (lightWeightCommandInfoCacheInitialized)
             {
                 if (commandType == null)
                 {
-                    var searchedKey = commandInfoCache.Keys.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                    var searchedKey = lightWeightCommandInfoCache.Keys.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
                     if (searchedKey.Name != null)
                     {
-                        return commandInfoCache[searchedKey];
+                        return lightWeightCommandInfoCache[searchedKey];
                     }
                 }
-                else if (commandInfoCache.ContainsKey(key))
+                else if (lightWeightCommandInfoCache.ContainsKey(key))
                 {
-                    return commandInfoCache[key];
+                    return lightWeightCommandInfoCache[key];
                 }
                 return null;
             }
 
-            lock (getCommandLock)
-            {
-                if (commandInfoCache.ContainsKey(key))
-                {
-                    return commandInfoCache[key];
-                }
-                var commandInfo = GetCommandInfoInternal(cmdletName, commandType);
-                commandInfoCache.Add(key, commandInfo);
-                return commandInfo;
-            }
+            return GetFullCommandInfo(name, commandType);
         }
 
         /// <summary>
@@ -766,28 +762,35 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
 
             var key = new CommandLookupKey(name, commandType);
 
-            if (commandInfoCacheInitialized)
+            if (lightWeightCommandInfoCacheInitialized)
             {
                 if (commandType == null)
                 {
-                    var searchedKey = commandInfoCache.Keys.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                    var searchedKey = lightWeightCommandInfoCache.Keys.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
                     if (searchedKey.Name != null)
                     {
-                        return commandInfoCache[searchedKey];
+                        return lightWeightCommandInfoCache[searchedKey];
                     }
                 }
-                else if (commandInfoCache.ContainsKey(key))
+                else if (lightWeightCommandInfoCache.ContainsKey(key))
                 {
-                    return commandInfoCache[key];
+                    return lightWeightCommandInfoCache[key];
                 }
                 return null;
             }
+
+            return GetFullCommandInfo(name, commandType);
+        }
+
+        public CommandInfo GetFullCommandInfo(string name, CommandTypes? commandType = null)
+        {
+            var key = new CommandLookupKey(name, commandType);
+            if (commandInfoCache.ContainsKey(key))
+            {
+                return commandInfoCache[key];
+            }
             lock (getCommandLock)
             {
-                if (commandInfoCache.ContainsKey(key))
-                {
-                    return commandInfoCache[key];
-                }
                 var commandInfo = GetCommandInfoInternal(name, commandType);
                 commandInfoCache.Add(key, commandInfo);
                 return commandInfo;
