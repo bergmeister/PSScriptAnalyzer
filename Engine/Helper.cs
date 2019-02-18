@@ -785,12 +785,12 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
         public CommandInfo GetFullCommandInfo(string name, CommandTypes? commandType = null)
         {
             var key = new CommandLookupKey(name, commandType);
-            if (commandInfoCache.ContainsKey(key))
-            {
-                return commandInfoCache[key];
-            }
             lock (getCommandLock)
             {
+                if (commandInfoCache.ContainsKey(key))
+                {
+                    return commandInfoCache[key];
+                }
                 var commandInfo = GetCommandInfoInternal(name, commandType);
                 commandInfoCache.Add(key, commandInfo);
                 return commandInfo;
