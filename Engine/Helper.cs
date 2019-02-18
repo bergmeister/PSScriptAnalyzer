@@ -149,9 +149,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                 {
                     using (var ps = System.Management.Automation.PowerShell.Create())
                     {
-                        var psCommand = ps.AddCommand("Get-Command")
-                            .AddParameter("All");
-
+                        var psCommand = ps.AddCommand("Get-Command");
                         var commandInfos = psCommand.Invoke<CommandInfo>();
 
                         foreach (var commandInfo in commandInfos)

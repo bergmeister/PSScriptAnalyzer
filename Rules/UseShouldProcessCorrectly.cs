@@ -328,11 +328,6 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
                 return false;
             }
 
-            if (cmdletInfo.ImplementingType == null)
-            {
-                return false;
-            }
-
             var attributes = cmdletInfo.ImplementingType.GetTypeInfo().GetCustomAttributes(
                 typeof(System.Management.Automation.CmdletCommonMetadataAttribute),
                 true);
