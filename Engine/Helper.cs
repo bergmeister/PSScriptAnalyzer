@@ -29,6 +29,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
         private Dictionary<string, Dictionary<string, object>> ruleArguments;
         private PSVersionTable psVersionTable;
         private Dictionary<CommandLookupKey, CommandInfo> commandInfoCache;
+        private readonly Lazy<System.Management.Automation.PowerShell> powerShell = new Lazy<System.Management.Automation.PowerShell>(() => System.Management.Automation.PowerShell.Create());
 
         #endregion
 
@@ -657,22 +658,17 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
         /// <returns>Returns null if command does not exists</returns>
         private CommandInfo GetCommandInfoInternal(string cmdName, CommandTypes? commandType)
         {
-            using (var ps = System.Management.Automation.PowerShell.Create())
+            var psCommand = powerShell.Value.AddCommand("Get-Command")
+                .AddParameter("Name", cmdName)
+                .AddParameter("ErrorAction", "SilentlyContinue");
+
+            if(commandType!=null)
             {
-                var psCommand = ps.AddCommand("Get-Command")
-                    .AddParameter("Name", cmdName)
-                    .AddParameter("ErrorAction", "SilentlyContinue");
-
-                if(commandType!=null)
-                {
-                    psCommand.AddParameter("CommandType", commandType);
-                }
-
-                var commandInfo = psCommand.Invoke<CommandInfo>()
-                         .FirstOrDefault();
-
-                return commandInfo;
+                psCommand.AddParameter("CommandType", commandType);
             }
+
+            var commandInfo = psCommand.Invoke<CommandInfo>().FirstOrDefault();
+            return commandInfo;
         }
 
         /// <summary>
