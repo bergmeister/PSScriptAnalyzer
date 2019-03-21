@@ -53,8 +53,9 @@ function Invoke-AppveyorTest {
 
     # Copy the generated modules into the out directory
     $modulePath = $env:PSModulePath.Split([System.IO.Path]::PathSeparator) | Where-Object { Test-Path $_} | Select-Object -First 1
-    Copy-Item "${CheckoutPath}\out\PSScriptAnalyzer" "$modulePath\" -Recurse -Force
-    Copy-Item "${CheckoutPath}\PSCompatibilityAnalyzer\out\PSCompatibilityAnalyzer" "$modulePath\" -Recurse -Force
+    Copy-Item "${CheckoutPath}\out\PSScriptAnalyzer" "$modulePath\" -Recurse -Force -Verbose
+    Write-Verbose "foo" -Verbose
+    Copy-Item "${CheckoutPath}\PSCompatibilityAnalyzer\out\PSCompatibilityAnalyzer" "$modulePath\" -Recurse -Force -Verbose
 
     # Set up testing assets
     $testResultsPath = Join-Path ${CheckoutPath} TestResults.xml
