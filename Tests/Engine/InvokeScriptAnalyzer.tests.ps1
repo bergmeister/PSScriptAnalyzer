@@ -647,12 +647,21 @@ Describe "Test -EnableExit Switch" {
                 $moduleManifest = @'
                 @{
                     ModuleVersion          = "1.0.0"
-                    RootModule             = "repro.psm1"
+                    RootModule             = "testmodule.psm1"
                     AliasesToExport        = @("anything")
-                }#
+                }
 '@
-                $moduleManifestPath = Join-Path $TestDrive 'moduleManifest.psd1'
-                Set-Content -Value $moduleManifest -Path $moduleManifestPath
+                $module = @'
+                @{
+                    ModuleVersion          = "1.0.0"
+                    RootModule             = "broken.psm1"
+                    AliasesToExport        = @("anything")
+                }
+'@
+                $moduleManifestPath = Join-Path $TestDrive 'testmodule.psd1'
+                $modulePath = Join-Path $TestDrive 'testmodule.psd1'
+                Set-Content -Value $moduleManifestPath -Path $moduleManifestPath
+                Set-Content -Value $module -Path $modulePath
                 1..100 | ForEach-Object { Invoke-ScriptAnalyzer -Path $moduleManifestPath }
             }
         }
