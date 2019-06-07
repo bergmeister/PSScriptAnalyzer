@@ -641,5 +641,20 @@ Describe "Test -EnableExit Switch" {
                 Invoke-ScriptAnalyzer -ScriptDefinition $scriptDefinition -ErrorAction Stop | Should -BeNullOrEmpty
             }
         }
+
+        Describe "Is robust when analysing module manifests" {
+            It "Does not throw" {
+                $moduleManifest = @'
+                @{
+                    ModuleVersion          = "1.0.0"
+                    RootModule             = "repro.psm1"
+                    AliasesToExport        = @("anything")
+                }#
+'@
+                $moduleManifestPath = Join-Path $TestDrive 'moduleManifest.psd1'
+                Set-Content -Value $moduleManifest -Path $moduleManifestPath
+                1..100 | ForEach-Object { Invoke-ScriptAnalyzer -Path $moduleManifestPath }
+            }
+        }
     }
 }
