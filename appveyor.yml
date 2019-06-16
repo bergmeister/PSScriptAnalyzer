@@ -3,13 +3,6 @@ environment:
   BuildConfiguration: Release
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true # For faster CI builds
   matrix:
-  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    PowerShellEdition: PowerShellCore
-  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    PowerShellEdition: WindowsPowerShell
-  - APPVEYOR_BUILD_WORKER_IMAGE: WMF 4
-    PowerShellEdition: WindowsPowerShell
-    PSVersion: 4
   - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
     PowerShellEdition: PowerShellCore
 
@@ -19,7 +12,7 @@ cache:
 
 install:
   - ps:   if ($env:PowerShellEdition -eq 'WindowsPowerShell') { Import-Module .\tools\appveyor.psm1; Invoke-AppveyorInstall }
-  - pwsh: if ($env:PowerShellEdition -eq 'PowerShellCore')    { Import-Module .\tools\appveyor.psm1; Invoke-AppveyorInstall }
+  - pwsh: if ($env:PowerShellEdition -eq 'PowerShellCore')    { Import-Module .\tools\appveyor.psm1; Invoke-AppveyorInstall -Verbose }
 
 build_script:
   - ps:   |
