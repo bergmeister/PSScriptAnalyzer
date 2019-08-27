@@ -39,6 +39,8 @@
 - Add ImplementingType to RuleInfo object for better settings file validation and settings template file creation (#1250) (by @JamesWTruher)
 - Fix typo in AvoidDefaultValueForMandatoryParameterError resource string (#1233) (Thanks @tnieto88!)
 - Change module root find function in CompatibilityRule (#1196) (by @rjmholt)
+- Allow formatter to optionally correct aliases (#1277) (by @bergmeister)
+- Add icon and add reference in readme and manifest (#1291) (by @bergmeister, thanks @adilio for creating the logo!)
 
 ### Documentation
 
@@ -57,6 +59,7 @@
 - Speedup CI builds by skipping the first time initialization of the bootstrapped dotnet CLI (#1211) (by @bergmeister)
 - Add suppression of warning for MS policy (#1205) (by @JamesWTruher)
 - Change logic for copying profiles into the 'install' directory (#1197) (by @JamesWTruher)
+- Fix Ubuntu Appveyor build (#1320) (by @bergmeister, thanks @JamesWTruher for the initial investigation)
 
 ## [1.18.0](https://github.com/PowerShell/PSScriptAnalyzer/tree/1.18.0) - 2019-03-21
 
