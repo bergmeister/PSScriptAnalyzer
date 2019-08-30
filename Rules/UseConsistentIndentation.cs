@@ -188,12 +188,10 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
                         // we add this redundant check
                         if (onNewLine)
                         {
-                            var tempIndentationLevel = indentationLevel;
-
                             // Check if the preceding character is an escape character
                             if (tokenIndex > 0 && tokens[tokenIndex - 1].Kind == TokenKind.LineContinuation)
                             {
-                                ++tempIndentationLevel;
+                                indentationLevel++;
                             }
 
                             // check for comments in between multi-line commands with line continuation
@@ -208,7 +206,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
 
                                 if (searchForPrecedingLineContinuationIndex >= 0 && tokens[searchForPrecedingLineContinuationIndex].Kind == TokenKind.LineContinuation)
                                 {
-                                    tempIndentationLevel++;
+                                    indentationLevel++;
                                 }
                             }
 
@@ -217,7 +215,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
                                 oneToken.Extent.StartLineNumber == token.Extent.StartLineNumber &&
                                 oneToken.Extent.StartColumnNumber < token.Extent.StartColumnNumber);
 
-                            AddViolation(token, tempIndentationLevel, diagnosticRecords, ref onNewLine, lineHasPipelineBeforeToken);
+                            AddViolation(token, indentationLevel, diagnosticRecords, ref onNewLine, lineHasPipelineBeforeToken);
                         }
                         break;
                 }

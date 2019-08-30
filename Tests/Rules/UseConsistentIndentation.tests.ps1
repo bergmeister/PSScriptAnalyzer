@@ -158,6 +158,21 @@ foo |
             Invoke-FormatterAssertion $scriptDefinition $expected 3 $settings
         }
 
+
+        It "When a line continuation and pipeline is used " {
+            $scriptDefinition = @'
+foo `
+-bar |
+baz
+'@
+            $expected = @'
+foo `
+    -bar |
+        baz
+'@
+            Invoke-FormatterAssertion $scriptDefinition $expected 2 $settings
+        }
+
         It "Should find a violation if a pipleline element is not indented correctly" {
             $def = @'
 get-process |
