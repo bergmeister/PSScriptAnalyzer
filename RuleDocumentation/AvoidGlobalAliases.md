@@ -4,6 +4,8 @@
 
 ## Description
 
+[here](./AlignAssignmentStatement.md)
+
 Globally scoped aliases override existing aliases within the sessions with matching names. This name collision can cause difficult to debug issues for consumers of modules and scripts.
 
 To understand more about scoping, see ```Get-Help about_Scopes```.
