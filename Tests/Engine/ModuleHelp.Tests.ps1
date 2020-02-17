@@ -56,11 +56,7 @@ Param
 (
 	[ValidateScript({ Get-Module -ListAvailable -Name $_ })]
 	[string]
-	$ModuleName = 'PSScriptAnalyzer',
-
-	[Parameter(Mandatory = $false)]
-	[System.Version]
-	$RequiredVersion
+	$ModuleName = 'PSScriptAnalyzer'
 )
 
 # #Requires -Module @{ModuleName = 'Pester'; ModuleVersion = '4.3.1'}
@@ -204,14 +200,8 @@ function Get-CommandVersion {
 
 
 if (!$RequiredVersion) {
-	$RequiredVersion = (Get-Module $ModuleName -ListAvailable | Sort-Object -Property Version -Descending | Select-Object -First 1).Version
+	$RequiredVersion = (Get-Command 'Invoke-ScriptAnalyzer').Module.Version
 }
-
-# Remove all versions of the module from the session. Pester can't handle multiple versions.
-Get-Module $ModuleName | Remove-Module
-
-# Import the required version
-Import-Module $ModuleName -RequiredVersion $RequiredVersion -ErrorAction Stop
 $ms = $null
 $commands =$null
 $paramBlackList = @()
@@ -222,7 +212,7 @@ if ($PSVersionTable.PSVersion -lt [Version]'5.0.0') {
 }
 else {
 	$ms = [Microsoft.PowerShell.Commands.ModuleSpecification]@{ ModuleName = $ModuleName; RequiredVersion = $RequiredVersion }
-	$commands = Get-Command -FullyQualifiedModule $ms -CommandType Cmdlet,Function,Workflow # Not alias
+	$commands = Get-Command -FullyQualifiedModule $ms
 }
 
 ## When testing help, remember that help is cached at the beginning of each session.
