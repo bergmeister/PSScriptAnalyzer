@@ -98,7 +98,10 @@ Describe "Running all compatibility rules with a settings file" {
 
     It "Finds the problem with command <Command> on line <Line> in the file" -TestCases $script:expectedCommandDiagnostics {
         param([string]$Command, [string]$Parameter, [int]$Line)
-
+        write-verbose -Verbose "debugging $($commandDiagnostics.Count)"
+        foreach($a in $commandDiagnostics) {
+            Write-Verbose -Verbose "command '$($a.Command)' - line '$($a.Line)'"
+        }
         $actualDiagnostic = $commandDiagnostics | Where-Object { $_.Command -eq $Command -and $_.Line -eq $Line }
         $actualDiagnostic.Command | Should -BeExactly $Command
         $actualDiagnostic.Line | Should -Be $Line
