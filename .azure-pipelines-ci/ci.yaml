@@ -23,9 +23,8 @@ stages:
   - stage: Test
     jobs:
       - ${{ each image in [ 'ubuntu-16.04', 'windows-latest' ] }}:
-        - ${{ each versions in [ 'LTS', 'Preview' ] }}:
-          - job:
-            pool:
-              vmImage: ${{ image }}
-            steps:
-            - template: templates/test.yaml
+        - job:
+          pool:
+            vmImage: ${{ image }}
+          steps:
+          - template: templates/test.yaml
