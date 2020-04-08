@@ -1,8 +1,6 @@
 variables:
   # Avoid expensive initialization of dotnet cli, see: https://donovanbrown.com/post/Stop-wasting-time-during-NET-Core-builds
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
-  VmImages: [ 'ubuntu-16.04', 'windows-latest' ]
-  PowerShellVersions: [ 'LTS', 'Preview' ]
 
 stages:
   - stage: Build
@@ -24,8 +22,8 @@ stages:
             artifactName: out
   - stage: Test
     jobs:
-      - ${{ each image in variables.PowerShellVersions }}:
-        - ${{ each image in variables.vmImages }}:
+      - ${{ each image in [ 'ubuntu-16.04', 'windows-latest' ] }}:
+        - ${{ each image in [ 'LTS', 'Preview' ] }}:
           job:
           pool:
             vmImage: ${{ variables.VmImages }}
