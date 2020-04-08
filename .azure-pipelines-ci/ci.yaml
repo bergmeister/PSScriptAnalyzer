@@ -1,6 +1,8 @@
 variables:
   # Avoid expensive initialization of dotnet cli, see: https://donovanbrown.com/post/Stop-wasting-time-during-NET-Core-builds
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  VmImages: [ 'ubuntu-16.04', 'windows-latest', ]
+  PowerShellVersions: [ 'LTS', 'Preview', ]
 
 stages:
   - stage: Build
@@ -22,46 +24,10 @@ stages:
             artifactName: out
   - stage: Test
     jobs:
-      - job:
-        strategy:
-          matrix:
-            Ubuntu_16_04:
-              vmImage: ubuntu-16.04
-            Ubuntu_16_04_PSPreview:
-              vmImage: ubuntu-16.04
-              PowerShellVersion: Preview
-            Ubuntu_18_04:
-              vmImage: ubuntu-18.04
-            Ubuntu_18_04_PSPreview:
-              vmImage: ubuntu-18.04
-              PowerShellVersion: Preview
-            macOS_10_14_Mojave:
-              vmImage: macOS-10.14
-            macOS_10_14_PSPreview:
-              vmImage: macOS-10.14
-              PowerShellVersion: Preview
-            macOS_10_15_Catalina:
-              vmImage: macOS-10.15
-            macOS_10_15_PSPreview:
-              vmImage: macOS-10.15
-              PowerShellVersion: Preview
-            Win2016:
-              vmImage: vs2017-win2016
-            Win2016_PSPreview:
-              vmImage: vs2017-win2016
-              PowerShellVersion: Preview
-            Win2016_PowerShell_5_1:
-              vmImage: vs2017-win2016
-              PowerShellVersion: WindowsPowerShell
-            Win2019:
-              vmImage: windows-2019
-            Win2019_PSPreview:
-              vmImage: windows-2019
-              PowerShellVersion: Preview
-            Win2019_PS5:
-              vmImage: windows-2019
-              PowerShellVersion: WindowsPowerShell
-        pool:
-          vmImage: $[ variables['vmImage'] ]
-        steps:
-        - template: templates/test.yaml
+      - ${{ each image in variables.PowerShellVersions }}:
+        - ${{ each image in variables.vmImages }}:
+          job:
+          pool:
+            vmImage: ${{ variables.VmImages }}
+          steps:
+          - template: templates/test.yaml
