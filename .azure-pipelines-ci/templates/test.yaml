@@ -2,6 +2,7 @@ jobs:
   - ${{ each image in parameters.images }}:
     - ${{ each powerShellVersion in parameters.powerShellVersions }}:
       - job:
+        displayName: ${{ format('{0} - {1}', image, powerShellVersion) }}
         pool: 
           vmImage: ${{ image }}
         steps:
@@ -19,14 +20,14 @@ jobs:
             # Using `prependpath` to update the PATH just for this build.
             Write-Host "##vso[task.prependpath]$powerShellPath"
           displayName: Install PowerShell Daily
-          condition: eq(variables['PowerShellVersion'], 'Preview')
+          condition: eq(variables['powerShellVersion'], 'Preview')
         - pwsh: '$PSVersionTable'
           displayName: Display PowerShell version information
         - task: PowerShell@2
           displayName: 'Test'
           inputs:
             targetType: inline
-            pwsh: ne(variables['PowerShellVersion'], 'WindowsPowerShell')
+            pwsh: ne(variables['powerShellVersion'], 'WindowsPowerShell')
             script: |
               Import-Module .\tools\appveyor.psm1
               Invoke-AppveyorTest -CheckoutPath $env:BUILD_SOURCESDIRECTORY
