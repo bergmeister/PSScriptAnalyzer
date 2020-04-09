@@ -2,7 +2,8 @@ jobs:
   - ${{ each image in parameters.images }}:
     - ${{ each powerShellVersion in parameters.powerShellVersions }}:
       - job:
-        pool: ${{ image }}
+        pool: 
+          vmImage: ${{ image }}
         steps:
         - task: DownloadPipelineArtifact@2
           displayName: 'Download Pipeline Artifact: out Folder'
