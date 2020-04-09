@@ -10,10 +10,11 @@ stages:
           vmImage: windows-latest
         steps:
         - pwsh: |
-            Import-Module .\tools\appveyor.psm1
-            Invoke-AppveyorInstall -SkipPesterInstallation
-            ./build.ps1 -Configuration 'Release' -All
-            ./PSCompatibilityCollector/build.ps1 -Configuration 'Release'
+            mkdir out
+            # Import-Module .\tools\appveyor.psm1
+            # Invoke-AppveyorInstall -SkipPesterInstallation
+            # ./build.ps1 -Configuration 'Release' -All
+            # ./PSCompatibilityCollector/build.ps1 -Configuration 'Release'
           displayName: 'Full Build'
         - task: PublishPipelineArtifact@1
           displayName: 'Publish Pipeline Artifact: out Folder'
@@ -22,9 +23,7 @@ stages:
             artifactName: out
   - stage: Test
     jobs:
-      - ${{ each image in [ 'ubuntu-16.04', 'windows-latest' ] }}:
-        - job:
-          pool:
-            vmImage: ${{ image }}
-          steps:
-          - template: templates/test.yaml
+    - template: templates/test.yaml
+      parameters:
+        images: [ 'ubuntu-16.04', 'vs2017-win2016' ]
+        powerShellVersions: [ 'LTS', 'Preview' ]
