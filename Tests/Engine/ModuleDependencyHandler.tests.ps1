@@ -1,20 +1,26 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+function Get-Skip
+{
+    if ($testingLibararyUsage -or ($PSversionTable.PSVersion -lt [Version]'5.0.0'))
+    {
+        return $true
+    }
+    if ($IsLinux -or $IsMacOS)
+    {
+        $dscIsInstalled = Test-Path /etc/opt/omi/conf/dsc/configuration
+        if (-not $dscIsInstalled)
+        {
+            return $true
+        }
+    }
+    return $false
+}
+$skipTest = Get-Skip
+
 Describe "Resolve DSC Resource Dependency" {
     BeforeAll {
-        $skipTest = $false # Test that require DSC to be installed
-        if ($testingLibararyUsage -or ($PSversionTable.PSVersion -lt [Version]'5.0.0'))
-        {
-            $skipTest = $true
-            return
-        }
-        if ($IsLinux -or $IsMacOS)
-        {
-            $dscIsInstalled = Test-Path /etc/opt/omi/conf/dsc/configuration
-            if (-not $dscIsInstalled)
-            {
-                $skipTest = $true
-            }
-        }
-
         $savedPSModulePath = $env:PSModulePath
         $violationFileName = 'MissingDSCResource.ps1'
         $violationFilePath = Join-Path $PSScriptRoot $violationFileName
@@ -179,7 +185,7 @@ Describe "Resolve DSC Resource Dependency" {
         }
     }
 
-    Context "Invoke-ScriptAnalyzer without switch but with module in temp path" {
+    Context "Invoke-ScriptAnalyzer without switch but with module in temp path" -Skip:$skipTest {
         BeforeAll {
             if ( $skipTest ) { return }
             $oldEnvVars = Get-Item Env:\* | Sort-Object -Property Key
@@ -238,8 +244,7 @@ Describe "Resolve DSC Resource Dependency" {
             $env:PSModulePath | Should -Be $savedPSModulePath
         }
 
-        if (!$skipTest)
-        {
+        It "Keeps the environment variables unchanged" -skip:$skipTest {
             if ($IsLinux -or $IsMacOS)
             {
                 $env:HOME = $oldLocalAppDataPath
@@ -252,9 +257,7 @@ Describe "Resolve DSC Resource Dependency" {
             }
             Remove-Item -Recurse -Path $tempModulePath -Force
             Remove-Item -Recurse -Path $tempPath -Force
-        }
 
-        It "Keeps the environment variables unchanged" -skip:$skipTest {
             Test-EnvironmentVariables($oldEnvVars)
         }
     }
