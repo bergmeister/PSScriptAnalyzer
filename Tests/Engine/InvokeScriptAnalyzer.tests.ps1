@@ -9,7 +9,7 @@ Describe "Test available parameters" {
     $params = $sa.Parameters
     Context "Path parameter" {
         It "has a Path parameter" {
-            $params.ContainsKey("Path") | Should -BeTrue
+            $params.ContainsKey("PPath") | Should -BeTrue
         }
 
         It "accepts string" {
