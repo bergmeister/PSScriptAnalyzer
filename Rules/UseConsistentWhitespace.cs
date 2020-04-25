@@ -39,6 +39,9 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
         private List<Func<TokenOperations, IEnumerable<DiagnosticRecord>>> violationFinders
                 = new List<Func<TokenOperations, IEnumerable<DiagnosticRecord>>>();
 
+        private IEnumerable<LinkedListNode<Token>> _lCurlyTokens;
+        private IEnumerable<LinkedListNode<Token>> _pipeTokens;
+
         [ConfigurableRuleProperty(defaultValue: true)]
         public bool CheckOpenBrace { get; protected set; }
 
@@ -111,6 +114,15 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
             }
 
             var tokenOperations = new TokenOperations(Helper.Instance.Tokens, ast);
+            if (CheckOpenBrace || CheckInnerBrace)
+            {
+                _lCurlyTokens = tokenOperations.GetTokenNodes(TokenKind.LCurly);
+            }
+            if (CheckPipe)
+            {
+                _pipeTokens = tokenOperations.GetTokenNodes(TokenKind.Pipe);
+            }
+
             var diagnosticRecords = Enumerable.Empty<DiagnosticRecord>();
             foreach (var violationFinder in violationFinders)
             {
@@ -224,7 +236,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
 
         private IEnumerable<DiagnosticRecord> FindOpenBraceViolations(TokenOperations tokenOperations)
         {
-            foreach (var lcurly in tokenOperations.GetTokenNodes(TokenKind.LCurly))
+            foreach (var lcurly in _lCurlyTokens)
             {
 
                 if (lcurly.Previous == null
@@ -251,7 +263,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
 
         private IEnumerable<DiagnosticRecord> FindInnerBraceViolations(TokenOperations tokenOperations)
         {
-            foreach (var lCurly in tokenOperations.GetTokenNodes(TokenKind.LCurly))
+            foreach (var lCurly in _lCurlyTokens)
             {
                 if (lCurly.Next == null
                     || !IsPreviousTokenOnSameLine(lCurly)
@@ -305,7 +317,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
 
         private IEnumerable<DiagnosticRecord> FindPipeViolations(TokenOperations tokenOperations)
         {
-            foreach (var pipe in tokenOperations.GetTokenNodes(TokenKind.Pipe))
+            foreach (var pipe in _pipeTokens)
             {
                 if (pipe.Next == null
                     || !IsPreviousTokenOnSameLine(pipe)
@@ -333,7 +345,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
                 }
             }
 
-            foreach (var pipe in tokenOperations.GetTokenNodes(TokenKind.Pipe))
+            foreach (var pipe in _pipeTokens)
             {
                 if (pipe.Previous == null
                     || !IsPreviousTokenOnSameLine(pipe)
