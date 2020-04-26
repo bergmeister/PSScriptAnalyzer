@@ -1594,18 +1594,26 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
             range = isRangeNull ? null : SnapToEdges(text, range);
             var previousLineCount = text.LineCount;
             var previousUnusedCorrections = 0;
+            bool appliedAllCorrections = false;
+            int loopCount = 0;
             do
             {
-                IEnumerable<DiagnosticRecord> records;
-                if (skipParsing && previousUnusedCorrections == 0)
+                var records = new List<DiagnosticRecord>();
+                DiagnosticRecord diagnosticRecord = null;
+                if (skipParsing && loopCount == 0)
                 {
-                    records = AnalyzeSyntaxTree(scriptAst, scriptTokens, String.Empty, skipVariableAnalysis);
+                    diagnosticRecord = AnalyzeSyntaxTree(scriptAst, scriptTokens, String.Empty, skipVariableAnalysis).FirstOrDefault();
                 }
                 else
                 {
-                    records = AnalyzeScriptDefinition(text.ToString(), out scriptAst, out scriptTokens, skipVariableAnalysis);
+                    diagnosticRecord = AnalyzeScriptDefinition(text.Text, out scriptAst, out scriptTokens, skipVariableAnalysis).FirstOrDefault();
+                }
+                if (diagnosticRecord != null)
+                {
+                    records.Add(diagnosticRecord);
                 }
                 var corrections = records
+                    .Where(oneDiagnosticRecord => oneDiagnosticRecord != null)
                     .Select(r => r.SuggestedCorrections)
                     .Where(sc => sc != null && sc.Any())
                     .Select(sc => sc.First())
@@ -1641,7 +1649,12 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                 }
 
                 previousLineCount = lineCount;
-            } while (previousUnusedCorrections > 0);
+                if (diagnosticRecord == null)
+                {
+                    appliedAllCorrections = true;
+                }
+                loopCount++;
+            } while (!appliedAllCorrections);
 
             updatedRange = range;
             return text;
