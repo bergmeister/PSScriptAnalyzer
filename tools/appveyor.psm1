@@ -123,7 +123,7 @@ function Invoke-AppveyorTest {
     Import-Module Pester
     $configuration = [PesterConfiguration]::Default
     $configuration.CodeCoverage.Enabled = $false
-    $configuration.Output.Verbosity = 'Normal'
+    $configuration.Output.Verbosity = 'Diagnostic'
     $configuration.Run.Exit = $true
     $configuration.Run.PassThru = $true
     $configuration.Run.Path = $testScripts

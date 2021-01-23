@@ -3,7 +3,7 @@
 
 BeforeAll {
     $testRootDirectory = Split-Path -Parent $PSScriptRoot
-    Import-Module (Join-Path $testRootDirectory "PSScriptAnalyzerTestHelper.psm1")
+    Import-Module (Join-Path $testRootDirectory "PSScriptAnalyzerTestHelper.psm1") -Verbose
 
     $ruleConfiguration = @{
         Enable         = $true
