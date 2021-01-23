@@ -4,7 +4,7 @@
 $ErrorActionPreference = 'Stop'
 
 function Install-Pester {
-    $requiredPesterVersion = '5.0.2'
+    $requiredPesterVersion = '5.0.4'
     $pester = Get-Module Pester -ListAvailable | Where-Object { $_.Version -eq $requiredPesterVersion }
     if ($null -eq $pester) {
         if ($null -eq (Get-Module -ListAvailable PowershellGet)) {
