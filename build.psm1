@@ -321,6 +321,7 @@ function Start-ScriptAnalyzerBuild
             Copy-Item -path $nsoft -Destination $destinationDirBinaries
         }
         else {
+            gci $destinationDirBinaries
             gci "$projectRoot"
             gci "$projectRoot\Rules"
             gci "$projectRoot\Rules\bin"
