@@ -321,6 +321,7 @@ function Start-ScriptAnalyzerBuild
             Copy-Item -path $nsoft -Destination $destinationDirBinaries
         }
         else {
+            gci "$projectRoot\Rules\bin\${buildConfiguration}\${framework}"
             Copy-Item -path "$projectRoot\Rules\bin\${buildConfiguration}\${framework}\PluralizeService.Core.dll" -Destination $destinationDirBinaries
         }
 
