@@ -270,7 +270,7 @@ function Start-ScriptAnalyzerBuild
                 $dotnetArgs += "--output"
                 $dotnetArgs += "${PSScriptRoot}\bin\${buildConfiguration}\${framework}"
             }
-            $buildOutput = & $script:DotnetExe $dotnetArgs 2>&1
+            $buildOutput = & $script:DotnetExe $dotnetArgs
             if ( $LASTEXITCODE -ne 0 ) { throw "$buildOutput" }
             Write-Verbose -Verbose:$verboseWanted -message "$buildOutput"
         }
