@@ -314,7 +314,7 @@ function Start-ScriptAnalyzerBuild
         $rulesProjectOutputDir = if ($env:TF_BUILD) {
             "$projectRoot\bin\${buildConfiguration}\${framework}" }
         else {
-            "$projectRoot\Rules\bin\\${buildConfiguration}\${framework}"
+            "$projectRoot\Rules\bin\${buildConfiguration}\${framework}"
         }
         if ($framework -eq 'net452') {
             $nsoft = Join-Path $rulesProjectOutputDir 'Newtonsoft.Json.dll'
