@@ -15,6 +15,16 @@ stages:
             ./build.ps1 -Configuration 'Release' -All
             ./PSCompatibilityCollector/build.ps1 -Configuration 'Release'
           displayName: 'Full Build'
+        - task: PublishPipelineArtifact@1
+          displayName: 'Publish Pipeline Artifact: Tests Folder'
+          inputs:
+            targetPath: '$(Build.SourcesDirectory)/Tests'
+            artifactName: Tests
+        - task: PublishPipelineArtifact@1
+          displayName: 'Publish Pipeline Artifact: Tools Folder'
+          inputs:
+            targetPath: '$(Build.SourcesDirectory)/Tools'
+            artifactName: Tests
         - pwsh: |
             Write-Host "##vso[artifact.upload containerfolder=out;artifactname=out;]${env:Build_SourcesDirectory}/out"
   - stage: Test
@@ -37,6 +47,7 @@ stages:
         pool:
           vmImage: $[ variables['vmImage'] ]
         steps:
+        - checkout: none
         - template: templates/test-pwsh.yaml
       - job:
         strategy:
@@ -50,4 +61,5 @@ stages:
         pool:
           vmImage: $[ variables['vmImage'] ]
         steps:
+        - checkout: none
         - template: templates/test-powershell.yaml

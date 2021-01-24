@@ -4,6 +4,16 @@ steps:
   inputs:
     artifactName: out
     targetPath: '$(Build.SourcesDirectory)/out'
+- task: DownloadPipelineArtifact@2
+  displayName: 'Download Pipeline Artifact: Tests Folder'
+  inputs:
+    artifactName: Tests
+    targetPath: '$(Build.SourcesDirectory)/tests'
+- task: DownloadPipelineArtifact@2
+  displayName: 'Download Pipeline Artifact: tools Folder'
+  inputs:
+    artifactName: tools
+    targetPath: '$(Build.SourcesDirectory)/tools'
 - task: PowerShell@2
   displayName: 'Test'
   inputs:
