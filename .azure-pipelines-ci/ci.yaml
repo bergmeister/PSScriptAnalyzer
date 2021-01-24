@@ -21,10 +21,10 @@ stages:
             targetPath: '$(Build.SourcesDirectory)/Tests'
             artifactName: Tests
         - task: PublishPipelineArtifact@1
-          displayName: 'Publish Pipeline Artifact: Tools Folder'
+          displayName: 'Publish Pipeline Artifact: tools Folder'
           inputs:
-            targetPath: '$(Build.SourcesDirectory)/Tools'
-            artifactName: Tests
+            targetPath: '$(Build.SourcesDirectory)/tools'
+            artifactName: tools
         - pwsh: |
             Write-Host "##vso[artifact.upload containerfolder=out;artifactname=out;]${env:Build_SourcesDirectory}/out"
   - stage: Test
