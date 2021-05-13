@@ -43,6 +43,33 @@ stages:
       - job:
         strategy:
           matrix:
+            Ubuntu_16_04:
+              vmImage: ubuntu-16.04
+              PowerShellVersion: LTS
+            Ubuntu_18_04:
+              vmImage: ubuntu-18.04
+              PowerShellVersion: LTS
+            Ubuntu_20_04:
+              vmImage: ubuntu-20.04
+              PowerShellVersion: LTS
+            macOS_10_14_Mojave:
+              vmImage: macOS-10.14
+              PowerShellVersion: LTS
+            macOS_10_15_Catalina:
+              vmImage: macOS-10.15
+              PowerShellVersion: LTS
+            Windows_Server2016_PowerShell_Core:
+              vmImage: vs2017-win2016
+              PowerShellVersion: LTS
+            Windows_Server2019_PowerShell_Core:
+              vmImage: windows-2019
+        pool:
+          vmImage: $[ variables['vmImage'] ]
+        steps:
+        - template: templates/test-pwsh.yaml
+      - job:
+        strategy:
+          matrix:
             Windows_Server2016_PowerShell_5_1:
               vmImage: vs2017-win2016
               pwsh: false

@@ -1,9 +1,29 @@
+parameters:
+- name: PowerShellVersion
+  type: string
+  default: Current
+  values:
+    - Current
+    - LTS
+
 steps:
 - task: DownloadPipelineArtifact@2
   displayName: 'Download Pipeline Artifact: out Folder'
   inputs:
     artifactName: out
     targetPath: '$(Build.SourcesDirectory)/out'
+- pwsh: |
+    Write-Host "Installing PowerShell Preview..."
+    # Use `AGENT_TEMPDIRECTORY` to make sure the downloaded PowerShell is cleaned up.
+    $powerShellPath = Join-Path -Path $env:AGENT_TEMPDIRECTORY -ChildPath 'powershell'
+    Invoke-WebRequest -Uri https://aka.ms/install-powershell.ps1 -OutFile ./install-powershell.ps1
+    ./install-powershell.ps1 -Destination $powerShellPath -Daily
+    # Using `prependpath` to update the PATH just for this build.
+    Write-Host "##vso[task.prependpath]$powerShellPath"
+  displayName: Install PowerShell Daily
+  condition: eq(variables['PowerShellVersion'], 'LTS')
+- pwsh: '$PSVersionTable'
+  displayName: Display PowerShell version information
 - task: PowerShell@2
   displayName: 'Test'
   inputs:
