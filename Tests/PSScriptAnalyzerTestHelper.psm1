@@ -5,7 +5,7 @@ Function Get-ExtentTextFromContent
 	    Param(
 	[Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.CorrectionExtent] $violation,
 	[string] $rawContent
-	)
+	)#
 	$scriptContent = New-Object -TypeName 'System.Collections.ArrayList'
 	$stringReader = New-Object -TypeName 'System.IO.StringReader' -ArgumentList @($rawContent)
 	while ($stringReader.Peek() -ne -1)
